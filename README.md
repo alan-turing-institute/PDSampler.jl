@@ -25,7 +25,7 @@ If you want to try it out, you should be able to add it using the git url:
 Pkg.clone("git://github.com/alan-turing-institute/PDMP.jl.git")
 ```
 
-You should then be able to run the tests.
+You should then be able to run the tests:
 
 ```julia
 Pkg.test("PDMP")
