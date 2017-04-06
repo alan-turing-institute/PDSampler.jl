@@ -6,7 +6,7 @@
 
 The aim of this package is to provide a flexible and expandable framework for the methods discussed in
 
-* [The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method](https://arxiv.org/abs/1510.02451)
+* Bouchard Cote, Doucet, Vollmer : [The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method](https://arxiv.org/abs/1510.02451)
 * [Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains](https://arxiv.org/pdf/1701.04244.pdf)
 * [The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data](https://arxiv.org/pdf/1607.03188.pdf)
 
