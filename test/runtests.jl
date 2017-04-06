@@ -1,5 +1,3 @@
-using PDMP
-using Base.Test
+using PDMP, Base.Test
 
-# write your own tests here
-@test 1 == 2
+@testset "gaussian" begin include("gaussian_test.jl") end
