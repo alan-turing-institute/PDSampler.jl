@@ -18,7 +18,7 @@ The aim of this package is to provide a flexible and expandable framework for th
 ## Package under construction
 
 This package is under construction.
-If you have questions / requests, please contact me at `tlienart σ turing.ac.uk`.
+If you have questions / requests, please send an email to `tlienart σ turing.ac.uk`.
 If you want to try it out, you should be able to add it using the git url:
 
 ```julia
