@@ -11,7 +11,6 @@ notifications:
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.Add("Polynomials"); Pkg.Add("Distributions")'
   - julia -e 'Pkg.clone(pwd()); Pkg.build("PDMP"); Pkg.test("PDMP"; coverage=true)'
 after_success:
   # push coverage results to Coveralls

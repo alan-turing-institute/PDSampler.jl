@@ -90,8 +90,6 @@ function pmf_caseD{T<:Float}(rexp::T, p::Poly, tm::T, t0::T, tp::T)::T
     Ip1  = polyint(polyval(p, Poly([tm,1.0])))
     step = Ip1(t0-tm)
     if rexp <= step # solve between tm and t0
-        @show rexp
-        @show pmf_base(rexp, Ip1)
         tau = tm + pmf_base(rexp, Ip1)
     else # solve after tp
         tau = tp + pmf_base(rexp-step, polyint(polyval(p, Poly([tp,1.0]))))
