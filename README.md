@@ -33,7 +33,8 @@ Pkg.test("PDMP")
 
 ## Examples
 
-The folder `examples` contains a number of curated examples for either the global PDMP sampler or the local BPS. See for example `ex_lbps_gausschain1` which runs the local BPS sampler on a simple chain with standard gaussian factors.
+The folder `examples` contains a number of curated examples for either the global PDMP sampler or the local BPS.
+See for example `ex_lbps_gausschain1` which runs the local BPS sampler on a simple chain with standard gaussian factors.
 
 You can have a look at the pre-run [notebook](https://github.com/alan-turing-institute/PDMP/blob/master/examples/analysis_global.ipynb). (Global BPS)
 You can do the same with [this notebook](https://github.com/alan-turing-institute/PDMP/blob/master/examples/analysis_local.ipynb). (Local BPS)
