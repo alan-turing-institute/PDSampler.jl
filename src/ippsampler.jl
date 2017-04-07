@@ -124,7 +124,7 @@ function nextevent_zz{T<:Vector{Float}}(g::MvGaussian, x::T, v::T)::NextEvent
         bi = u2[i]*v[i]
         ci = ai./bi
         ei = max(0.0,ci)*ci
-        taus[i] = -ci + sqrt(ei + 2randexp()/abs(bi))
+        taus[i] = -ci + sqrt(ei + 2.0randexp()/abs(bi))
     end
     tau, flipindex = findmin(taus)
     NextEvent(tau,flipindex=flipindex)
