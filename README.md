@@ -29,6 +29,9 @@ Pkg.test("PDMP")
 Pkg.update("PDMP")
 ```
 
+**Note about code coverage**: two significant files (`src/simulate.jl` and `src/local/simulate.jl`) are hard to "cleanly" check in the usual CS sense. The guarantees are all in terms of infinite computational time which obviously we do not have. 
+Some of the code will in the future be pulled out of the main function to have controllable chunks.
+
 ## Examples
 
 The folder `examples` contains a number of curated examples for either the global PDMP sampler or the local BPS.
