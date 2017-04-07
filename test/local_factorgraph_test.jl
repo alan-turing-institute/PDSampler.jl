@@ -15,6 +15,7 @@ listfactors = [ Factor( nextevent, gll, i) for i in 1:3]
 chain       = chaingraph(listfactors)
 compc       = FactorGraphStruct([[1,2],[2,3],[3,4]])
 chain2      = FactorGraph(FactorGraphStruct([[1,2],[2,3],[3,4]]), listfactors)
+chain3      = FactorGraph([[1,2],[2,3],[3,4]], listfactors)
 
 i = rand(1:3)
 x = randn(p)
@@ -25,6 +26,9 @@ v = randn(p)
 
 @test   chain2.structure.flist == chain.structure.flist &&
         chain2.structure.vlist == chain.structure.vlist
+
+@test   chain3.structure.flist == chain.structure.flist &&
+        chain3.structure.vlist == chain.structure.vlist
 
 @test chain.factors[i].gll(x) == chain2.factors[i].gll(x)
 
