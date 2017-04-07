@@ -8,7 +8,7 @@ function gradloglik(g::PMFGaussian, x::Vector{Float})::Vector{Float}
     u = x[1:g.d]
     v = x[g.d+1:end]
     e = dot(u,v)-g.r
-    -e/sigma^2 * [v; u]
+    -e/g.sigma^2 * [v; u]
 end
 
 function loglik(g::PMFGaussian, x::Vector{Float})::Float

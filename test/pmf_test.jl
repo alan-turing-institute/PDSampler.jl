@@ -19,7 +19,7 @@ gvb = - e * u / s^2
 g   = gradloglik(pmfg, [u;v])
 
 @test   norm(gub-g[1:d]) <= 1e-10 &&
-        norm(gvb-g[d+1:end)) <= 1e-10
+        norm(gvb-g[d+1:end]) <= 1e-10
 
 # the tests have crude accuracy (because the benchmark is drawn from visual
 # inspections with Grapher). This doesn't matter much.
