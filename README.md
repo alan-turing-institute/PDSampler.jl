@@ -16,14 +16,17 @@ This package is currently under construction.
 If you have questions / requests, please send an email to `tlienart σ turing.ac.uk` or open an issue.
 If you want to try it out, you should be able to add it using the git url:
 
+#### Install from Github for the first time
 ```julia
 Pkg.clone("git://github.com/alan-turing-institute/PDMP.jl.git")
 ```
-
-You should then be able to run the tests:
-
+#### Run tests
 ```julia
 Pkg.test("PDMP")
+```
+#### Update to latest Github version
+```julia
+Pkg.update("PDMP")
 ```
 
 ## Examples
