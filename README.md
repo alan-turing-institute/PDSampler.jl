@@ -12,8 +12,8 @@ The aim of this package is to provide a flexible and expandable framework for th
 
 ## Package under construction
 
-This package is under construction.
-If you have questions / requests, please send an email to `tlienart σ turing.ac.uk`.
+This package is currently under construction.
+If you have questions / requests, please send an email to `tlienart σ turing.ac.uk` or open an issue.
 If you want to try it out, you should be able to add it using the git url:
 
 ```julia
@@ -29,6 +29,8 @@ Pkg.test("PDMP")
 ## Examples
 
 The folder `examples` contains a number of curated examples for either the global PDMP sampler or the local BPS.
+Examples such as `ex_bps_mvg1.jl` use the global BPS approach, `mvg1` refers to the case (here a multivariate gaussian).
+Examples such as `ex_lbps_gausschain1` use the local BPS approach, `gausschain1` refers to a Markov chain with Gaussian potentials.
 See for example `ex_lbps_gausschain1` which runs the local BPS sampler on a simple chain with standard gaussian factors.
 
 You can have a look at the pre-run [notebook](https://github.com/alan-turing-institute/PDMP/blob/master/examples/analysis_global.ipynb). (Global BPS)
@@ -36,7 +38,138 @@ You can do the same with [this notebook](https://github.com/alan-turing-institut
 
 The examples produce `.jld` files which are/can then be analysed in one of the `analysis` notebooks (or your adapted version theoref).
 
----
+## How to use this framework
+
+### Global BPS
+
+(We follow here step by step the example `ex_bps_mvg3.jl`)
+
+Start by loading the library:
+
+```julia
+using PDMP
+```
+
+you will then need to define two things:
+
+1. a geometry (boundaries)
+2. an energy (gradient of log-likelihood)
+
+At the moment, the package can handle unconstrained geometries and polygonal domains.
+Let's say we want to be constrained to the positive orthan in 2D:
+
+```julia
+p                 = 2
+ns, a             = eye(p), zeros(p)
+geom              = PDMP.Polygonal(ns,a)
+nextboundary(x,v) = PDMP.nextboundary(geom, x, v)
+```
+
+Here `ns` and `a` are the normals and the intercepts of the facets.
+The type `Polygonal` encapsulates that geometry.
+The function `nextboundary` returns the next boundary on the current ray `[x,x+tv]` with `t>0` as well as the time when that hit will happen.
+
+We then need to specify a model, in particular we need to define a function of the form `gll(x)` which can return the gradient of the log-likelihood at `x`.
+Here let us consider a 2D gaussian for simplicity.
+
+```julia
+P1  = randn(p,p)
+P1 *= P1'
+mu  = zeros(p)+1.
+mvg = PDMP.MvGaussianCanon(mu, P1)
+```
+
+Here we have defined the gaussian through the "Canonical" representation (see `src/models/gaussian.jl` for others) i.e.: by specifying a mean and a precision matrix.
+
+The gradient of the log-likelihood is then given by
+
+```julia
+gll(x) = PDMP.gradloglik(mvg, x)
+```
+
+**Remark**: if you want to implement your own model, you should define your model in `src/models/yourmodel.jl` and make sure it implements a `gradloglik` function.
+
+Next we need to define the function which can return the first arrival time of the IPP (see algorithm). Note that you could be using `nextevent_zz` here as well if you wanted the Zig-Zag sampler. See `src/ippsampler.jl` for more.
+
+```julia
+nextevent(x, v) = PDMP.nextevent_bps(mvg, x, v)
+```
+
+For a Gaussian (and some other simple functions), this is analytical through an inversion-like method (see BPS paper).
+Another approach is the thinning approach using a bounding intensity.
+At the moment thinning with a linear bound is implemented (cf. `src/ippsampler.jl`).
+
+Finally, you need to specify the parameters of the simulation such as the starting point, velocity, length of the path generated, rate of refreshment and maximum number of gradient evaluations.
+
+```julia
+T    = 1000.0   # length of path generated
+lref = 2.0      # rate of refreshment
+x0   = randn(p) # starting point
+v0   = randn(p) # starting velocity
+v0  /= norm(v0) # put it on the sphere (not necessary)
+
+sim = PDMP.Simulation( x0, v0, T, nextevent, gll,
+            nextboundary, lref ; maxgradeval = 10000)
+```
+
+And finally, generate the path and recover some details about the simulation.
+
+```julia
+(path, details) = PDMP.simulate(sim)
+```
+
+The `path` object belongs to the type `Path` and can be sampled using `samplepath` (see `src/path.jl`).
+
+### Local BPS
+
+(We follow here step by step the example `ex_lbps_gausschain1.jl`)
+
+The approach to using the local BPS is much the same as for the global one except that you need to specify a `FactorGraph`. That object will contain the structure of the factor graph (which factor is connected to which variables) as well as the list of all factors (which have a `gll` and `nextevent` since each factor can be seen individually as a small BPS).
+
+Let's declare a chain of bivariate gaussians:
+
+```julia
+nfac = 3 # number of factors
+
+mvg             = PDMP.MvGaussianStandard(zeros(2),eye(2))
+gll(x)          = PDMP.gradloglik(mvg, x)
+nextevent(x, v) = PDMP.nextevent_bps(mvg, x, v)
+
+# all factors have that same likelihood
+chainfactor(i) = Factor(nextevent,gll,i)
+
+# assemble into a chain graph
+chain = chaingraph([chainfactor(i) for i in 1:nfac])
+```
+
+This is a simple graph with a known structure so that it's already defined through the `chaingraph` function (in `src/local/factorgraph.jl`)
+For an arbitrary graph, you would need to provide two things:
+
+1. the structure of the factor graph: a list of list where each element corresponds to a factor and the corresponding list contains the indices of the variables attached to that factor
+2. the list of factors
+
+The rest is very similar to the global BPS:
+
+```julia
+lambdaref  = .01
+maxnevents = 10000
+T          = Inf
+nvars      = chain.structure.nvars
+x0         = randn(nvars)
+v0         = randn(nvars)
+v0        /= norm(v0)
+
+lsim = LocalSimulation(chain, x0, v0, T, maxnevents, lambdaref)
+
+(all_evlist, details) = simulate(lsim)
+```
+
+The `all_evlist` object contains a list of `EventList` corresponding to the what happened on each of the factors.
+It can also be sampled using `samplelocalpath` (cf. `src/local/event.jl`).
+
+# Technical doc
+
+**Comment**: this is bound to become a stand-alone document.
 
 ## Understanding the code
 
