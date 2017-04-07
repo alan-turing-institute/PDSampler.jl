@@ -90,4 +90,4 @@ chainstruct(nvars::Int) = FactorGraphStruct([[i,i+1] for i in 1:nvars-1])
 chaingraph(lf::Vector{Factor}) = FactorGraph(chainstruct(length(lf)+1), lf)
 
 # row based reading (left right then top down)
-gridstruct(nvars::Int) = error("Not implemented yet")
+# gridstruct(nvars::Int) = error("Not implemented yet")

@@ -12,7 +12,10 @@ gll(x)         = PDMP.gradloglik(mvg, x)
 nextevent(x,v) = PDMP.nextevent_bps(mvg, x, v)
 
 chain = chaingraph([ Factor( nextevent, gll, i) for i in 1:3])
+compc = FactorGraphStruct([[1,2],[2,3],[3,4]])
 
+@test   chain.structure.flist == compc.flist &&
+        chain.structure.vlist == compc.vlist
 
 fgs = FactorGraphStruct( [[1,2,5],
                           [1,3,6],
@@ -24,6 +27,9 @@ fgs = FactorGraphStruct( [[1,2,5],
 @test sort(linkedfactors(fgs,3)) == [1,2,4]
 @test sort(linkedfactors(fgs,4)) == [1,3]
 @test chainstruct(5).flist == [[1,2],[2,3],[3,4],[4,5]]
+
+@test assocfactors(chain,  2) == [1,2]
+@test linkedfactors(chain, 2) == [1,3]
 
 xtest = randn(p)
 vtest = randn(p)
