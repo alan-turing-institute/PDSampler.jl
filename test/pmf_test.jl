@@ -1,5 +1,26 @@
 using PDMP, Base.Test, Polynomials
 
+d = 3
+u = randn(d)
+v = randn(d)
+r = 3
+s = 0.1
+
+pmfg = PMFGaussian(r, s, d)
+
+e  = (dot(u,v) - r)
+lb = 0.5(e/s)^2
+l  = loglik(pmfg, [u;v])
+
+@test abs(l-lb) <= 1e-10
+
+gub = - e * v / s^2
+gvb = - e * u / s^2
+g   = gradloglik(pmfg, [u;v])
+
+@test   norm(gub-g[1:d]) <= 1e-10 &&
+        norm(gvb-g[d+1:end)) <= 1e-10
+
 # the tests have crude accuracy (because the benchmark is drawn from visual
 # inspections with Grapher). This doesn't matter much.
 

@@ -13,7 +13,7 @@ end
 
 function loglik(g::PMFGaussian, x::Vector{Float})::Float
     u = x[1:g.d]
-    v = x[g:d+1:end]
+    v = x[g.d+1:end]
     e = dot(u,v) - g.r
     0.5(e/g.sigma)^2
 end
