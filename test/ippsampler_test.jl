@@ -63,3 +63,25 @@ srand(12); tauq   = q_sampletaugaussian(mu, C1, x, v)
 srand(12); bounce = nextevent_bps(mvg, x, v)
 
 @test abs(tauq - bounce.tau) <= 1e-12 && bounce.dobounce(g,v)
+
+## additional tests
+
+nedef = NextEvent(0.5)
+@test   nedef.tau == 0.5 && nedef.dobounce(randn(),randn()) &&
+        nedef.flipindex == -1
+
+srand(555); a  = nextevent_zz(mvg, x, v)
+srand(555)
+u1   = mvg.prec*x-mvg.precmu
+u2   = mvg.prec*v
+taus = zeros(p)
+for i in 1:p
+    ai = u1[i] * v[i]
+    bi = u2[i] * v[i]
+    ci = ai./bi
+    ei = max(0.0,ci)*ci
+    taus[i] = -ci + sqrt(ei + 2.0randexp()/abs(bi))
+end
+tau, flipindex = findmin(taus)
+
+@test a.tau == tau && a.flipindex == flipindex
