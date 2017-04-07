@@ -11,8 +11,7 @@ notifications:
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.clone(pwd())'
-  - julia -e 'Pkg.test("PDMP"; coverage=true)'
+  - julia -e 'Pkg.clone(pwd()); Pkg.test("PDMP"; coverage=true)'
 #  - julia -e 'Pkg.build("PDMP")';
 after_success:
   # push coverage results to Codecov
