@@ -1,6 +1,14 @@
 using Documenter, PDMP
 
-makedocs()
+makedocs(
+    modules  = [PDMP],
+    format   = :html,
+    sitename = "PDMP.jl"
+    authors  = "Thibaut Lienart",
+    pages    = Any[
+        "Home" => "index.md"
+    ]
+)
 
 deploydocs(
     repo   = "github.com/alan-turing-institute/PDMP.jl.git",
