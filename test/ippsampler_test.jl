@@ -85,3 +85,53 @@ end
 tau, flipindex = findmin(taus)
 
 @test a.tau == tau && a.flipindex == flipindex
+
+## testing nextevent_bps for PMF
+
+d = 3
+r = 3
+s = 0.1
+
+pmfg = PMFGaussian(r, s, d)
+
+n  = 100
+xu = [randn(d) for i in 1:n]
+xv = [randn(d) for i in 1:n]
+wu = [randn(d) for i in 1:n]
+wv = [randn(d) for i in 1:n]
+
+srand(542)
+ti = [nextevent_bps(pmfg, [xu[i];xv[i]], [wu[i];wv[i]]).tau for i in 1:n]
+
+srand(542)
+ri = [randexp() for i in 1:100]
+
+# it must collide
+p1(xu,xv,wu,wv) = PDMP.Poly( [  dot(xu,xv)-pmfg.r,
+                                (dot(xu,wv)+dot(xv,wu)),
+                                dot(wu,wv) ])
+p2(xu,xv,wu,wv) = PDMP.Poly( [  (dot(xu,wv)+dot(xv,wu)),
+                                2.0dot(wu,wv)])
+E(xu,xv,wu,wv) = p1(xu,xv,wu,wv) * p2(xu,xv,wu,wv)
+
+#χ(i) = t->max(0.0,E(xu[i],xv[i],wu[i],wv[i])(t))
+χ(i) = t-> p1(xu[i],xv[i],wu[i],wv[i])(t) * p2(xu[i],xv[i],wu[i],wv[i])(t)
+
+### testing roots
+t0(i) = -0.5(dot(xu[i],wv[i])+dot(xv[i],wu[i]))/dot(wu[i],wv[i])
+Δ(i)  = t0(i)^2+(dot(xu[i],xv[i])-pmfg.r)/dot(wu[i],wv[i])
+
+@show maximum(χ(i)(t0(i)) for i in 1:n)
+res = [(Δ(i)>0) ? (maximum(map(χ(i), t0(i)+sqrt(Δ(i))*[-1.0,1.0])),Δ(i)) : (0.0, Δ(i))
+                for i in 1:n]
+
+# if Δ <= 0
+#     @test
+# else
+# end
+#
+# tm,tp = t0 + sqrt(t0^2+ex/wuwv)*[-1.0,1.0]
+#
+# #@show quadgk(χ(1),0.0,ti[1])[1] - ri[1]
+#
+# #@show maximum((quadgk(χ(i),0.0,ti[i])[1] - ri[i]) for i in 1:n)
