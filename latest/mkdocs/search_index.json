@@ -2,23 +2,23 @@
     "docs": [
         {
             "location": "/", 
-            "text": "PDMP.jl Documentation\n\n\nSome text describing the package\n\n\n\n\nSubtitle\n\n\n```--\n\n\nIndex\n\n\n```\n\n\n@index ```", 
+            "text": "PDMP.jl User Guide\n\n\n\n\nIntroduction\n\n\nThe aim of this package is to provide a flexible and expandable framework for \nPiecewise Deterministic Markov Processes\n and their application in Bayesian computations. See \nthe references\n.\n\n\n\n\nReferences\n\n\n\n\nAlexandre Bouchard-C\u00f4t\u00e9, Sebastian J. Vollmer and Arnaud Doucet, \nThe Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method\n (preprint, 2015)\n\n\nJoris Bierkens, Alexandre Bouchard-C\u00f4t\u00e9, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer, \nPiecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains\n (preprint, 2017)\n\n\nJoris Bierkens, Paul Fearnhead and Gareth Roberts, \nThe Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data\n (preprint, 2016)", 
             "title": "Introduction"
         }, 
         {
-            "location": "/#pdmpjl-documentation", 
-            "text": "Some text describing the package", 
-            "title": "PDMP.jl Documentation"
+            "location": "/#pdmpjl-user-guide", 
+            "text": "", 
+            "title": "PDMP.jl User Guide"
         }, 
         {
-            "location": "/#subtitle", 
-            "text": "```--", 
-            "title": "Subtitle"
+            "location": "/#introduction", 
+            "text": "The aim of this package is to provide a flexible and expandable framework for  Piecewise Deterministic Markov Processes  and their application in Bayesian computations. See  the references .", 
+            "title": "Introduction"
         }, 
         {
-            "location": "/#index", 
-            "text": "```  @index ```", 
-            "title": "Index"
+            "location": "/#references", 
+            "text": "Alexandre Bouchard-C\u00f4t\u00e9, Sebastian J. Vollmer and Arnaud Doucet,  The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method  (preprint, 2015)  Joris Bierkens, Alexandre Bouchard-C\u00f4t\u00e9, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer,  Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains  (preprint, 2017)  Joris Bierkens, Paul Fearnhead and Gareth Roberts,  The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data  (preprint, 2016)", 
+            "title": "References"
         }
     ]
 }
