@@ -1,12 +1,9 @@
 # PDMP
 
-[![Build Status](https://travis-ci.org/alan-turing-institute/PDMP.jl.svg?branch=master)](https://travis-ci.org/alan-turing-institute/PDMP.jl)
-
-[![codecov.io](http://codecov.io/github/alan-turing-institute/PDMP.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDMP.jl?branch=master)
-
+[![Travis](https://travis-ci.org/alan-turing-institute/PDMP.jl.svg?branch=master)](https://travis-ci.org/alan-turing-institute/PDMP.jl)
+[![CodeCov](http://codecov.io/github/alan-turing-institute/PDMP.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDMP.jl?branch=master)
+[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDMP.jl/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDMP.jl/latest)
 
 The aim of this package is to provide a flexible and expandable framework for the methods discussed in
 
