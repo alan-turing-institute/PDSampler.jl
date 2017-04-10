@@ -1,5 +1,5 @@
 site_name:           PDMP.jl
-repo_url:            https://github.com/alan-turing-institute/PDMP.jl.git
+repo_url:            https://github.com/alan-turing-institute/PDMP.jl
 site_description:
 site_author:         Thibaut Lienart
 theme:               readthedocs
