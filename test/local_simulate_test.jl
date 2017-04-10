@@ -116,3 +116,27 @@ srand(321); aa = randn()
 srand(321); ab = randn(2)
 
 @test a1==aa && a2==ab
+
+### Testing LS_REFRESHMENT
+t  = randexp()
+
+srand(123)
+
+pq = ls_refreshment(chain, t, all_evlist)
+
+srand(123)
+
+### this is a bit of a silly test but ls_refreshment is the
+# composite of functions that have all been tested, so there's not much
+# else to test than to just check it "works"
+v = Vector{AllowedVarType}(chain.structure.nvars)
+for i in 1:length(v)
+    v[i] = ls_random(all_evlist.evl[i])
+end
+pq2 = PDMP.PriorityQueue(Int,Float64)
+for fidx in 1:chain.structure.nfactors
+    (xf, vf, g, vars) = ls_retrieve(chain, fidx, all_evlist, t)
+    ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)
+end
+
+@test pq == pq2
