@@ -6,6 +6,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDMP.jl/latest)
+
 The aim of this package is to provide a flexible and expandable framework for the methods discussed in
 
 * Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, [The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method](https://arxiv.org/abs/1510.02451) (preprint, 2015)
@@ -31,7 +33,7 @@ Pkg.test("PDMP")
 Pkg.update("PDMP")
 ```
 
-**Note about code coverage**: two significant files (`src/simulate.jl` and `src/local/simulate.jl`) are hard to "cleanly" check in the usual CS sense. The guarantees are all in terms of infinite computational time which obviously we do not have. 
+**Note about code coverage**: two significant files (`src/simulate.jl` and `src/local/simulate.jl`) are hard to "cleanly" check in the usual CS sense. The guarantees are all in terms of infinite computational time which obviously we do not have.
 Some of the code will in the future be pulled out of the main function to have controllable chunks.
 
 ## Examples

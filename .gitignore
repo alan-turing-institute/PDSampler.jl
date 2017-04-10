@@ -5,4 +5,5 @@
 *.jld
 *.ipynb_checkpoints
 sandbox/
-build/
+docs/build/
+docs/site
