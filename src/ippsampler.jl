@@ -75,7 +75,7 @@ function nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
 
     ### CASES (cf. models/pmf.jl)
 
-    Δ = t0^2+ex/wuwv # discriminant of p1
+    Δ = t0^2-ex/wuwv # discriminant of p1
     if Δ <= 0
         # only single real root (t0)
         # two imaginary roots
@@ -85,9 +85,13 @@ function nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
             tau = pmf_caseB(rexp, p, t0)
         end
     else
-        # three distinct real roots, potential bump ==> 0_/\_/ <==
+        # three distinct real roots,
         tm,tp = t0 + sqrt(Δ)*[-1.0,1.0]
-        if tm <= 0
+        if tp <= 0 # case: |/
+            tau = pmf_caseA(rexp, p)
+        elseif t0 <= 0 # case: |_/
+            tau = pmf_caseB(rexp, p, tp)
+        elseif tm <= 0 # case: |\_/
             tau = pmf_caseC(rexp, p, t0, tp)
         else
             tau = pmf_caseD(rexp, p, tm, t0, tp)

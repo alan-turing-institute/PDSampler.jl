@@ -42,7 +42,7 @@ function pmf_caseA(rexp::Float, p::Poly)::Float
     ##############################
     pmf_base(rexp, polyint(p))
 end
-function pmf_caseB{T<:Float}(rexp::T, p::Poly, t0::T)::T
+function pmf_caseB{T<:Float}(rexp::T, p::Poly, r::T)::T
     # == CASE B ###### intensity:
     #   |         |
     #   |        |
@@ -52,7 +52,7 @@ function pmf_caseB{T<:Float}(rexp::T, p::Poly, t0::T)::T
     # the branch starts after 0 at t0
     # move the branch to zero, then add t0 to root
     ##############################################
-    t0 + pmf_base(rexp, polyint(polyval(p, Poly([t0,1.0]))))
+    r + pmf_base(rexp, polyint(polyval(p, Poly([r,1.0]))))
 end
 function pmf_caseC{T<:Float}(rexp::T, p::Poly, t0::T, tp::T)::T
     # == CASE C ###### intensity:
