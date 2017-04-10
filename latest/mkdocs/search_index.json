@@ -1,0 +1,24 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "PDMP.jl Documentation\n\n\nSome text describing the package\n\n\n\n\nSubtitle\n\n\n```--\n\n\nIndex\n\n\n```\n\n\n@index ```", 
+            "title": "Introduction"
+        }, 
+        {
+            "location": "/#pdmpjl-documentation", 
+            "text": "Some text describing the package", 
+            "title": "PDMP.jl Documentation"
+        }, 
+        {
+            "location": "/#subtitle", 
+            "text": "```--", 
+            "title": "Subtitle"
+        }, 
+        {
+            "location": "/#index", 
+            "text": "```  @index ```", 
+            "title": "Index"
+        }
+    ]
+}
