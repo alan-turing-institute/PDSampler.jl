@@ -52,62 +52,58 @@ function nextevent_bps{T<:Vector{Float}}(g::MvGaussian, x::T, v::T)::NextEvent
     NextEvent(tau)
 end
 
-# ### TODO: dev
-# function  nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
-#     xu,xv = x[1:g.d], x[g.d+1:end]
-#     wu,wv = w[1:g.d], w[g.d+1:end]
-#     #
-#     xuwv = dot(xu,wv)
-#     xvwu = dot(xv,wu)
-#     wuwv = dot(wu,wv)
-#     dxw  = xuwv+xvwu
-#     #
-#     t0    = -0.5dxw/wuwv
-#     ex    = dot(xu,xv)-g.r
-#     #
-#     # e(x+tw) = e(x)+(<wu,xv>+<wv,xu>)t+<wu,wv>t^2
-#     p1 = Poly([ex, dxw, wuwv])
-#     # <xv,wu>+<xu,wv>+2<wu,wv>t
-#     p2 = Poly([dxw, 2.0wuwv])
-#     p  = p1*p2
-#     Ip = polyint(p)
-#     #
-#     delta = t0^2+ex/wuwv
-#     rexp = randexp()
-#
-#     tau = 0.0
-#
-#     if delta<=0
-#         # only single real root (t0)
-#         if t0 <= 0
-#             tau = pmf_caseA(rexp, Ip)
-#         else
-#             tau = pmf_caseB(rexp, p, Ip, t0)
-#         end
-#     else
-#         # three distinct real roots, potential bump ==> 0_/\_/ <==
-#         tm,tp = t0 + sqrt(t0^2+ex/wuwv)*[-1.0,1.0]
-#         if tp <= 0 # ==> 0/ <==
-#             # ==CASE A==
-#             # no max needed, need to find x s.t. rexp=F(x)
-#             intercept = p(0.0)
-#             if rexp < intercept
-#                 tau = 0.0
-#             else
-#                 rs  = roots(Ip-rexp)
-#                 rrs = [rs[i].re if isapprox(rs[i].im,0.0) for i in 1:length(rs)]
-#                 k   = searchsortedfirst(rrs, t0)
-#                 tau = rrs[k]
-#             end
-#         else
-#         end
-#     end
-#
-#     ### Cases
-#     # Full Hump
-#
-#
-# end
+### TODO: dev
+function  nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
+    # unmasking x, w
+    xu, xv = x[1:g.d], x[g.d+1:end]
+    wu, wv = w[1:g.d], w[g.d+1:end]
+    # precomputing useful dot products
+    xuwv, xvwu = dot(xu,wv), dot(xv,wu)
+    wuwv, dxw  = dot(wu,wv), xuwv+xvwu
+    # real root
+    t0 = -0.5dxw/wuwv
+    # e(x) := ⟨x_u, x_v⟩ - r
+    ex = dot(xu,xv)-g.r
+    # (quadratic in t) e(x+tw) = e(x)+(⟨wu,xv⟩+⟨wv,xu⟩)t+⟨wu,wv⟩t^2
+    p1 = Poly([ex, dxw, wuwv])
+    # (linear in t) ⟨xv,wu⟩+⟨xu,wv⟩+2⟨wu,wv⟩t
+    p2 = Poly([dxw, 2.0wuwv])
+    # ⟨∇E(x+tw),w⟩ is a cubic in t (and the intensity)
+    p  = p1*p2
+
+    rexp  = randexp()
+    tau   = 0.0
+
+    ### CASES
+    Δ = t0^2+ex/wuwv # discriminant of p1
+
+    if Δ <= 0
+        # only single real root (t0)
+        # two imaginary roots
+        if t0 <= 0
+            tau = pmf_caseA(rexp, p)
+        else
+            tau = pmf_caseB(rexp, p, Ip, t0)
+        end
+    else
+        # three distinct real roots, potential bump ==> 0_/\_/ <==
+        tm,tp = t0 + sqrt(t0^2+ex/wuwv)*[-1.0,1.0]
+        if tp <= 0 # ==> 0/ <==
+            # ==CASE A==
+            # no max needed, need to find x s.t. rexp=F(x)
+            intercept = p(0.0)
+            if rexp < intercept
+                tau = 0.0
+            else
+                rs  = roots(Ip-rexp)
+                rrs = [rs[i].re if isapprox(rs[i].im,0.0) for i in 1:length(rs)]
+                k   = searchsortedfirst(rrs, t0)
+                tau = rrs[k]
+            end
+        else
+        end
+    end
+end
 
 """
     nextevent_zz(g::MvGaussian, x, v)

@@ -4,6 +4,8 @@
 
 [![codecov.io](http://codecov.io/github/alan-turing-institute/PDMP.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDMP.jl?branch=master)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 The aim of this package is to provide a flexible and expandable framework for the methods discussed in
 
 * Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, [The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method](https://arxiv.org/abs/1510.02451) (preprint, 2015)
