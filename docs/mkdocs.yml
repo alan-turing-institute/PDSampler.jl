@@ -18,7 +18,9 @@ markdown_extensions:
   - fenced_code
   - mdx_math # For LaTeX
 
-docs_dir: 'build'
+docs_dir: 'src'
+
+edit_uri: edit/master/docs/src
 
 pages:
 - Introduction: index.md
