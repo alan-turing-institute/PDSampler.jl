@@ -1,0 +1,3 @@
+using PDMP, Documenter
+
+makedocs()
