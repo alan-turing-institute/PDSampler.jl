@@ -2,6 +2,7 @@
 
 PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
+See [the references](#references) at the bottom of this page.
 
 The package is currently under construction (Spring 2017).
 The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI).
@@ -34,15 +35,16 @@ Pages = [
 Depth = 2
 ```
 
-### Documentation to the code
+### Code documentation
 
 These pages introduce you to the core of the package and its interface.
 This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.
 
-(**/!\WIP/!\**)
-
-```@docs
-nextboundary_bps
+```@contents
+Pages = [
+        "techdoc/types.md"
+    ]
+Depth = 2
 ```
 
 ### References
