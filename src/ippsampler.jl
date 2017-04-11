@@ -1,3 +1,9 @@
+export
+    NextEvent,
+    LinearBound,
+    nextevent_bps,
+    nextevent_zz
+
 abstract IPPSamplingMethod
 abstract Thinning <: IPPSamplingMethod
 

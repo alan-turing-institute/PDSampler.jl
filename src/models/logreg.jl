@@ -1,3 +1,9 @@
+export
+    LogReg,
+    logistic,
+    loglogistic,
+    gradloglogistic
+
 """
     LogReg(X, y, b)
 

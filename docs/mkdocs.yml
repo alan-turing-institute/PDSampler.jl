@@ -1,5 +1,5 @@
 site_name:           PDMP.jl
-repo_url:            https://github.com/alan-turing-institute/PDMP.jl.git
+repo_url:            https://github.com/alan-turing-institute/PDMP.jl
 site_description:
 site_author:         Thibaut Lienart
 theme:               readthedocs
@@ -18,7 +18,9 @@ markdown_extensions:
   - fenced_code
   - mdx_math # For LaTeX
 
-docs_dir: 'build'
+docs_dir: 'src'
+
+edit_uri: edit/master/docs/src
 
 pages:
 - Introduction: index.md

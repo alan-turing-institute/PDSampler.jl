@@ -1,3 +1,12 @@
+using Distributions: Beta
+
+export
+    reflect_bps!,
+    reflect_zz!,
+    refresh_global!,
+    refresh_restricted!,
+    refresh_partial!
+
 # ------------------------------------------------------------------------------
 # BPS KERNELS
 

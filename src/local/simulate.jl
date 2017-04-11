@@ -1,3 +1,20 @@
+using Base.Collections:
+        PriorityQueue,
+        enqueue!,
+        dequeue!,
+        peek
+
+export
+    LocalSimulation,
+    simulate,
+    # helper functions
+    ls_reshape,
+    ls_retrieve,
+    ls_saveupdate!,
+    ls_updatepq!,
+    ls_random,
+    ls_refreshment
+
 """
     LocalSimulation
 
