@@ -37,17 +37,16 @@ end
 # HELPER FUNCTIONS FOR THE BPS sampler
 
 function pmf_base(rexp::Float, poly::Poly)::Float
-    if poly(0.0) < rexp
-        # find solutions to [Poly(x) = y]
-        rs  = roots(poly-rexp)
-        # pick the one that works for us (first real one after 0.0)
-        rrs = [real(rs[i]) for i in 1:length(rs) if isapprox(imag(rs[i]),0.0)]
-        rrs = sort(rrs)
-        k   = searchsortedfirst(rrs, 0.0)
-        return rrs[k]
-    else
-        return 0.0
-    end
+
+
+    # find solutions to [Poly(x) = y]
+    rs  = roots(poly-rexp)
+    # pick the one that works for us (first real one after 0.0)
+    rrs = [real(rs[i]) for i in 1:length(rs) if isapprox(imag(rs[i]),0.0)]
+    rrs = sort(rrs)
+    k   = searchsortedfirst(rrs, 0.0)
+    # the second branch should not happen but there may be numerical troubles
+    (rexp>poly(0.0))?rrs[k]:0.0
 end
 function pmf_caseA(rexp::Float, p::Poly)::Float
     # == CASE A ###### intensity:
@@ -62,23 +61,25 @@ function pmf_caseA(rexp::Float, p::Poly)::Float
     pmf_base(rexp, polyint(p))
 end
 function pmf_caseB{T<:Float}(rexp::T, p::Poly, r::T)::T
+    @assert 0.0 < r
     # == CASE B ###### intensity:
     #   |         |
     #   |        |
     #   |      /
-    #   |____/__________
+    #   |____r__________
     ##############################################
-    # the branch starts after 0 at t0
+    # the branch starts after 0 at r
     # move the branch to zero, then add t0 to root
     ##############################################
     r + pmf_base(rexp, polyint(polyval(p, Poly([r,1.0]))))
 end
 function pmf_caseC{T<:Float}(rexp::T, p::Poly, t0::T, tp::T)::T
+    @assert 0.0 < t0 < tp
     # == CASE C ###### intensity:
     #   |             |
     #   |\           |
     #   |  \       /
-    #   |___\____/______
+    #   |___t0___tp______
     ##############################################
     # partial hump then flat then branch
     # the integral has a "step", should check on
@@ -95,11 +96,12 @@ function pmf_caseC{T<:Float}(rexp::T, p::Poly, t0::T, tp::T)::T
     tau
 end
 function pmf_caseD{T<:Float}(rexp::T, p::Poly, tm::T, t0::T, tp::T)::T
+    @assert 0.0 <= tm < t0 < tp
     # == CASE D ###### intensity:
     #   |
     #   |       _          |
     #   |     /  \       /
-    #   |___/_____\____/_____
+    #   |___tm___t0____tp_____
     ##############################################
     # flat then complete hump then flat then branch
     # the integral has a two "steps", should check
