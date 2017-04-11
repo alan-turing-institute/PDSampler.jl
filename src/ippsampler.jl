@@ -39,7 +39,7 @@ immutable NextEvent
     end
 end
 
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 """
     nextevent_bps(g::MvGaussian, x, v)
@@ -80,7 +80,7 @@ function nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
     tau  = 0.0
 
     ### CASES (cf. models/pmf.jl)
-
+    
     Δ = t0^2-ex/wuwv # discriminant of p1
     if Δ <= 0
         # only single real root (t0)
@@ -133,7 +133,7 @@ end
 Return a bouncing time and corresponding intensity corresponding to a linear
 upperbound described in `lb`.
 """
-function nextevent_bps{T<:Vector{Float}}(lb::LinearBound, x::T, v::T)::NextEvent
+function nextevent_bps{T<:Vector{Float}}(lb::LinearBound, x::T,v::T)::NextEvent
     a = lb.a(x, v)
     b = lb.b
     @assert a>=0.0 && b>0.0 "<ippsampler/nextevent_bps/linearbound>"

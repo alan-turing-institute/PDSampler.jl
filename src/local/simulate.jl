@@ -3,6 +3,7 @@ using Base.Collections:
         enqueue!,
         dequeue!,
         peek
+using ProgressMeter
 
 export
     LocalSimulation,
@@ -67,7 +68,9 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
     globalclock = 0.0
 
     # global iteration
-    while globalclock < sim.T && nevents < sim.maxnevents
+    prog = Progress(sim.maxnevents, 1)
+    #while globalclock < sim.T && nevents < sim.maxnevents
+    for evnum in 1:sim.maxnevents
         # get bounce and dequeue
         (fidx, tbounce) = peek(pq)
         dequeue!(pq)
@@ -93,8 +96,9 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
             pq    = ls_refreshment(sim.fg, tref, all_evlist)
             tref += randexp()/sim.lambdaref
         end
-        nevents += 1
-    # end of nevents = 1:sim.maxnevents
+        # if use while loop
+        # nevents += 1
+        next!(prog)
     end
 
     details = Dict(
