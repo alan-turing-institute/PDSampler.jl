@@ -20,6 +20,7 @@ nexteventU(x, v) = nextevent_bps(mvgU, x, v)
 factorU(k)       = Factor(nexteventU, gllU, k)
 
 allfactors = [factorU(k) for k in 1:nU]
+structure  = [[k] for k in 1:nU]
 
 # factors: create M factors for the movies,
 mvgV             = MvDiagonalGaussian(zeros(latentD), sigmaV)
@@ -30,6 +31,7 @@ factorV(k)       = Factor(nexteventV, gllV, nU+k)
 allV = [factorV(k) for k in 1:nV]
 
 push!(allfactors, allV...)
+push!(structure, [[k] for k in nU+(1:nV)]...)
 
 # factors: create nz(R) factors for the ratings
 maskU(x) = x[1:latentD]
@@ -48,4 +50,4 @@ for k in 1:size(R,1)
     push!(allfactors, fij)
 end
 
-println("success")
+
