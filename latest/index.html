@@ -106,7 +106,8 @@
               
                 <h1 id="pdmpjl-documentation">PDMP.jl Documentation</h1>
 <p>PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on <em>Piecewise Deterministic Markov Processes</em> and their applications.
-This includes the <strong>Bouncy Particle Sampler</strong> and the <strong>Zig-Zag Sampler</strong>.</p>
+This includes the <strong>Bouncy Particle Sampler</strong> and the <strong>Zig-Zag Sampler</strong>.
+See <a href="#references">the references</a> at the bottom of this page.</p>
 <p>The package is currently under construction (Spring 2017).
 The project is hosted and maintained by the <a href="https://www.turing.ac.uk">Alan Turing Institute</a> (ATI).
 If you encounter problems, please <a href="https://github.com/alan-turing-institute/PDMP.jl/issues">open an issue on Github</a>.
@@ -130,15 +131,16 @@ Pages = [
         "examples/lbps_gchain.md"
     ]
 Depth = 2</p>
-<pre class="codehilite"><code>### Documentation to the code
+<pre class="codehilite"><code>### Code documentation
 
 These pages introduce you to the core of the package and its interface.
 This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.
 
-(**/!\WIP/!\**)
-
-```@docs
-nextboundary_bps</code></pre>
+```@contents
+Pages = [
+        &quot;techdoc/types.md&quot;
+    ]
+Depth = 2</code></pre>
 
 
 <h3 id="references">References</h3>
@@ -188,5 +190,5 @@ nextboundary_bps</code></pre>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-04-11 12:38:21
+Build Date UTC : 2017-04-11 12:43:13
 -->
