@@ -1,3 +1,18 @@
+using Polynomials:
+        Poly,
+        roots,
+        polyint,
+        polyval
+
+export
+    PMFGaussian,
+    # helper functions (see also ippsampler)
+    pmf_base,
+    pmf_caseA,
+    pmf_caseB,
+    pmf_caseC,
+    pmf_caseD
+
 immutable PMFGaussian
     r::Float       # Rating
     sigma::Float

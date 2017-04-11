@@ -1,3 +1,7 @@
+export
+    Simulation,
+    simulate
+
 """
     Simulation
 

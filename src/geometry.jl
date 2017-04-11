@@ -1,3 +1,8 @@
+export
+    Unconstrained,
+    Polygonal,
+    nextboundary
+
 abstract Domain
 
 """

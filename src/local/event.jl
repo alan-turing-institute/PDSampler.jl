@@ -1,3 +1,13 @@
+export
+    AllowedVarType,
+    Event,
+    EventList,
+    AllEventList,
+    getevent,
+    getlastevent,
+    pushevent!,
+    samplelocalpath
+
 """
     AllowedVarType
 

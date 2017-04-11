@@ -1,3 +1,13 @@
+export
+    MvGaussian,
+    MvGaussianStandard,
+    MvDiagonalGaussian,
+    MvGaussianCanon,
+    MvGaussianNatural,
+    mvg_mu,
+    mvg_precmu,
+    mvg_precmult
+
 abstract MvGaussian
 
 """

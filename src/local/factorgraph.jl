@@ -1,3 +1,14 @@
+export
+    Factor,
+    FactorObject,
+    FactorGraphStruct,
+    FactorGraph,
+    assocvariables,
+    assocfactors,
+    linkedfactors,
+    chainstruct,
+    chaingraph
+
 """
     Factor
 
