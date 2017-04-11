@@ -4,6 +4,8 @@
 .DS_Store
 *.jld
 *.ipynb_checkpoints
+examples/res
+examples/notebooks
 sandbox/
 docs/build/
 docs/site
