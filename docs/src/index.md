@@ -28,10 +28,7 @@ The following examples will introduce you to the functionalities of the package.
 The code to all examples can be found in the [examples directory](https://github.com/alan-turing-institute/PDMP.jl/tree/master/example).
 
 ```@contents
-Pages = [
-        "examples/bps_mvg_constr.md",
-        "examples/lbps_gchain.md"
-    ]
+Pages = ["examples/bps_mvg_constr.md", "examples/lbps_gchain.md"]
 Depth = 2
 ```
 
@@ -41,9 +38,7 @@ These pages introduce you to the core of the package and its interface.
 This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.
 
 ```@contents
-Pages = [
-        "techdoc/types.md"
-    ]
+Pages = ["techdoc/types.md"]
 Depth = 2
 ```
 

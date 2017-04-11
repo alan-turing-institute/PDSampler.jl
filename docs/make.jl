@@ -2,11 +2,9 @@ using Documenter, PDMP
 
 makedocs(
     modules  = [PDMP],
+    doctest  = false,
     sitename = "PDMP.jl",
-    authors  = "Thibaut Lienart",
-    pages    = Any[
-        "Home" => "index.md"
-    ]
+    authors  = "Thibaut Lienart"
 )
 
 deploydocs(

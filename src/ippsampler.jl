@@ -80,7 +80,7 @@ function nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
     tau  = 0.0
 
     ### CASES (cf. models/pmf.jl)
-    
+
     Δ = t0^2-ex/wuwv # discriminant of p1
     if Δ <= 0
         # only single real root (t0)
