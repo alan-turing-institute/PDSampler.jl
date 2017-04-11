@@ -8,4 +8,4 @@
 PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 
-Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDMP.jl/latest).
+Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDMP.jl/latest) for information on how to use/expand this package.
