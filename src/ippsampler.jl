@@ -34,7 +34,7 @@ immutable NextEvent
     tau::Float         # candidate first arrival time
     dobounce::Function # do bounce (if accept reject step)
     flipindex::Int     # flipindex (if ZZ style)
-    function NextEvent(tau; dobounce=(g,v)->true, flipindex::Int=-1)
+    function NextEvent(tau; dobounce=(g,v)->true, flipindex=-1)
         new(tau,dobounce,flipindex)
     end
 end
@@ -124,7 +124,7 @@ function nextevent_zz{T<:Vector{Float}}(g::MvGaussian, x::T, v::T)::NextEvent
         taus[i] = -ci + sqrt(ei + 2.0randexp()/abs(bi))
     end
     tau, flipindex = findmin(taus)
-    NextEvent(tau,flipindex=flipindex)
+    NextEvent(tau, flipindex=flipindex)
 end
 
 """
@@ -139,6 +139,5 @@ function nextevent_bps{T<:Vector{Float}}(lb::LinearBound, x::T,v::T)::NextEvent
     @assert a>=0.0 && b>0.0 "<ippsampler/nextevent_bps/linearbound>"
     tau       = -a/b + sqrt((a/b)^2 + 2randexp()/b)
     lambdabar = a + b*tau
-    dobounce(g,v) = rand() < -dot(g,v)/lambdabar
-    NextEvent(tau, dobounce=dobounce)
+    NextEvent(tau, dobounce=(g,v)->(rand()<-dot(g,v)/lambdabar) )
 end
