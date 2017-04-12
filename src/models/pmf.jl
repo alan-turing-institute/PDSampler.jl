@@ -48,7 +48,7 @@ function pmf_base(rexp::Float, poly::Poly)::Float
         rrs = real(rs)
         sp  = sortperm(abs(abs(rs)-rrs))
         # take the first one that's larger than zero
-        k = searchsortedfirst(rrs(sp), 0.0)
+        k = searchsortedfirst(rrs[sp], 0.0)
         return k > length(rrs) ? 0.0 : rrs[k]
     end
     rrs[k]
