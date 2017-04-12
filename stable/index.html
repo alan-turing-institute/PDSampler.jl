@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  <meta name="author" content="Thibaut Lienart">
+  <link rel="shortcut icon" href="./img/favicon.ico">
+  <title>Introduction - PDMP.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+  <link href="./assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Introduction";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> PDMP.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">Introduction</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#pdmpjl-documentation">PDMP.jl Documentation</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#using-the-package">Using the Package</a></li>
+        
+            <li><a class="toctree-l3" href="#examples">Examples</a></li>
+        
+            <li><a class="toctree-l3" href="#references">References</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">PDMP.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Introduction</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/alan-turing-institute/PDMP.jl/edit/master/docs/src/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="pdmpjl-documentation">PDMP.jl Documentation</h1>
+<p><a href="https://github.com/alan-turing-institute/PDMP.jl">PDMP.jl</a> is a package designed to provide an efficient, flexible, and expandable framework for samplers based on <em>Piecewise Deterministic Markov Processes</em> and their applications.
+This includes the <strong>Bouncy Particle Sampler</strong> and the <strong>Zig-Zag Sampler</strong>.
+See <a href="#references">the references</a> at the bottom of this page.</p>
+<p>The package is currently under construction (Spring 2017).
+The project is hosted and maintained by the <a href="https://www.turing.ac.uk">Alan Turing Institute</a> (ATI).
+If you encounter problems, please <a href="https://github.com/alan-turing-institute/PDMP.jl/issues">open an issue on Github</a>.
+If you have comments or wish to collaborate, send an email to <code>tlienart σ turing &gt; ac &gt; uk</code>.</p>
+<h3 id="using-the-package">Using the Package</h3>
+<p>To install the (unregistered) package, use the following command inside the Julia REPL:</p>
+<pre class="codehilite"><code class="language-julia">Pkg.clone(&quot;git://github.com/alan-turing-institute/PDMP.jl.git&quot;)</code></pre>
+
+
+<p>To Load the package, use the command:</p>
+<pre class="codehilite"><code class="language-julia">using PDMP</code></pre>
+
+
+<p>You can also run the tests with <code>Pkg.test("PDMP")</code> and update to the latest Github version with <code>Pkg.update("PDMP")</code>.</p>
+<h3 id="examples">Examples</h3>
+<p>The following examples will introduce you to the functionalities of the package.
+The code to all examples can be found in the <a href="https://github.com/alan-turing-institute/PDMP.jl/tree/master/example">examples directory</a>.</p>
+<p>```@contents
+Pages = ["examples/bps_mvg_constr.md", "examples/lbps_gchain.md"]
+Depth = 2</p>
+<pre class="codehilite"><code>### Code documentation
+
+These pages introduce you to the core of the package and its interface.
+This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.
+
+```@contents
+Pages = [&quot;techdoc/types.md&quot;]
+Depth = 2</code></pre>
+
+
+<h3 id="references">References</h3>
+<ul>
+<li>Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, <a href="https://arxiv.org/abs/1510.02451"><em>The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method</em></a>, arXiv preprint, 2015.</li>
+<li>Joris Bierkens, Alexandre Bouchard-Côté, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer, <a href="https://arxiv.org/pdf/1701.04244.pdf"><em>Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains</em></a>, arXiv preprint, 2017.</li>
+<li>Joris Bierkens, Paul Fearnhead and Gareth Roberts, <a href="https://arxiv.org/pdf/1607.03188.pdf"><em>The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data</em></a>, arXiv preprint, 2016.</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/alan-turing-institute/PDMP.jl" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+    </span>
+</div>
+    <script src="./js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="./assets/mathjaxhelper.js"></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.16.3
+Build Date UTC : 2017-04-12 14:34:20
+-->
