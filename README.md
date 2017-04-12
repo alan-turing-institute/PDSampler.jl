@@ -8,3 +8,20 @@ PDMP.jl is a package designed to provide an efficient, flexible, and expandable 
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 
 Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDMP.jl/latest) for information on how to use/expand this package.
+
+## Installation and requirements
+
+(This is explained in more details in the documentation)
+
+Requirements:
+
+* Julia 0.5 (strict)
+* 64-bit architecture (flexible)
+
+In the Julia REPL:
+
+```julia
+Pkg.clone("https://github.com/alan-turing-institute/PDMP.jl.git")
+using PDMP
+```
+
