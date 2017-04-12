@@ -9,12 +9,14 @@ __precompile__(false) # TODO change to true when more stable
 
 module PDMP
 
-typealias Int Int64
-typealias Float Float64
-
 if Sys.WORD_SIZE == 32
     typealias Int Int32
     typealias Float Float32
+elseif Sys.WORD_SIZE == 64
+    typealias Int Int64
+    typealias Float Float64
+else
+    error("Unknown architecture...")
 end
 
 export
