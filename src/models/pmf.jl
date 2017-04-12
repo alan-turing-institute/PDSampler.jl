@@ -37,16 +37,21 @@ end
 # HELPER FUNCTIONS FOR THE BPS sampler
 
 function pmf_base(rexp::Float, poly::Poly)::Float
-
-
     # find solutions to [Poly(x) = y]
     rs  = roots(poly-rexp)
     # pick the one that works for us (first real one after 0.0)
     rrs = [real(rs[i]) for i in 1:length(rs) if isapprox(imag(rs[i]),0.0)]
     rrs = sort(rrs)
     k   = searchsortedfirst(rrs, 0.0)
-    # the second branch should not happen but there may be numerical troubles
-    (rexp>poly(0.0))?rrs[k]:0.0
+    # this may happen due to numerical issues
+    if k > length(rrs)
+        rrs = real(rs)
+        sp  = sortperm(abs(abs(rs)-rrs))
+        # take the first one that's larger than zero
+        k = searchsortedfirst(rrs(sp), 0.0)
+        return k > length(rrs) ? 0.0 : rrs[k]
+    end
+    rrs[k]
 end
 function pmf_caseA(rexp::Float, p::Poly)::Float
     # == CASE A ###### intensity:
