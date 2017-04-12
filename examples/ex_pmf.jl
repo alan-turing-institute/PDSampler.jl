@@ -1,6 +1,6 @@
 using PDMP, JLD
 
-a = readdlm("data/pmf_testR.csv", ',', Int64)
+a = readdlm("data/pmf_testR.csv", ',', Int)
 R = a[:,1:3]
 
 latentD = 4     # dimension of latent space

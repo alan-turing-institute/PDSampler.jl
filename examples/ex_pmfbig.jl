@@ -2,7 +2,7 @@ using PDMP, JLD
 
 start = time()
 
-a = readdlm("data/ratings_filtered.csv", ',', Int64)
+a = readdlm("data/ratings_filtered.csv", ',', Int)
 R = a[:,1:3]
 
 println("($(time()-start)s) -- read the data")

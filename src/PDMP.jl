@@ -9,15 +9,8 @@ __precompile__(false) # TODO change to true when more stable
 
 module PDMP
 
-if Sys.WORD_SIZE == 32
-    typealias Int Int32
-    typealias Float Float32
-elseif Sys.WORD_SIZE == 64
-    typealias Int Int64
-    typealias Float Float64
-else
-    error("Unknown architecture...")
-end
+const Int   = (Sys.WORD_SIZE==32)?Int32:Int64
+const Float = (Sys.WORD_SIZE==64)?Float32:Float64
 
 export
     Int,
