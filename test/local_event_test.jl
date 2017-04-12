@@ -19,7 +19,7 @@ x0    = randn(nvars)
 v0    = randn(nvars)
 v0   /= norm(v0)
 
-all_evlist = AllEventList(Float64, nvars)
+all_evlist = AllEventList(Float, nvars)
 
 for i in 1:nvars
     evi = Event(x0[i], v0[i], 0.0)

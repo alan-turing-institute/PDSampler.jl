@@ -32,7 +32,7 @@ x0    = randn(nvars)
 v0    = randn(nvars)
 v0   /= norm(v0)
 
-all_evlist = AllEventList(Float64, nvars)
+all_evlist = AllEventList(Float, nvars)
 
 for i in 1:nvars
     evi = Event(x0[i], v0[i], 0.0)
@@ -100,12 +100,12 @@ srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
 @test pq[fidx] == t+bounce.tau
 
 ### Testing LS_RANDOM
-evl1 = EventList{Float64}()
+evl1 = EventList{Float}()
 push!(evl1.xs, randn())
 push!(evl1.vs, randn())
 push!(evl1.ts, abs(randn()))
 
-evl2 = EventList{Vector{Float64}}()
+evl2 = EventList{Vector{Float}}()
 push!(evl2.xs, randn(2))
 push!(evl2.vs, randn(2))
 push!(evl2.ts, abs(randn()))
@@ -133,7 +133,7 @@ v = Vector{AllowedVarType}(chain.structure.nvars)
 for i in 1:length(v)
     v[i] = ls_random(all_evlist.evl[i])
 end
-pq2 = PDMP.PriorityQueue(Int,Float64)
+pq2 = PDMP.PriorityQueue(Int,Float)
 for fidx in 1:chain.structure.nfactors
     (xf, vf, g, vars) = ls_retrieve(chain, fidx, all_evlist, t)
     ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)

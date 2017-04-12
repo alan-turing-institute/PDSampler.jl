@@ -7,7 +7,7 @@ q_gradloglik(lr,w) = sum( lr.y[i]*(1/(1+exp(lr.y[i]*dot(lr.X[i,:],w))))*X[i,:]
                             for i in 1:lr.n )
 function q_gradloglik_cv(lr,wstar)
     gll_star = q_gradloglik(lr,wstar)
-    function gll_cv(w::Vector{Float64};i=rand(1:lr.n))
+    function gll_cv(w::Vector{Float};i=rand(1:lr.n))
         gll_star+lr.n*(
             lr.y[i] .* 1/(1+exp(lr.y[i] .* (dot(lr.X[i,:],w)))) .* lr.X[i,:] - lr.y[i] .* 1/(1+exp(lr.y[i] .* (dot(lr.X[i,:],wstar)))).*lr.X[i,:])
     end
