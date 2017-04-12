@@ -9,8 +9,8 @@ __precompile__(false) # TODO change to true when more stable
 
 module PDMP
 
-const Int   = (Sys.WORD_SIZE==32)?Int32:Int64
-const Float = (Sys.WORD_SIZE==64)?Float32:Float64
+const Int   = Int64
+const Float = Float64
 
 export
     Int,
