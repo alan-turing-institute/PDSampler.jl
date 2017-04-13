@@ -28,13 +28,16 @@ srand(123)
 ### test NextEvent capsule (trivial test for code cov)
 
 tau = 0.1
-dobounce = (g,v)->-dot(g,v)<rand()
+dobounce = (g,v)->-dot(g,v)<1.0
 flipindex = 4
 ne = NextEvent(tau,dobounce=dobounce,flipindex=flipindex)
 g  = randn(4)
 v  = randn(4)
 @test ne.tau==tau && ne.dobounce(g,v)==dobounce(g,v) &&
         ne.flipindex==flipindex
+
+ne2 = NextEvent(tau)
+@test ne2.tau==tau && ne2.dobounce(g,v) && ne2.flipindex==-1
 
 p = 5
 
