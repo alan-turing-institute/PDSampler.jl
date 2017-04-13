@@ -35,9 +35,12 @@ g  = randn(4)
 v  = randn(4)
 @test ne.tau==tau && ne.dobounce(g,v)==dobounce(g,v) &&
         ne.flipindex==flipindex
-
 ne2 = NextEvent(tau)
-@test ne2.tau==tau && ne2.dobounce(g,v) && ne2.flipindex==-1
+@test ne2.tau==tau && ne2.dobounce(g,v) &&
+        ne2.flipindex==-1
+ne3 = NextEvent(tau,dobounce=dobounce)
+@test ne3.tau==tau && ne3.dobounce(g,v)==dobounce(g,v) &&
+        ne3.flipindex==-1
 
 p = 5
 
