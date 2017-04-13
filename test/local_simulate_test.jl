@@ -31,6 +31,10 @@ x0a = randn(nvars-1)
 @test_throws AssertionError LocalSimulation(chain,x0,v0,T,-10,0.01)
 @test_throws AssertionError LocalSimulation(chain,x0,v0,T,1000,-0.1)
 
+ls = LocalSimulation(chain,x0,v0,T,1000,0.001)
+@test ls.x0==x0 && ls.v0==v0 && ls.T==T && ls.maxnevents==1000 &&
+        ls.lambdaref==0.001 && ls.fg.structure.flist==chain.structure.flist
+
 ### TEST LS_RESHAPE
 v = Vector{AllowedVarType}(5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]
