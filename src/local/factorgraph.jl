@@ -7,7 +7,10 @@ export
     assocfactors,
     linkedfactors,
     chainstruct,
-    chaingraph
+    chaingraph,
+    emptyfactor,
+    emptyfactorgraphstruct,
+    emptyfactorgraph
 
 """
     Factor

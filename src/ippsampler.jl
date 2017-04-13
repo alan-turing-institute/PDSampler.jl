@@ -34,9 +34,12 @@ immutable NextEvent
     tau::Float         # candidate first arrival time
     dobounce::Function # do bounce (if accept reject step)
     flipindex::Int     # flipindex (if ZZ style)
-    function NextEvent(tau; dobounce=(g,v)->true, flipindex=-1)
+    function NextEvent(tau, dobounce, flipindex)
         new(tau,dobounce,flipindex)
     end
+end
+function NextEvent(tau; dobounce=(g,v)->true, flipindex=-1)::NextEvent
+    NextEvent(tau,dobounce,flipindex)
 end
 
 # -----------------------------------------------------------------------------
