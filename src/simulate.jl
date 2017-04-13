@@ -31,10 +31,14 @@ immutable Simulation
 
     # constructor
     function Simulation( x0, v0, T, nextevent, gradloglik, nextboundary,
-                lambdaref = 1.0, algname = "BPS";
-                mass = eye(0), blocksize = 1000, maxsimtime = 4e3,
-                maxsegments = Int(1e6), maxgradeval = Int(1e8),
-                refresh! = refresh_global! )
+                lambdaref   = 1.0 ,
+                algname     = "BPS" ;
+                mass        = eye(0),
+                blocksize   = 1000,
+                maxsimtime  = 4e3,
+                maxsegments = Int(1e6),
+                maxgradeval = Int(1e8),
+                refresh!    = refresh_global! )
         #
         an = uppercase(algname)
         @assert (an in ["BPS", "ZZ"]) "Unknown algorithm <$algname>"
@@ -42,6 +46,28 @@ immutable Simulation
              an, length(x0), mass, blocksize, maxsimtime, maxsegments,
              maxgradeval, refresh! )
     end
+end
+# Constructor with named arguments
+function Simulation(;
+            x0 = zeros(0),
+            v0 = zeros(0),
+            T = 0.0,
+            nextevent=_->_,
+            gradloglik=_->_,
+            nextboundary=_->_,
+            lambdaref=1.0,
+            algname="BPS",
+            mass = eye(0),
+            blocksize = 1000,
+            maxsimtime = 4e3,
+            maxsegments = Int(1e6),
+            maxgradeval = Int(1e8),
+            refresh!    = refresh_global! )
+    # calling the unnamed constructor
+    Simulation(x0,v0,T,nextevent,gradloglik,nextboundary,lambdaref,algname;
+               mass=mass,blocksize=blocksize,maxsimtime=maxsimtime,
+               maxsegments=maxsegments,maxgradeval=maxgradeval,
+               refresh! = refresh! )
 end
 
 """
