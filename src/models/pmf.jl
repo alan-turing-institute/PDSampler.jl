@@ -52,6 +52,7 @@ function pmf_base(rexp::Float, p::Poly)::Float
     k   = searchsortedfirst(prs,0.0)
     k > length(prs) ? 0.0 : prs[k]
 end
+
 function pmf_caseA(rexp::Float, p::Poly)::Float
     # == CASE A ###### intensity:
     #  |   |
