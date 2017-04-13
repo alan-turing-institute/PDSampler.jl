@@ -21,6 +21,12 @@ g   = gradloglik(pmfg, [u;v])
 @test   norm(gub-g[1:d]) <= 1e-10 &&
         norm(gvb-g[d+1:end]) <= 1e-10
 
+### test pmf_base corner cases
+rex = 0.1
+r   = -0.5+sqrt(0.75)im
+p   = poly([1.2+1e-9im,-1.7,r,conj(r)]) + rex
+@test isapprox(pmf_base(rex, p), 1.2)
+
 # the tests have crude accuracy (because the benchmark is drawn from visual
 # inspections with Grapher). This doesn't matter much.
 
