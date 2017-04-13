@@ -11,8 +11,7 @@ zfgs = emptyfactorgraphstruct()
         zfgs.nfactors==0 && zfgs.nvars==0
 
 zfg = emptyfactorgraph()
-@test isempty(zfg.structure.flist) &&
-        isempty(zfg.factors)
+@test isempty(zfg.structure.flist)
 
 srand(1234)
 

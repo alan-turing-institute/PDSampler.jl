@@ -43,7 +43,7 @@ immutable FactorGraphStruct
     # -- constructor
     function FactorGraphStruct(flist)
         # finding how many variables there are
-        maxvar = 1
+        maxvar = 0
         for f in flist
             maxvar = max(maxvar,maximum(f))
         end
