@@ -37,9 +37,7 @@ immutable Simulation
                 refresh! = refresh_global! )
         #
         an = uppercase(algname)
-        if !(an in ["BPS", "ZZ"])
-             error("Unknown algorithm <$algname>")
-        end
+        @assert (an in ["BPS", "ZZ"]) "Unknown algorithm <$algname>"
         new( x0, v0, T, nextevent, gradloglik, nextboundary, lambdaref,
              an, length(x0), mass, blocksize, maxsimtime, maxsegments,
              maxgradeval, refresh! )
