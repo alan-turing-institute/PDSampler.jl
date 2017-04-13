@@ -15,6 +15,22 @@ chain = chaingraph([ Factor( (x,v)->PDMP.nextevent_bps(mvg, x, v),
 
 srand(1234)
 
+# test_local_definegraph defines a chain.
+nvars = chain.structure.nvars
+x0    = randn(nvars)
+v0    = randn(nvars)
+v0   /= norm(v0)
+T     = abs(randn())
+
+### TEST LOCALSIMULATION
+v0a = randn(nvars+1)
+x0a = randn(nvars-1)
+@test_throws AssertionError LocalSimulation(chain,x0,v0a,T, 1000, 0.01)
+@test_throws AssertionError LocalSimulation(chain,x0a,v0,T, 1000, 0.01)
+@test_throws AssertionError LocalSimulation(chain,x0,v0,-0.1,1000,0.01)
+@test_throws AssertionError LocalSimulation(chain,x0,v0,T,-10,0.01)
+@test_throws AssertionError LocalSimulation(chain,x0,v0,T,1000,-0.1)
+
 ### TEST LS_RESHAPE
 v = Vector{AllowedVarType}(5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]
@@ -25,12 +41,6 @@ end
 u = vcat(v...)
 
 @test ls_reshape(u, w) == v
-
-# test_local_definegraph defines a chain.
-nvars = chain.structure.nvars
-x0    = randn(nvars)
-v0    = randn(nvars)
-v0   /= norm(v0)
 
 all_evlist = AllEventList(Float, nvars)
 
