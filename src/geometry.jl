@@ -30,7 +30,8 @@ end
 
 Return (NaN, NaN) corresponding to the unconstrained case.
 """
-nextboundary{T<:Vector{Float}}(ud::Unconstrained, x::T, v::T) = (NaN, NaN)
+nextboundary{T<:Vector{Float}}(ud::Unconstrained, x::T, v::T
+                               )::Tuple{Float,Float} = (NaN, NaN)
 
 """
     nextboundary(pd::Polygonal, x, v)

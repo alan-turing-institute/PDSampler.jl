@@ -1,4 +1,4 @@
-__precompile__(false) # TODO set to true in releases
+__precompile__(true) # TODO set to true in releases
 
 # =================================================================
 # TODO
