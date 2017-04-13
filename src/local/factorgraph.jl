@@ -22,6 +22,7 @@ immutable Factor
     gll::Function       # gradient of log likelihood
     index::Int          # factor index
 end
+emptyfactor() = Factor(_->_,_->_,0)
 
 """
     FactorGraphStruct
@@ -53,6 +54,7 @@ immutable FactorGraphStruct
         new(flist, vars, length(flist), maxvar)
     end
 end
+emptyfactorgraphstruct() = FactorGraphStruct([])
 
 """
     FactorGraph
@@ -69,6 +71,7 @@ end
 function FactorGraph(fgs::Vector{Vector{Int}}, factors::Vector{Factor})
     FactorGraph(FactorGraphStruct(fgs),factors)
 end
+emptyfactorgraph() = FactorGraph(emptyfactorgraphstruct(),[emptyfactor()])
 
 # access the variables associated to a factor or vice versa
 assocvariables(fgs::FactorGraphStruct, fidx::Int) = fgs.flist[fidx]

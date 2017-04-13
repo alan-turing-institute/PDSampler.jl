@@ -35,6 +35,14 @@ ls = LocalSimulation(chain,x0,v0,T,1000,0.001)
 @test ls.x0==x0 && ls.v0==v0 && ls.T==T && ls.maxnevents==1000 &&
         ls.lambdaref==0.001 && ls.fg.structure.flist==chain.structure.flist
 
+ls2 = LocalSimulation(
+        factorgraph=chain,
+        x0=x0, v0=v0, T=T,
+        maxnevents=1000, lambdaref=0.001)
+
+@test ls2.x0==x0 && ls2.v0==v0 && ls2.T==T && ls2.maxnevents==1000 &&
+        ls2.lambdaref==0.001 && ls2.fg.structure.flist==chain.structure.flist
+
 ### TEST LS_RESHAPE
 v = Vector{AllowedVarType}(5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]

@@ -53,7 +53,6 @@ Path and a dictionary of indicators (clocktime, ...).
 function simulate(sim::Simulation)::Tuple{Path, Dict}
     # keep track of how much time we've been going for
     start = time()
-
     # dimensionality
     d = sim.dim
     # initial states

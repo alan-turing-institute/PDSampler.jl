@@ -36,6 +36,16 @@ immutable LocalSimulation
         new(fg,x0,v0,T,maxnevents,lambdaref, length(x0))
     end
 end
+# With named arguments
+function LocalSimulation(;
+            factorgraph = emptyfactorgraph(),
+            x0          = zeros(0),
+            v0          = zeros(0),
+            T           = 0.0,
+            maxnevents  = 0,
+            lambdaref   = 0)
+    LocalSimulation(factorgraph, x0, v0, T, maxnevents, lambdaref)
+end
 
 function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
     # keep track of how much time we've been going for
