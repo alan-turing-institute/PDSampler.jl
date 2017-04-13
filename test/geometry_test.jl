@@ -26,9 +26,9 @@ polyconstr = Polygonal(normals,intercepts)
 x = randn(p)
 v = randn(p)
 
-(b,c) = nextboundary(unconstr, x, v)
+res = nextboundary(unconstr, x, v)
 
-@test isnan(b) && isnan(c)
+@test reduce(*,map(isnan,res))
 
 (t_b, n_b) = q_nextboundary(normals, intercepts, x, v)
 (t, n)     = nextboundary(polyconstr, x, v)
