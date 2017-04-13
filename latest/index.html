@@ -61,6 +61,8 @@
         
             <li><a class="toctree-l3" href="#examples">Examples</a></li>
         
+            <li><a class="toctree-l3" href="#code-documentation">Code documentation</a></li>
+        
             <li><a class="toctree-l3" href="#references">References</a></li>
         
         </ul>
@@ -104,14 +106,11 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="pdmpjl-documentation">PDMP.jl Documentation</h1>
-<p><a href="https://github.com/alan-turing-institute/PDMP.jl">PDMP.jl</a> is a package designed to provide an efficient, flexible, and expandable framework for samplers based on <em>Piecewise Deterministic Markov Processes</em> and their applications.
-This includes the <strong>Bouncy Particle Sampler</strong> and the <strong>Zig-Zag Sampler</strong>.
-See <a href="#references">the references</a> at the bottom of this page.</p>
-<p>The package is currently under construction (Spring 2017).
-The project is hosted and maintained by the <a href="https://www.turing.ac.uk">Alan Turing Institute</a> (ATI).
-If you encounter problems, please <a href="https://github.com/alan-turing-institute/PDMP.jl/issues">open an issue on Github</a>.
-If you have comments or wish to collaborate, send an email to <code>tlienart σ turing &gt; ac &gt; uk</code>.</p>
+                <p><a id='PDMP.jl-Documentation-1'></a></p>
+<h1 id="pdmpjl-documentation">PDMP.jl Documentation</h1>
+<p><a href="https://github.com/alan-turing-institute/PDMP.jl">PDMP.jl</a> is a package designed to provide an efficient, flexible, and expandable framework for samplers based on <em>Piecewise Deterministic Markov Processes</em> and their applications. This includes the <strong>Bouncy Particle Sampler</strong> and the <strong>Zig-Zag Sampler</strong>. See <a href="#references">the references</a> at the bottom of this page.</p>
+<p>The package is currently under construction (Spring 2017). The project is hosted and maintained by the <a href="https://www.turing.ac.uk">Alan Turing Institute</a> (ATI). If you encounter problems, please <a href="https://github.com/alan-turing-institute/PDMP.jl/issues">open an issue on Github</a>. If you have comments or wish to collaborate, send an email to <code>tlienart σ turing &gt; ac &gt; uk</code>.</p>
+<p><a id='Using-the-Package-1'></a></p>
 <h3 id="using-the-package">Using the Package</h3>
 <p>To install the (unregistered) package, use the following command inside the Julia REPL:</p>
 <pre class="codehilite"><code class="language-julia">Pkg.clone(&quot;git://github.com/alan-turing-institute/PDMP.jl.git&quot;)</code></pre>
@@ -122,22 +121,20 @@ If you have comments or wish to collaborate, send an email to <code>tlienart σ 
 
 
 <p>You can also run the tests with <code>Pkg.test("PDMP")</code> and update to the latest Github version with <code>Pkg.update("PDMP")</code>.</p>
+<p><a id='Examples-1'></a></p>
 <h3 id="examples">Examples</h3>
-<p>The following examples will introduce you to the functionalities of the package.
-The code to all examples can be found in the <a href="https://github.com/alan-turing-institute/PDMP.jl/tree/master/example">examples directory</a>.</p>
-<p>```@contents
-Pages = ["examples/bps_mvg_constr.md", "examples/lbps_gchain.md"]
-Depth = 2</p>
-<pre class="codehilite"><code>### Code documentation
-
-These pages introduce you to the core of the package and its interface.
-This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.
-
-```@contents
-Pages = [&quot;techdoc/types.md&quot;]
-Depth = 2</code></pre>
-
-
+<p>The following examples will introduce you to the functionalities of the package. The code to all examples can be found in the <a href="https://github.com/alan-turing-institute/PDMP.jl/tree/master/example">examples directory</a>.</p>
+<ul>
+<li><a href="examples/bps_mvg_constr.md#Truncated-Multivariate-Gaussian-1">Truncated Multivariate Gaussian</a></li>
+<li><a href="examples/lbps_gchain.md#Chain-of-Multivariate-Gaussian-1">Chain of Multivariate Gaussian</a></li>
+</ul>
+<p><a id='Code-documentation-1'></a></p>
+<h3 id="code-documentation">Code documentation</h3>
+<p>These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.</p>
+<ul>
+<li><a href="techdoc/types.md#PDMP-Types-1">PDMP Types</a></li>
+</ul>
+<p><a id='References-1'></a></p>
 <h3 id="references">References</h3>
 <ul>
 <li>Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, <a href="https://arxiv.org/abs/1510.02451"><em>The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method</em></a>, arXiv preprint, 2015.</li>
@@ -185,5 +182,5 @@ Depth = 2</code></pre>
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-04-13 11:26:19
+Build Date UTC : 2017-04-13 11:51:49
 -->
