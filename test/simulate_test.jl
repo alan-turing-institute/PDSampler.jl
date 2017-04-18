@@ -49,11 +49,11 @@ vrand = randn(p)
 @test   (srand(12);sim.gll(xrand))==(srand(12);gll_cv(xrand)) &&
         sim.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim.lambdaref == lref &&
-        sim.algname == "BPS"
-@test   sim.dim == length(x0) &&
-        sim.mass == eye(0) &&
-        sim.blocksize == 1000 &&
-        sim.maxsimtime == 4e3 &&
+        sim.algname   == "BPS"
+@test   sim.dim         == length(x0) &&
+        sim.mass        == eye(0) &&
+        sim.blocksize   == 1000 &&
+        sim.maxsimtime  == 4e3 &&
         sim.maxsegments == Int(1e6) &&
         sim.maxgradeval == maxgradeval
 
@@ -79,10 +79,26 @@ sim2 = Simulation(
 @test   (srand(12);sim2.gll(xrand))==(srand(12);gll_cv(xrand)) &&
         sim2.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim2.lambdaref == lref &&
-        sim2.algname == "BPS"
-@test   sim2.dim == length(x0) &&
-        sim2.mass == eye(0) &&
-        sim2.blocksize == 1000 &&
-        sim2.maxsimtime == 4e3 &&
+        sim2.algname   == "BPS"
+@test   sim2.dim         == length(x0) &&
+        sim2.mass        == eye(0) &&
+        sim2.blocksize   == 1000 &&
+        sim2.maxsimtime  == 4e3 &&
         sim2.maxsegments == Int(1e6) &&
         sim2.maxgradeval == maxgradeval
+
+@test_throws AssertionError Simulation(
+        x0 = x0, v0 = v0, T = T, gradloglik = gll_cv,
+        nextboundary = nb, lambdaref = lref; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        x0 = x0, v0 = v0, T = T, nextevent = nev,
+        nextboundary = nb, lambdaref = lref; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        x0 = x0, v0 = v0, T = T, nextevent = nev, gradloglik = gll_cv,
+        lambdaref = lref; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        x0 = x0, v0 = v0, T = 0.0, nextevent = nev, gradloglik = gll_cv,
+        nextboundary = nb, lambdaref = lref; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        x0 = x0, v0 = v0, T = 1.0, nextevent = nev, gradloglik = gll_cv,
+        nextboundary = nb, lambdaref = 0.0; maxgradeval = maxgradeval)

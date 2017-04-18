@@ -17,17 +17,15 @@ immutable Simulation
     nextboundary::Function # Where/When is the next boundary hit
     lambdaref::Float       # Refreshment rate
     algname::String        # BPS, ZZ
-
     # derived
-    dim::Int             # dimensionality
-
+    dim::Int               # dimensionality
     # optional named arguments
-    mass::Matrix{Float}  # mass matrix (preconditioner)
-    blocksize::Int       # increment the storage by blocks
-    maxsimtime::Float    # max. simulation time (s)
-    maxsegments::Int     # max. num. of segments
-    maxgradeval::Int     # max. num. grad. evals
-    refresh!::Function   # refreshment function (TODO: examples)
+    mass::Matrix{Float}    # mass matrix (preconditioner)
+    blocksize::Int         # increment the storage by blocks
+    maxsimtime::Float      # max. simulation time (s)
+    maxsegments::Int       # max. num. of segments
+    maxgradeval::Int       # max. num. grad. evals
+    refresh!::Function     # refreshment function (TODO: examples)
 
     # constructor
     function Simulation( x0, v0, T, nextevent, gradloglik, nextboundary,
@@ -39,35 +37,62 @@ immutable Simulation
                 maxsegments = Int(1e6),
                 maxgradeval = Int(1e8),
                 refresh!    = refresh_global! )
-        #
+        # check none of the default named arguments went through
+        @assert !(  x0           == :undefined ||
+                    v0           == :undefined ||
+                    nextevent    == :undefined ||
+                    gradloglik   == :undefined ||
+                    nextboundary == :undefined) "Essential arguments undefined"
+        # basic check to see that things are reasonable
+        @assert length(x0)==length(v0)>0 "Inconsistent arguments"
+        @assert T>0.0 "Simulation time must be positive"
+        @assert lambdaref > 0.0 "Refreshment rate must be greater than 0"
         an = uppercase(algname)
         @assert (an in ["BPS", "ZZ"]) "Unknown algorithm <$algname>"
-        new( x0, v0, T, nextevent, gradloglik, nextboundary, lambdaref,
-             an, length(x0), mass, blocksize, maxsimtime, maxsegments,
-             maxgradeval, refresh! )
+        new( x0, v0, T,
+             nextevent,
+             gradloglik,
+             nextboundary,
+             lambdaref,
+             an,
+             length(x0),
+             mass,
+             blocksize,
+             maxsimtime,
+             maxsegments,
+             maxgradeval,
+             refresh! )
     end
 end
 # Constructor with named arguments
 function Simulation(;
-            x0 = zeros(0),
-            v0 = zeros(0),
-            T = 0.0,
-            nextevent=_->_,
-            gradloglik=_->_,
-            nextboundary=_->_,
-            lambdaref=1.0,
-            algname="BPS",
-            mass = eye(0),
-            blocksize = 1000,
-            maxsimtime = 4e3,
-            maxsegments = Int(1e6),
-            maxgradeval = Int(1e8),
-            refresh!    = refresh_global! )
+            x0           = :undefined,
+            v0           = :undefined,
+            T            = :undefined,
+            nextevent    = :undefined,
+            gradloglik   = :undefined,
+            nextboundary = :undefined,
+            lambdaref    = 1.0,
+            algname      = "BPS",
+            mass         = eye(0),
+            blocksize    = 1000,
+            maxsimtime   = 4e3,
+            maxsegments  = Int(1e6),
+            maxgradeval  = Int(1e8),
+            refresh!     = refresh_global! )
     # calling the unnamed constructor
-    Simulation(x0,v0,T,nextevent,gradloglik,nextboundary,lambdaref,algname;
-               mass=mass,blocksize=blocksize,maxsimtime=maxsimtime,
-               maxsegments=maxsegments,maxgradeval=maxgradeval,
-               refresh! = refresh! )
+    Simulation( x0, v0, T,
+                nextevent,
+                gradloglik,
+                nextboundary,
+                lambdaref,
+                algname;
+                mass        = mass,
+                blocksize   = blocksize,
+                maxsimtime  = maxsimtime,
+                maxsegments = maxsegments,
+                maxgradeval = maxgradeval,
+                refresh!    = refresh! )
 end
 
 """
