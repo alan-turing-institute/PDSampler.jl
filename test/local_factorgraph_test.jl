@@ -1,18 +1,5 @@
 using PDMP, Base.Test
 
-# testing empty structures
-zfactor = emptyfactor()
-@test   zfactor.nextevent(Inf)==Inf &&
-        zfactor.gll(Inf)==Inf &&
-        zfactor.index == 0
-
-zfgs = emptyfactorgraphstruct()
-@test isempty(zfgs.flist) && isempty(zfgs.vlist) &&
-        zfgs.nfactors==0 && zfgs.nvars==0
-
-zfg = emptyfactorgraph()
-@test isempty(zfg.structure.flist)
-
 srand(1234)
 
 p   = 2

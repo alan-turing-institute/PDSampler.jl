@@ -40,6 +40,7 @@ immutable Simulation
         # check none of the default named arguments went through
         @assert !(  x0           == :undefined ||
                     v0           == :undefined ||
+                    T            == :undefined ||
                     nextevent    == :undefined ||
                     gradloglik   == :undefined ||
                     nextboundary == :undefined) "Essential arguments undefined"

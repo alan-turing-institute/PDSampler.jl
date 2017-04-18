@@ -31,21 +31,32 @@ immutable LocalSimulation
     # -- implicit
     nvars::Int                  # Number of nodes
     function LocalSimulation(fg, x0, v0, T, maxnevents, lambdaref)
-        @assert length(v0)==length(x0)==fg.structure.nvars "inconsistent dims"
-        @assert T>0.0 && maxnevents > 0 && lambdaref > 0.0 "inconsistent params"
-        new(fg,x0,v0,T,maxnevents,lambdaref, length(x0))
+        # check none of the default named arguments went through
+        @assert !(  fg           == :undefined ||
+                    x0           == :undefined ||
+                    v0           == :undefined ||
+                    T            == :undefined ) "Essential arguments undefined"
+        @assert length(x0)==length(v0)==fg.structure.nvars>0 "inconsistent dims"
+        @assert T>0.0 && maxnevents>0 && lambdaref>0.0 "inconsistent params"
+        new( fg, x0, v0, T,
+             maxnevents,
+             lambdaref,
+             length(x0) )
     end
 end
 # Constructor with named arguments
 function LocalSimulation(;
-            factorgraph = emptyfactorgraph(),
-            x0          = zeros(0),
-            v0          = zeros(0),
-            T           = 0.0,
-            maxnevents  = 0,
-            lambdaref   = 0)::LocalSimulation
+            factorgraph = :undefined,
+            x0          = :undefined,
+            v0          = :undefined,
+            T           = :undefined,
+            maxnevents  = 50000,
+            lambdaref   = 0.5)::LocalSimulation
     # calling the unnamed constructor
-    LocalSimulation(factorgraph, x0, v0, T, maxnevents, lambdaref)
+    LocalSimulation( factorgraph,
+                     x0, v0, T,
+                     maxnevents,
+                     lambdaref )
 end
 
 function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}

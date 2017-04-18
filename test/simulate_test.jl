@@ -102,3 +102,12 @@ sim2 = Simulation(
 @test_throws AssertionError Simulation(
         x0 = x0, v0 = v0, T = 1.0, nextevent = nev, gradloglik = gll_cv,
         nextboundary = nb, lambdaref = 0.0; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        v0 = v0, T = T, nextevent = nev, gradloglik = gll_cv,
+        nextboundary = nb, lambdaref = lref; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        x0 = x0, T = T, nextevent = nev, gradloglik = gll_cv,
+        nextboundary = nb, lambdaref = lref; maxgradeval = maxgradeval)
+@test_throws AssertionError Simulation(
+        x0 = x0, v0 = v0, nextevent = nev, gradloglik = gll_cv,
+        nextboundary = nb, lambdaref = lref; maxgradeval = maxgradeval)
