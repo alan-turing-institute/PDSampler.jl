@@ -1,7 +1,9 @@
 export
     AllowedTimeType,
     Path,
-    samplepath
+    samplepath,
+    quadpathpoly,
+    pathmean
 
 """
     AllowedTimeType
@@ -80,3 +82,38 @@ function samplepath(p::Path, t::AllowedTimeType)::Matrix{Float}
     samples
 end
 samplepath(p::Path, t::Float) = samplepath(p,[t])[:,1]
+
+"""
+    quadpathpoly(path, poly)
+
+Integrate a polynomial on the elements along a path. So if we are sampling in Rd
+and have phi(X)=Poly(xk), then we can integrate the polynomial along the path.
+Note that we can't do the same thing if phi(X) mixes 2 or more components.
+"""
+function quadpathpoly(path::Path, pol::Poly, T::Float)::Vector{Float}
+    dim  = length(path.xs[:,1])
+    res  = zeros(dim)
+    nseg = length(path.ts)-1
+    for segidx = 1:nseg-1
+        # for each segment in the path
+        segment = getsegment(path, segidx)
+        tau     = segment.tau
+        xa      = segment.xa
+        v       = segment.v
+        # integrate along that segment
+        for d = 1:dim
+            res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
+        end
+    end
+    # last segment
+    lastsegment = getsegment(path,nseg)
+    tau         = T - lastsegment.ta
+    xa          = lastsegment.xa
+    v           = lastsegment.v
+    # integrate along that segment
+    for d = 1:dim
+        res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
+    end
+    res/T 
+end
+pathmean(path::Path, T::Float) = quadpathpoly(path, Poly([0.0,1.0]), T)

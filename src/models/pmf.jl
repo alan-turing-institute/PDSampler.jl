@@ -1,9 +1,3 @@
-using Polynomials:
-        Poly,
-        roots,
-        polyint,
-        polyval
-
 export
     PMFGaussian,
     # helper functions (see also ippsampler)

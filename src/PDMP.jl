@@ -19,6 +19,12 @@ export
     loglik,
     gradloglik,
     gradloglik_cv
+    
+using Polynomials:
+        Poly,
+        roots,
+        polyint,
+        polyval
 
 ### source files (keep the order)
 
