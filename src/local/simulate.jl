@@ -7,15 +7,7 @@ using ProgressMeter
 
 export
     LocalSimulation,
-    simulate,
-    # helper functions
-    ls_reshape,
-    ls_retrieve,
-    ls_saveupdate!,
-    ls_updatepq!,
-    ls_random,
-    ls_refreshment
-
+    simulate
 """
     LocalSimulation
 
@@ -32,12 +24,16 @@ immutable LocalSimulation
     nvars::Int                  # Number of nodes
     function LocalSimulation(fg, x0, v0, T, maxnevents, lambdaref)
         # check none of the default named arguments went through
-        @assert !(  fg           == :undefined ||
-                    x0           == :undefined ||
-                    v0           == :undefined ||
-                    T            == :undefined ) "Essential arguments undefined"
-        @assert length(x0)==length(v0)==fg.structure.nvars>0 "inconsistent dims"
-        @assert T>0.0 && maxnevents>0 && lambdaref>0.0 "inconsistent params"
+        cond =  !(  fg == :undefined ||
+                    x0 == :undefined ||
+                    v0 == :undefined ||
+                    T  == :undefined )
+        @assert cond "Essential arguments undefined"
+        cond = (length(x0) == length(v0) == fg.structure.nvars > 0)
+        @assert cond "inconsistent dims"
+        cond = (T > 0.0 && maxnevents > 0 && lambdaref > 0.0)
+        @assert cond "inconsistent params"
+        # creating the object
         new( fg, x0, v0, T,
              maxnevents,
              lambdaref,
@@ -60,27 +56,8 @@ function LocalSimulation(;
 end
 
 function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
-    # keep track of how much time we've been going for
-    start = time()
 
-    # initialisation of the eventlists for every node in the graph
-    all_evlist = AllEventList([typeof(sim.x0[i]) for i in 1:sim.nvars])
-
-    for i in 1:sim.nvars
-        evi = Event(sim.x0[i], sim.v0[i], 0.0)
-        pushevent!(all_evlist.evl[i], evi)
-    end
-
-    # initialisation of the priority queue and the refreshment time
-    pq   = PriorityQueue(Int, Float)
-    tref = randexp()/sim.lambdaref
-    # filling of the priority queue with initial position
-    for (fidx, factor) in enumerate(sim.fg.factors)
-        vars   = assocvariables(sim.fg, fidx)
-        xf, vf = sim.x0[vars], sim.v0[vars]
-        g      = factor.gll(vcat(xf...))
-        pq     = ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, 0.0)
-    end
+    (start, all_evlist, pq, tref) = ls_init(sim)
 
     # counters for the first branch (bounce) and the second branch (refresh)
     ev_firstbranch  = 0
@@ -134,9 +111,40 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
     (all_evlist, details)
 end
 
-# ==============================================================================
+# =============================================================================
 # NOTE: The functions with a `ls_` prefix are helper functions exclusively
-# designed for the local simulation.
+# designed for the local simulation. They aren't expected to be used elsewhere.
+
+"""
+    ls_init(sim)
+
+Initialise a local simulation: store the starting clock time, create a list of
+all eventlists and push the original event, create the priorityqueue and fill
+it with the initial bounce times
+"""
+function ls_init(sim::LocalSimulation
+                )::Tuple{Float,AllEventList,PriorityQueue,Float}
+    # instantiate wall clock
+    start = time()
+    # initialisation of the eventlists for every node in the graph
+    all_evlist = AllEventList([typeof(sim.x0[i]) for i in 1:sim.nvars])
+    for i in 1:sim.nvars
+        evi = Event(sim.x0[i], sim.v0[i], 0.0)
+        pushevent!(all_evlist.evl[i], evi)
+    end
+    # initialisation of the priority queue and the refreshment time
+    pq   = PriorityQueue(Int, Float)
+    tref = randexp()/sim.lambdaref
+    # filling of the priority queue with initial position
+    # TODO: can this be parallelised?
+    for (fidx, factor) in enumerate(sim.fg.factors)
+        vars   = assocvariables(sim.fg, fidx)
+        xf, vf = sim.x0[vars], sim.v0[vars]
+        g      = factor.gll(vcat(xf...))
+        pq     = ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, 0.0)
+    end
+    (start, all_evlist, pq, tref)
+end
 
 """
     ls_reshape(u, v)
