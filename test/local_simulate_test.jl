@@ -43,9 +43,9 @@ ls2 = LocalSimulation(
         ls2.lambdaref==0.001 && ls2.fg.structure.flist==chain.structure.flist
 
 ### TEST LS_INIT
-#(start, all_evlist, pq, tref) = ls_init(ls2)
+(start, all_evlist, pq, tref) = PDMP.ls_init(ls2)
 
-#@test
+@test time()-start > 0.0 # and expected to be small...
 
 ### TEST LS_RESHAPE
 v = Vector{PDMP.AllowedVarType}(5)
