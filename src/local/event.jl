@@ -1,5 +1,4 @@
 export
-    AllowedVarType,
     Event,
     EventList,
     AllEventList,

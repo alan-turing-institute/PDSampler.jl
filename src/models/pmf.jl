@@ -1,11 +1,5 @@
 export
-    PMFGaussian,
-    # helper functions (see also ippsampler)
-    pmf_base,
-    pmf_caseA,
-    pmf_caseB,
-    pmf_caseC,
-    pmf_caseD
+    PMFGaussian
 
 immutable PMFGaussian
     r::Float       # Rating

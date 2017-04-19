@@ -6,9 +6,9 @@ p     = 2
 P1    = randn(p)
 P1   *= P1'
 mu    = zeros(p)
-mvg   = PDMP.MvGaussianCanon(mu,P1)
-chain = chaingraph([ Factor( (x,v)->PDMP.nextevent_bps(mvg, x, v),
-                              x   ->PDMP.gradloglik(mvg, x),
+mvg   = MvGaussianCanon(mu,P1)
+chain = chaingraph([ Factor( (x,v)->nextevent_bps(mvg, x, v),
+                              x   ->gradloglik(mvg, x),
                               i) for i in 1:3])
 
 srand(53)

@@ -45,10 +45,12 @@ ls2 = LocalSimulation(
 ### TEST LS_INIT
 #(start, all_evlist, pq, tref) = ls_init(ls2)
 
+#@test
+
 ### TEST LS_RESHAPE
-v = Vector{AllowedVarType}(5)
+v = Vector{PDMP.AllowedVarType}(5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]
-w = Vector{AllowedVarType}(5)
+w = Vector{PDMP.AllowedVarType}(5)
 for i in 1:length(v)
     w[i] = v[i]*0.
 end
@@ -153,7 +155,7 @@ srand(123)
 ### this is a bit of a silly test but ls_refreshment is the
 # composite of functions that have all been tested, so there's not much
 # else to test than to just check it "works"
-v = Vector{AllowedVarType}(chain.structure.nvars)
+v = Vector{PDMP.AllowedVarType}(chain.structure.nvars)
 for i in 1:length(v)
     v[i] = PDMP.ls_random(all_evlist.evl[i])
 end

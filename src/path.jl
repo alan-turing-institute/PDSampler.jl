@@ -1,5 +1,4 @@
 export
-    AllowedTimeType,
     Path,
     samplepath,
     quadpathpoly,
@@ -114,6 +113,6 @@ function quadpathpoly(path::Path, pol::Poly, T::Float)::Vector{Float}
     for d = 1:dim
         res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
     end
-    res/T 
+    res/T
 end
 pathmean(path::Path, T::Float) = quadpathpoly(path, Poly([0.0,1.0]), T)
