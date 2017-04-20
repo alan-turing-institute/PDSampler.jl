@@ -240,12 +240,12 @@ function ls_updatepq!(pq::PriorityQueue, fg::FactorGraph, fidx::Int,
     # useful temporary variables
     vcxf, vcvf = vcat(xf...), vcat(vf...)
     # Update time in Priority Queue for the current factor
-    acc = false
+    acc  = false
+    tauf = 0.0
     while !acc
-        bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
-        acc    = bounce.dobounce(g, vcvf)
+        bounce    = fg.factors[fidx].nextevent(vcxf, vcvf)
+        acc, tauf = bounce.dobounce(g, vcvf), bounce.tau
     end
-    tauf = bounce.tau
     # add the time to current priorityQueue
     pq[fidx] = t+tauf
     pq
