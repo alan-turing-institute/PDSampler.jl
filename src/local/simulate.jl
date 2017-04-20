@@ -240,6 +240,27 @@ function ls_updatepq!(pq::PriorityQueue, fg::FactorGraph, fidx::Int,
 end
 
 """
+    ls_bouncetime(fg, fidx, xf, vf, g, t)
+
+Compute the bounce time (possibly via thinning depending on the factor's
+implementation) associated with a factor and return it added to `t`. 
+"""
+function ls_bouncetime(fg::FactorGraph, fidx::Int,
+                      xf::Vector{AllowedVarType}, vf::Vector{AllowedVarType},
+                      g::Vector{Float}, t::Float)::Float
+    # useful temporary variables
+    vcxf, vcvf = vcat(xf...), vcat(vf...)
+    # Update time in Priority Queue for the current factor
+    bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
+    acc    = bounce.dobounce(g, vcvf)
+    while !acc
+        bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
+        acc    = bounce.dobounce(g, vcvf)
+    end
+    t+bounce.tau
+end
+
+"""
     ls_random(evl)
 
 (Local simulation, helper function) Generate N(0,1) random numbers of dimension

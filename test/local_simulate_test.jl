@@ -134,8 +134,9 @@ pq = PDMP.PriorityQueue()
 srand(123); PDMP.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
 # It's gaussian so no need for thinning
 srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
+srand(123); t2 = PDMP.ls_bouncetime(chain, fidx, xf, vf, g, t)
 
-@test pq[fidx] == t+bounce.tau
+@test pq[fidx] == t+bounce.tau == t2
 
 ### Testing LS_RANDOM
 evl1 = EventList{Float}()
