@@ -43,9 +43,21 @@ ls2 = LocalSimulation(
         ls2.lambdaref==0.001 && ls2.fg.structure.flist==chain.structure.flist
 
 ### TEST LS_INIT
+srand(140)
 (start, all_evlist, pq, tref) = PDMP.ls_init(ls2)
 
 @test time()-start > 0.0 # and expected to be small...
+i = rand(1:chain.structure.nvars)
+@test   all_evlist.evl[i].xs[1] == x0[i] &&
+        all_evlist.evl[i].vs[1] == v0[i] &&
+        all_evlist.evl[i].ts[1] == 0.0
+srand(140)
+@test tref == randexp()/0.001
+
+# pq for i <> NOTE it's hard to test precisely
+# in parallel setting because would need to know
+# how many "rand()" have been called before actual call..
+@test pq[i] > 0.0
 
 ### TEST LS_RESHAPE
 v = Vector{PDMP.AllowedVarType}(5)
