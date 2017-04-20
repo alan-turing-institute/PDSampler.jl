@@ -259,8 +259,7 @@ function ls_bouncetime( fidx::Int, fg::FactorGraph, aev::AllEventList,
     # unpack xf, vf
     vcxf, vcvf = vcat(xf...), vcat(vf...)
     # Update time in Priority Queue for the current factor
-    bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
-    acc    = bounce.dobounce(g, vcvf)
+    acc = false
     while !acc
         bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
         acc    = bounce.dobounce(g, vcvf)
