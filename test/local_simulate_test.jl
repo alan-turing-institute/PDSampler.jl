@@ -1,6 +1,7 @@
 # TODO: tests with multiD variables
-
-using PDMP, Base.Test
+using PDMP
+#using PDMP
+using Base.Test
 
 srand(1234)
 
@@ -134,9 +135,9 @@ pq = PDMP.PriorityQueue()
 srand(123); PDMP.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
 # It's gaussian so no need for thinning
 srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
-srand(123); t2 = PDMP.ls_bouncetime(chain, fidx, xf, vf, g, t)
+srand(123); t2 = PDMP.ls_bouncetime(fidx, chain, all_evlist, t)
 
-@test pq[fidx] == t+bounce.tau == t2
+@test pq[fidx] == t+bounce.tau == t+t2
 
 ### Testing LS_RANDOM
 evl1 = EventList{Float}()

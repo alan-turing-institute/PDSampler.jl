@@ -19,7 +19,7 @@ export
     loglik,
     gradloglik,
     gradloglik_cv
-    
+
 using Polynomials:
         Poly,
         roots,

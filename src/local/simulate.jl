@@ -22,6 +22,7 @@ immutable LocalSimulation
     lambdaref::Float            # Refreshment rate
     # -- implicit
     nvars::Int                  # Number of nodes
+    nfactors::Int               # Number of factors
     function LocalSimulation(fg, x0, v0, T, maxnevents, lambdaref)
         # check none of the default named arguments went through
         cond =  !(  fg == :undefined ||
@@ -37,7 +38,8 @@ immutable LocalSimulation
         new( fg, x0, v0, T,
              maxnevents,
              lambdaref,
-             length(x0) )
+             length(x0),
+             length(fg.factors) )
     end
 end
 # Constructor with named arguments
@@ -64,10 +66,11 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
     ev_secondbranch = 0
     nevents         = 0 # sum of above two
     # global clock
-    globalclock = 0.0
+    globalclock     = 0.0
 
     # global iteration
     prog = Progress(sim.maxnevents, 1)
+    # HACK
     #while globalclock < sim.T && nevents < sim.maxnevents
     for evnum in 1:sim.maxnevents
         # get bounce and dequeue
@@ -136,12 +139,8 @@ function ls_init(sim::LocalSimulation
     pq   = PriorityQueue(Int, Float)
     tref = randexp()/sim.lambdaref
     # filling of the priority queue with initial position
-    # TODO: can this be parallelised?
-    for (fidx, factor) in enumerate(sim.fg.factors)
-        vars   = assocvariables(sim.fg, fidx)
-        xf, vf = sim.x0[vars], sim.v0[vars]
-        g      = factor.gll(vcat(xf...))
-        pq     = ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, 0.0)
+    for fi in 1:length(sim.fg.factors)
+        pq[fi] = ls_bouncetime(fi, sim.fg, all_evlist, 0.0)
     end
     (start, all_evlist, pq, tref)
 end
@@ -182,16 +181,27 @@ function ls_retrieve(fg::FactorGraph, fidx::Int,
     # don't necessarily have the same types
     vf = Vector{AllowedVarType}(length(vars))
     xf = Vector{AllowedVarType}(length(vars))
-    # retrieve vf, xf(t)
-    for (i, k) in enumerate(vars)
-        # get the eventlist corresponding to variable k
-        ev    = getlastevent(all_evlist.evl[k])
-        # store the components and extrapolate from ev.x as needed
-        vf[i] = ev.v
-        xf[i] = ev.x + (t-ev.t)*ev.v
+
+    # shortcut to initial event
+    if t == 0.0
+        for (i, k) in enumerate(vars)
+            ev = getevent(all_evlist.evl[k], 1)
+            xf[i], vf[i] = ev.x, ev.v
+        end
+    # retrieving later than initial event (standard case)
+    else
+        # retrieve vf, xf(t)
+        for (i, k) in enumerate(vars)
+            # get the eventlist corresponding to variable k
+            ev    = getlastevent(all_evlist.evl[k])
+            # store the components and extrapolate from ev.x as needed
+            vf[i] = ev.v
+            xf[i] = ev.x + (t-ev.t)*ev.v
+        end
     end
     # compute the gradient of the factor's log likelihood at xf
     g  = fg.factors[fidx].gll(vcat(xf...))
+    # compute the reflection (if required)
     vf = doreflect ? ls_reshape(reflect_bps!(g, vcat(vf...)), vf) : vf
     (xf, vf, g, vars)
 end
@@ -240,15 +250,14 @@ function ls_updatepq!(pq::PriorityQueue, fg::FactorGraph, fidx::Int,
 end
 
 """
-    ls_bouncetime(fg, fidx, xf, vf, g, t)
+    ls_bouncetime(fidx, fg, alleventlist, t)
 
-Compute the bounce time (possibly via thinning depending on the factor's
-implementation) associated with a factor and return it added to `t`. 
+Compute the next bouncing time for a given factor.
 """
-function ls_bouncetime(fg::FactorGraph, fidx::Int,
-                      xf::Vector{AllowedVarType}, vf::Vector{AllowedVarType},
-                      g::Vector{Float}, t::Float)::Float
-    # useful temporary variables
+function ls_bouncetime( fidx::Int, fg::FactorGraph, aev::AllEventList,
+                        t::Float )::Float
+    (xf, vf, g, vars) = ls_retrieve(fg, fidx, aev, t, false)
+    # unpack xf, vf
     vcxf, vcvf = vcat(xf...), vcat(vf...)
     # Update time in Priority Queue for the current factor
     bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
@@ -257,7 +266,7 @@ function ls_bouncetime(fg::FactorGraph, fidx::Int,
         bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
         acc    = bounce.dobounce(g, vcvf)
     end
-    t+bounce.tau
+    bounce.tau
 end
 
 """
