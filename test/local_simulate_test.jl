@@ -165,12 +165,8 @@ srand(321); ab = randn(2)
 ### Testing LS_REFRESHMENT
 t  = randexp()
 
+srand(123); pq = PDMP.ls_refreshment(chain, t, all_evlist)
 srand(123)
-
-pq = PDMP.ls_refreshment(chain, t, all_evlist)
-
-srand(123)
-
 ### this is a bit of a silly test but ls_refreshment is the
 # composite of functions that have all been tested, so there's not much
 # else to test than to just check it "works"
@@ -183,5 +179,24 @@ for fidx in 1:chain.structure.nfactors
     (xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, t)
     PDMP.ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)
 end
-
 @test pq == pq2
+
+#### TEST LS_FIRSTBRANCH!
+fidx = 2
+all_evlist_copy  = deepcopy(all_evlist)
+pq_copy          = deepcopy(pq)
+srand(9)
+(all_evlist, pq) = PDMP.ls_firstbranch!(chain, fidx, all_evlist, pq, t)
+## reproduce part of the action
+srand(9)
+(xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist_copy, t, true)
+PDMP.ls_saveupdate!(all_evlist_copy, vars, xf, vf, t)
+PDMP.ls_updatepq!(pq_copy, chain, fidx, xf, vf, g, t)
+# update a single attached factor
+fpidx = linkedfactors(chain, fidx)[1]
+(xfp, vfp, gp) = PDMP.ls_retrieve(chain, fpidx, all_evlist_copy, t)
+PDMP.ls_updatepq!(pq_copy, chain, fpidx, xfp, vfp, gp, t)
+
+@test   getlastevent(all_evlist.evl[1]).x ==
+        getlastevent(all_evlist_copy.evl[1]).x
+@test pq_copy[fpidx] == pq[fpidx]

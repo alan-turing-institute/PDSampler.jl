@@ -87,15 +87,7 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
         # FIRST BRANCH (t<tref => )
         if t < tref
             ev_firstbranch += 1
-            # retrieve xf, vf corresponding to factor
-            (xf, vf, g, vars) = ls_retrieve(sim.fg, fidx, all_evlist, t, true)
-            ls_saveupdate!(all_evlist, vars, xf, vf, t)
-            ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, t)
-            # same story for linked factors (fp)
-            for fpidx in linkedfactors(sim.fg, fidx)
-                (xfp, vfp, gp) = ls_retrieve(sim.fg, fpidx, all_evlist, t)
-                ls_updatepq!(pq, sim.fg, fpidx, xfp, vfp, gp, t)
-            end
+            ls_firstbranch!(sim.fg, fidx, all_evlist, pq, t)
         # -------------
         # SECOND BRANCH (t>=tref => refreshment)
         else
@@ -152,6 +144,28 @@ function ls_init(sim::LocalSimulation
     end
     (start, all_evlist, pq, tref)
 end
+
+"""
+    ls_firstbranch(fg, fidx, all_evlist, pq, t)
+
+Operation corresponding to the first branch of events in simulate.
+"""
+function ls_firstbranch!(fg::FactorGraph, fidx::Int, all_evlist::AllEventList,
+                         pq::PriorityQueue, t::Float
+                         )::Tuple{AllEventList,PriorityQueue}
+    # retrieve xf, vf corresponding to factor
+    (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t, true)
+    ls_saveupdate!(all_evlist, vars, xf, vf, t)
+    ls_updatepq!(pq, fg, fidx, xf, vf, g, t)
+    # same story for linked factors (fp)
+    Threads.@threads for fpidx in linkedfactors(fg, fidx)
+        # we don't need to retrieve `vars` here
+        (xfp, vfp, gp) = ls_retrieve(fg, fpidx, all_evlist, t)
+        ls_updatepq!(pq, fg, fpidx, xfp, vfp, gp, t)
+    end
+    (all_evlist, pq)
+end
+
 
 """
     ls_reshape(u, v)
