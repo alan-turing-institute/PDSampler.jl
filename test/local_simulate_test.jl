@@ -93,6 +93,12 @@ pushevent!(all_evlist.evl[j], ev2)
 pushevent!(all_evlist.evl[k], ev3)
 
 ### Testing LS_RETRIEVE (1D) (without reflection)
+fidx = 2
+(xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, 0.0)
+@test   xf == x0[assocvariables(chain, fidx)] &&
+        vf == v0[assocvariables(chain, fidx)] &&
+        g  == PDMP.gradloglik(mvg, vcat(xf...))
+
 fidx = 1
 t    = t3+rand()
 (xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, t, false)

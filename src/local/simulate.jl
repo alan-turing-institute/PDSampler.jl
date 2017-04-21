@@ -57,6 +57,11 @@ function LocalSimulation(;
                      lambdaref )
 end
 
+"""
+    simulate(sim)
+
+Run a local BPS simulation following the specifications of `sim`.
+"""
 function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
 
     (start, all_evlist, pq, tref) = ls_init(sim)
@@ -157,7 +162,8 @@ AllowedVarType following the structure of `v`. For example, let
 `[1., [2., 3.]]`.
 """
 function ls_reshape{V<:Vector{AllowedVarType}}(u::Vector{Float}, v::V)::V
-    w = Vector{AllowedVarType}(length(v))
+    w = similar(v)
+    # offsets to know where to look for next block of information
     offset = 0
     for i in 1:length(v)
         tmpi    = length(v[i])
@@ -179,11 +185,11 @@ function ls_retrieve(fg::FactorGraph, fidx::Int,
                     all_evlist::AllEventList,
                     t::Float, doreflect::Bool=false)
     # indices of the variable associated with factor fidx
-    vars  = assocvariables(fg, fidx)
+    vars = assocvariables(fg, fidx)
     # allocate xf, vf, note the different variables
     # don't necessarily have the same types
     vf = Vector{AllowedVarType}(length(vars))
-    xf = Vector{AllowedVarType}(length(vars))
+    xf = similar(vf)
 
     # shortcut to initial event
     if t == 0.0
