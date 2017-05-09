@@ -41,7 +41,7 @@ This is useful if you are looking into expanding the code yourself to add a capa
 ```@contents
 Pages = [
     "techdoc/types.md"
-        ]
+    ]
 Depth = 2
 ```
 
