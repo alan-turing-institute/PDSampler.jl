@@ -5,7 +5,9 @@ export
     getevent,
     getlastevent,
     pushevent!,
-    samplelocalpath
+    samplelocalpath,
+    quadpathpoly,
+    pathmean
 
 """
     AllowedVarType
@@ -142,9 +144,56 @@ function samplelocalpath(evl::EventList, t::AllowedTimeType)
         else
             # get the next segment
             j += searchsortedlast(evl.ts[j+1:end],ti)
-            eva,evb = getlocalsegment(evl,j)
+            eva, evb = getlocalsegment(evl,j)
         end
     end
     samples
 end
 samplelocalpath(evl::EventList, t::Float) = samplelocalpath(evl, [t])[1]
+
+"""
+    quadpathpoly(evl, pol, T)
+
+Integrate a polynomial on the elements along a path for a single node.
+So if we are sampling in Rd and have phi(X)=Poly(xk), then we can integrate the
+polynomial along the path. Note that we can't do the same thing if phi(X) mixes
+2 or more nodes. See also syntactic sugar to perform the same operation on all
+nodes.
+"""
+function quadpathpoly(evl::EventList, pol::Poly, T::Float)::Vector{Float}
+    dim  = length(evl.xs[1])
+    res  = zeros(dim)
+    nseg = length(evl.ts)-1
+    for segidx = 1:nseg-1
+        # for each segment in the path
+        eva, evb = getlocalsegment(evl, segidx)
+        # segment time, initial point and velocity
+        tau = evb.t - eva.t
+        xa  = eva.x
+        v   = (evb.x - xa) / tau
+        # integrate along that segment
+        for d = 1:dim
+            res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
+        end
+    end
+    # last segment
+    eva, evb = getlocalsegment(evl, nseg)
+    # characteristics
+    tau = T - eva.t
+    xa  = eva.x
+    v   = (evb.x - xa) / (evb.t - eva.t)
+    for d = 1:dim
+        res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
+    end
+    res/T
+end
+function quadpathpoly(aev::AllEventList, pol::Poly, T::Float
+                     )::Vector{Vector{Float}}
+    res = Vector{Vector{Foat}}(length(aev.evl))
+    for (d, evl) in enumerate(aev.evl)
+        res[d] = quadpathpoly(evl, pol, T)
+    end
+    res
+ end
+ pathmean(evl::EventList, T::Float)    = quadpathpoly(evl, Poly([0.0,1.0]), T)
+ pathmean(aev::AllEventList, T::Float) = quadpathpoly(aev, Poly([0.0,1.0]), T)

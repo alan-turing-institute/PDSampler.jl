@@ -96,16 +96,17 @@ function quadpathpoly(path::Path, pol::Poly, T::Float)::Vector{Float}
     for segidx = 1:nseg-1
         # for each segment in the path
         segment = getsegment(path, segidx)
-        tau     = segment.tau
-        xa      = segment.xa
-        v       = segment.v
+        # get the characteristics
+        tau = segment.tau
+        xa  = segment.xa
+        v   = segment.v
         # integrate along that segment
         for d = 1:dim
             res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
         end
     end
     # last segment
-    lastsegment = getsegment(path,nseg)
+    lastsegment = getsegment(path, nseg)
     tau         = T - lastsegment.ta
     xa          = lastsegment.xa
     v           = lastsegment.v

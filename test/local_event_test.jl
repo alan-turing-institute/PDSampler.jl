@@ -53,3 +53,9 @@ ses = [ ts[j]<t1?(x0[i]+ts[j]*v0[i]):
 
 # sample localpath (multiple between)
 @test isapprox( norm(ss-ses)/length(ss) , 0.0 )
+
+T  = 3.0
+ss = samplelocalpath(all_evlist.evl[i], linspace(0.0,T,5000))
+pm = sum(ss)/length(ss)
+
+@test abs(pathmean(all_evlist.evl[i], T)[1] - pm) <=1e-2
