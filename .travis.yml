@@ -2,17 +2,13 @@
 language: julia
 os:
   - linux
-#  - osx
 julia:
   - 0.5
-#  - nightly
 notifications:
   email: false
-# uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.clone(pwd()); Pkg.test("PDMP"; coverage=true)'
-#  - julia -e 'Pkg.build("PDMP")';
 after_success:
   # push coverage results to Codecov
   - julia -e 'cd(Pkg.dir("PDMP")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'

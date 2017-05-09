@@ -57,6 +57,11 @@ function LocalSimulation(;
                      lambdaref )
 end
 
+"""
+    simulate(sim)
+
+Run a local BPS simulation following the specifications of `sim`.
+"""
 function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
 
     (start, all_evlist, pq, tref) = ls_init(sim)
@@ -82,15 +87,7 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
         # FIRST BRANCH (t<tref => )
         if t < tref
             ev_firstbranch += 1
-            # retrieve xf, vf corresponding to factor
-            (xf, vf, g, vars) = ls_retrieve(sim.fg, fidx, all_evlist, t, true)
-            ls_saveupdate!(all_evlist, vars, xf, vf, t)
-            ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, t)
-            # same story for linked factors (fp)
-            for fpidx in linkedfactors(sim.fg, fidx)
-                (xfp, vfp, gp) = ls_retrieve(sim.fg, fpidx, all_evlist, t)
-                ls_updatepq!(pq, sim.fg, fpidx, xfp, vfp, gp, t)
-            end
+            ls_firstbranch!(sim.fg, fidx, all_evlist, pq, t)
         # -------------
         # SECOND BRANCH (t>=tref => refreshment)
         else
@@ -149,6 +146,28 @@ function ls_init(sim::LocalSimulation
 end
 
 """
+    ls_firstbranch(fg, fidx, all_evlist, pq, t)
+
+Operation corresponding to the first branch of events in simulate.
+"""
+function ls_firstbranch!(fg::FactorGraph, fidx::Int, all_evlist::AllEventList,
+                         pq::PriorityQueue, t::Float
+                         )::Tuple{AllEventList,PriorityQueue}
+    # retrieve xf, vf corresponding to factor
+    (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t, true)
+    ls_saveupdate!(all_evlist, vars, xf, vf, t)
+    ls_updatepq!(pq, fg, fidx, xf, vf, g, t)
+    # same story for linked factors (fp)
+    Threads.@threads for fpidx in linkedfactors(fg, fidx)
+        # we don't need to retrieve `vars` here
+        (xfp, vfp, gp) = ls_retrieve(fg, fpidx, all_evlist, t)
+        ls_updatepq!(pq, fg, fpidx, xfp, vfp, gp, t)
+    end
+    (all_evlist, pq)
+end
+
+
+"""
     ls_reshape(u, v)
 
 (Local Simulation, helper function) Reshape a single vector `u` to a vector of
@@ -157,7 +176,8 @@ AllowedVarType following the structure of `v`. For example, let
 `[1., [2., 3.]]`.
 """
 function ls_reshape{V<:Vector{AllowedVarType}}(u::Vector{Float}, v::V)::V
-    w = Vector{AllowedVarType}(length(v))
+    w = similar(v)
+    # offsets to know where to look for next block of information
     offset = 0
     for i in 1:length(v)
         tmpi    = length(v[i])
@@ -179,11 +199,11 @@ function ls_retrieve(fg::FactorGraph, fidx::Int,
                     all_evlist::AllEventList,
                     t::Float, doreflect::Bool=false)
     # indices of the variable associated with factor fidx
-    vars  = assocvariables(fg, fidx)
+    vars = assocvariables(fg, fidx)
     # allocate xf, vf, note the different variables
     # don't necessarily have the same types
     vf = Vector{AllowedVarType}(length(vars))
-    xf = Vector{AllowedVarType}(length(vars))
+    xf = similar(vf)
 
     # shortcut to initial event
     if t == 0.0

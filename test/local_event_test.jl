@@ -53,3 +53,41 @@ ses = [ ts[j]<t1?(x0[i]+ts[j]*v0[i]):
 
 # sample localpath (multiple between)
 @test isapprox( norm(ss-ses)/length(ss) , 0.0 )
+
+################
+all_evlist = AllEventList(Vector{Float}, nvars)
+
+xs = [[0.,0.] [1.,1.] [2.,1.5] [3.,5.0] [3.4,-2.0]]
+ts = [0.0, 1.0, 2.0, 2.5, 2.7]
+i  = rand(1:nvars)
+for k in 1:length(ts)-1
+    x = xs[:,k]
+    v = (xs[:,k+1]-x) / (ts[k+1]-ts[k])
+    evk = Event(x, v, ts[k])
+    pushevent!(all_evlist.evl[i], evk)
+end
+
+Ns = 10000
+ss = linspace(0.0,ts[end],Ns)
+# compare with classical
+ss1 = samplelocalpath(all_evlist.evl[i], ss)
+ss2 = samplepath(Path(xs,ts), ss)
+@test norm(sum(ss1)/Ns - sum(ss2,2)/Ns) <= 1e-10
+# compare quadrature
+@test norm(pathmean(Path(xs,ts)) - pathmean(all_evlist.evl[i],ts[end]))<=1e-10
+
+############
+# testing pathmean (and implicitly quadpathpoly) on entire alleventlist
+all_evlist = AllEventList(Float, nvars)
+for k in 1:nvars
+    t = 0.0
+    for e in 1:50
+        pushevent!(all_evlist.evl[k], Event(randn(),randn(),t))
+        t+=rand()
+    end
+end
+i = rand(1:nvars)
+@test abs(
+        pathmean(Path(all_evlist.evl[i].xs', all_evlist.evl[i].ts)) -
+        pathmean(all_evlist, all_evlist.evl[i].ts[end])[i]
+        )[1] <= 1e-10
