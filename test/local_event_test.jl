@@ -75,3 +75,19 @@ ss2 = samplepath(Path(xs,ts), ss)
 @test norm(sum(ss1)/Ns - sum(ss2,2)/Ns) <= 1e-10
 # compare quadrature
 @test norm(pathmean(Path(xs,ts)) - pathmean(all_evlist.evl[i],ts[end]))<=1e-10
+
+############
+# testing pathmean (and implicitly quadpathpoly) on entire alleventlist
+all_evlist = AllEventList(Float, nvars)
+for k in 1:nvars
+    t = 0.0
+    for e in 1:50
+        pushevent!(all_evlist.evl[k], Event(randn(),randn(),t))
+        t+=rand()
+    end
+end
+i = rand(1:nvars)
+@test abs(
+        pathmean(Path(all_evlist.evl[i].xs', all_evlist.evl[i].ts)) -
+        pathmean(all_evlist, all_evlist.evl[i].ts[end])[i]
+        )[1] <= 1e-10

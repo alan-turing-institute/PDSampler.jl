@@ -187,7 +187,7 @@ function quadpathpoly(evl::EventList, pol::Poly, T::Float)::Vector{Float}
 end
 function quadpathpoly(aev::AllEventList, pol::Poly, T::Float
                      )::Vector{Vector{Float}}
-    res = Vector{Vector{Foat}}(length(aev.evl))
+    res = Vector{Vector{Float}}(length(aev.evl))
     for (d, evl) in enumerate(aev.evl)
         res[d] = quadpathpoly(evl, pol, T)
     end
