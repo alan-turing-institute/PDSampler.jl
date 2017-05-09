@@ -5,17 +5,16 @@ This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 See [the references](#references) at the bottom of this page.
 
 The package is currently under construction (Spring 2017).
-The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI).
-If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
-If you have comments or wish to collaborate, send an email to `tlienart σ turing > ac > uk`.
+The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
+If you have comments or wish to collaborate, please send an email to `tlienart σ turing > ac > uk`.
 
 ### Using the Package
 
-To install the (unregistered) package, use the following command inside the Julia REPL:
+To install the (currently unregistered) package, use the following command inside the Julia REPL:
 ```julia
 Pkg.clone("git://github.com/alan-turing-institute/PDMP.jl.git")
 ```
-To Load the package, use the command:
+To load the package, use the command:
 ```julia
 using PDMP
 ```
@@ -25,10 +24,12 @@ You can also run the tests with ```Pkg.test("PDMP")``` and update to the latest 
 ### Examples
 
 The following examples will introduce you to the functionalities of the package.
-The code to all examples can be found in the [examples directory](https://github.com/alan-turing-institute/PDMP.jl/tree/master/example).
 
 ```@contents
-Pages = ["examples/bps_mvg_constr.md", "examples/lbps_gchain.md"]
+Pages = [
+    "examples/bps_mvg_constr.md",
+    "examples/lbps_gchain.md"
+    ]
 Depth = 2
 ```
 
@@ -38,7 +39,9 @@ These pages introduce you to the core of the package and its interface.
 This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.
 
 ```@contents
-Pages = ["techdoc/types.md"]
+Pages = [
+    "techdoc/types.md"
+        ]
 Depth = 2
 ```
 
