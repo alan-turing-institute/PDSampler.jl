@@ -163,7 +163,7 @@ nodes.
 function quadpathpoly(evl::EventList, pol::Poly, T::Float)::Vector{Float}
     dim  = length(evl.xs[1])
     res  = zeros(dim)
-    nseg = length(evl.ts)-1
+    nseg = searchsortedlast(evl.ts,T)
     for segidx = 1:nseg-1
         # for each segment in the path
         eva, evb = getlocalsegment(evl, segidx)
@@ -177,13 +177,11 @@ function quadpathpoly(evl::EventList, pol::Poly, T::Float)::Vector{Float}
         end
     end
     # last segment
-    eva, evb = getlocalsegment(evl, nseg)
+    eva = getevent(evl, nseg)
     # characteristics
     tau = T - eva.t
-    xa  = eva.x
-    v   = (evb.x - xa) / (evb.t - eva.t)
     for d = 1:dim
-        res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
+        res[d] += polyint(polyval(pol,Poly([eva.x[d],eva.v[d]])))(tau)
     end
     res/T
 end

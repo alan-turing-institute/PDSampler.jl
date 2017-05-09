@@ -42,7 +42,10 @@ immutable Segment
     # -- implicit
     tau::Float
     v::Vector{Float}
-    Segment(ta,tb,xa,xb) = new(ta,tb,xa,xb,tb-ta,(xb-xa)/(tb-ta))
+    function Segment(ta,tb,xa,xb)
+        @assert tb>ta "times of subsequent events should be distinct"
+        new(ta,tb,xa,xb,tb-ta,(xb-xa)/(tb-ta))
+    end
 end
 
 """
@@ -75,6 +78,8 @@ function samplepath(p::Path, t::AllowedTimeType)::Matrix{Float}
             i += 1
         else
             j  += searchsortedlast(p.ts[j+1:end],ti)
+            # safeguard for out of bound: point to last segment
+            j   = (j+1>=length(p.ts)) ? length(p.ts)-1 : j
             seg = getsegment(p,j)
         end
     end
@@ -89,10 +94,11 @@ Integrate a polynomial on the elements along a path. So if we are sampling in Rd
 and have phi(X)=Poly(xk), then we can integrate the polynomial along the path.
 Note that we can't do the same thing if phi(X) mixes 2 or more components.
 """
-function quadpathpoly(path::Path, pol::Poly, T::Float)::Vector{Float}
+function quadpathpoly(path::Path, pol::Poly)::Vector{Float}
     dim  = length(path.xs[:,1])
     res  = zeros(dim)
     nseg = length(path.ts)-1
+    T    = path.ts[end]
     for segidx = 1:nseg-1
         # for each segment in the path
         segment = getsegment(path, segidx)
@@ -107,13 +113,14 @@ function quadpathpoly(path::Path, pol::Poly, T::Float)::Vector{Float}
     end
     # last segment
     lastsegment = getsegment(path, nseg)
-    tau         = T - lastsegment.ta
-    xa          = lastsegment.xa
-    v           = lastsegment.v
+    # characteristics
+    tau = T - lastsegment.ta
+    xa  = lastsegment.xa
+    v   = lastsegment.v
     # integrate along that segment
     for d = 1:dim
         res[d] += polyint(polyval(pol,Poly([xa[d],v[d]])))(tau)
     end
     res/T
 end
-pathmean(path::Path, T::Float) = quadpathpoly(path, Poly([0.0,1.0]), T)
+pathmean(path::Path) = quadpathpoly(path, Poly([0.0,1.0]))

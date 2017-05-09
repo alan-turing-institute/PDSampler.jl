@@ -19,9 +19,26 @@ ts = [0.0, 1.0, 2.0, 2.5, 2.7]
 
 pb = Path(xs,ts)
 
-N  = 1000
-T  = 2.6
-ss = linspace(0.0,T,N)
+N  = 10000
+ss = linspace(0.0,ts[end],N)
 
 samples = samplepath(pb,ss)
-@test norm(sum(samples,2)/N - pathmean(pb,T)) <= 1e-3
+@test norm(sum(samples,2)/N - pathmean(pb))/norm(pathmean(pb)) <= 5e-3
+
+@show sum(samples,2)/N
+
+#####
+srand(15)
+N  = 500
+xs = zeros(2,N)
+ts = zeros(N)
+xs[:,1] = randn(2)
+for s in 2:N
+    xs[:,s] = randn(2)
+    ts[s]   = ts[s-1]+rand()
+end
+pb = Path(xs, ts)
+N  = 10000
+ss = linspace(0.0,ts[end],N)
+samples = samplepath(pb,ss)
+@test norm(sum(samples,2)/N-pathmean(pb))/norm(pathmean(pb)) <= 5e-3
