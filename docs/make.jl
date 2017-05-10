@@ -24,6 +24,6 @@ deploydocs(
     target = "build",
     osname = "linux",
     branch = "gh-pages",
-    julia  = "0.5"
+    julia  = "0.5",
     deps   = Deps.pip("mkdocs","python-markdown-math")
     )
