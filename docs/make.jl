@@ -9,7 +9,7 @@ makedocs(
         "Examples" => [
             "Global BPS 1" => "examples/bps_mvg_constr.md",
             "Local BPS 1" => "examples/lbps_gchain.md"
-        ]
+        ],
         "Technical doc" => [
             "Types" => "techdoc/types.md"
         ]
