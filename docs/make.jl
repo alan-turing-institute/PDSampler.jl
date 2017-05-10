@@ -24,4 +24,5 @@ deploydocs(
     branch = "gh-pages",
     deps   = "nothing",
     make   = "nothing",
+    deps   = Deps.pip("pygments", "mkdocs", "python-markdown-math")
 )
