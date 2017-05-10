@@ -25,6 +25,3 @@ deploydocs(
     deps = nothing,
     make = nothing
 )
-#    branch = "gh-pages",
-#    osname = "linux",
-#    deps   = Deps.pip("pygments", "mkdocs", "python-markdown-math")
