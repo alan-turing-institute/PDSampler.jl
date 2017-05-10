@@ -21,6 +21,7 @@ makedocs(
 deploydocs(
     repo   = "github.com/alan-turing-institute/PDMP.jl.git",
     target = "build",
+    branch = "gh-pages",
     deps   = "nothing",
     make   = "nothing",
 )
