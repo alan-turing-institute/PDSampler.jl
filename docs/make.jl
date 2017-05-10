@@ -14,8 +14,8 @@ makedocs(
         "Technical doc" => [
             "Types" => "techdoc/types.md"
         ],
-    doctest = false
     ]
+    doctest = false
 )
 
 deploydocs(
