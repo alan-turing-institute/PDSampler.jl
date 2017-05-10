@@ -13,7 +13,7 @@ makedocs(
             "Local BPS 1" => "examples/lbps_gchain.md"
         ],
         "Technical Documentation" => Any[
-            "Types" => "types.md"
+            "Types" => "techdoc/types.md"
         ]
     ]
 )
