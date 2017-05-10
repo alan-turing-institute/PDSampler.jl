@@ -1,26 +1,26 @@
-site_name: PDMP.jl
-repo_url: https://github.com/alan-turing-institute/PDMP.jl
-site_description: Samplers based on Piecewise Deterministic Markov Processes
-site_author: Thibaut Lienart
-theme: readthedocs
-docs_dir: 'build'
-
-pages:
-    - Introduction: index.md
-    - Examples:
-        - Global BPS 1: examples/bps_mvg_constr.md
-        - Local BPS 1: examples/lbps_gchain.md
-    - Technical Documentation:
-        - Types: techdoc/types.md
-
-markdown_extensions:
-    - codehilite
-    - extra
-    - tables
-    - fenced_code
-
-extra_css:
-    - assets/Documenter.css
-# extra_javascript:
-#     - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML-full
-#     - assets/mathjaxhelper.js
+# site_name: PDMP.jl
+# repo_url: https://github.com/alan-turing-institute/PDMP.jl
+# site_description: Samplers based on Piecewise Deterministic Markov Processes
+# site_author: Thibaut Lienart
+# theme: readthedocs
+# docs_dir: 'build'
+#
+# pages:
+#     - Introduction: index.md
+#     - Examples:
+#         - Global BPS 1: examples/bps_mvg_constr.md
+#         - Local BPS 1: examples/lbps_gchain.md
+#     - Technical Documentation:
+#         - Types: techdoc/types.md
+#
+# markdown_extensions:
+#     - codehilite
+#     - extra
+#     - tables
+#     - fenced_code
+#
+# extra_css:
+#     - assets/Documenter.css
+# # extra_javascript:
+# #     - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML-full
+# #     - assets/mathjaxhelper.js
