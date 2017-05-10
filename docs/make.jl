@@ -2,7 +2,6 @@ using Documenter, PDMP
 
 makedocs(
     modules = [PDMP],
-    clean = false,
     format = :html,
     sitename = "PDMP.jl",
     authors = "Thibaut Lienart",
