@@ -21,7 +21,6 @@ makedocs(
 deploydocs(
     repo   = "github.com/alan-turing-institute/PDMP.jl.git",
     target = "build",
+    deps   = "nothing",
     make   = "nothing",
-    julia  = "0.5",
-    osname = "linux",
-    deps   = "nothing")
+)
