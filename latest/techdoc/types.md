@@ -18,7 +18,7 @@ FactorGraph
 Encapsulation of a factor graph. It is made out of a structure (FactorGraphStruct) and an array of factors corresponding to the given structure. See also: `Factor`, `FactorGraphStruct`.
 
 
-<a target='_blank' href='https://github.com/alan-turing-institute/PDMP.jl/tree/ff15ce084137ea4464ec5862015fc5c367a10cbd/src/local/factorgraph.jl#L57-L64' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/alan-turing-institute/PDMP.jl/tree/2e2ef68576465dee6190ec741b94a4f73a59747a/src/local/factorgraph.jl#L57-L64' class='documenter-source'>source</a><br>
 
 
   * `Int` for `Int64` – in `PDMP.jl`
