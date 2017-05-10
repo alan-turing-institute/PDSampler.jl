@@ -12,7 +12,8 @@ makedocs(
         ],
         "Technical doc" => [
             "Types" => "techdoc/types.md"
-        ]
+        ],
+    doctest = false
     ]
 )
 
@@ -22,7 +23,9 @@ deploydocs(
     make   = "nothing",
     julia  = "0.5",
     osname = "linux",
-    deps   = Deps.pip("mkdocs", "python-markdown-math"))
+    deps   = "nothing")
+
+#Deps.pip("mkdocs", "python-markdown-math"))
 
 # makedocs(
 #     modules  = [PDMP],

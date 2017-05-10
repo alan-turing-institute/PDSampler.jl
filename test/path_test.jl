@@ -25,8 +25,6 @@ ss = linspace(0.0,ts[end],N)
 samples = samplepath(pb,ss)
 @test norm(sum(samples,2)/N - pathmean(pb))/norm(pathmean(pb)) <= 5e-3
 
-@show sum(samples,2)/N
-
 #####
 srand(15)
 N  = 500
