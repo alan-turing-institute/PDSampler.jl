@@ -13,3 +13,6 @@ using PDMP, Base.Test
 @testset "l_event"     begin include("local_event_test.jl")        end
 @testset "l_fgraph"    begin include("local_factorgraph_test.jl")  end
 @testset "l_sim"       begin include("local_simulate_test.jl")     end
+
+@testset "ex_gbps1"    begin include("ex_gbps1.jl") end
+@testset "ex_lbps1"    begin include("ex_lbps1.jl") end

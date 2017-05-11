@@ -7,7 +7,8 @@ export
     pushevent!,
     samplelocalpath,
     quadpathpoly,
-    pathmean
+    pathmean,
+    tmax
 
 """
     AllowedVarType
@@ -66,6 +67,8 @@ type AllEventList
     end
 end
 AllEventList(T::DataType, nvars::Int) = AllEventList([T for i in 1:nvars])
+
+tmax(aev::AllEventList) = maximum(aev.evl[i].ts[end] for i in 1:length(aev.evl))
 
 """
     getevent(evl, evidx)
@@ -193,5 +196,6 @@ function quadpathpoly(aev::AllEventList, pol::Poly, T::Float
     end
     res
  end
- pathmean(evl::EventList, T::Float)    = quadpathpoly(evl, Poly([0.0,1.0]), T)
- pathmean(aev::AllEventList, T::Float) = quadpathpoly(aev, Poly([0.0,1.0]), T)
+pathmean(evl::EventList, T::Float)    = quadpathpoly(evl, Poly([0.0,1.0]), T)
+pathmean(aev::AllEventList, T::Float) = quadpathpoly(aev, Poly([0.0,1.0]), T)
+pathmean(aev::AllEventList) = pathmean(aev, tmax(aev))

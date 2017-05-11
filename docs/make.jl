@@ -1,5 +1,7 @@
 using Documenter, PDMP
 
+include("readexamples.jl")
+
 makedocs(
     modules = [PDMP],
     format = :html,
@@ -7,10 +9,7 @@ makedocs(
     authors = "Thibaut Lienart",
     pages = Any[
         "Introduction" => "index.md",
-        "Examples" => Any[
-            "Global BPS 1" => "examples/bps_mvg_constr.md",
-            "Local BPS 1" => "examples/lbps_gchain.md"
-        ],
+        "Examples" => listofexamples,
         "Technical Documentation" => Any[
             "Types" => "techdoc/types.md"
         ]
