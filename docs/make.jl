@@ -1,6 +1,6 @@
 using Documenter, PDMP
 
-include("readexamples.jl")
+listofexamples = filter(e->e[end-2:end]==".md",readdir("src/examples/"))
 
 makedocs(
     modules = [PDMP],
@@ -9,7 +9,7 @@ makedocs(
     authors = "Thibaut Lienart",
     pages = Any[
         "Introduction" => "index.md",
-        "Examples" => listofexamples,
+        "Examples" => "examples/".*listofexamples,
         "Technical Documentation" => Any[
             "Types" => "techdoc/types.md"
         ]

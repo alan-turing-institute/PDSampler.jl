@@ -1,5 +1,3 @@
-listofexamples = []
-
 baseURL = "https://github.com/alan-turing-institute/PDMP.jl/blob/master/"
 tests   = readdir("../test/")
 for name in tests
@@ -9,7 +7,6 @@ for name in tests
         URL     = baseURL * "test/$name"
         mdname  = "$(name[1:end-3]).md"
         pathout = "src/examples/$mdname"
-        push!(listofexamples, "examples/$mdname")
         open(pathin) do fi
             open(pathout, "w") do fo
                 write(fo, "(*the code for this example can be found [here]($URL)*)\n\n")
