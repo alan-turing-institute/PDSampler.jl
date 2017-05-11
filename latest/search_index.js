@@ -77,7 +77,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Local BPS (Chain of Gaussians)",
     "title": "Local BPS (Chain of Gaussians)",
     "category": "section",
-    "text": "The approach to using the local BPS is much the same as for the global one except that you need to specify a FactorGraph. That object will contain the structure of the factor graph (which factor is connected to which variables) as well as the list of all factors (which have a gll and nextevent since each factor can be seen individually as a small BPS).Let's declare a chain of bivariate gaussians:using PDMP\nnfac = 3 # number of factors\n\nmvg             = PDMP.MvGaussianStandard(zeros(2),eye(2))\ngll(x)          = PDMP.gradloglik(mvg, x)\nnextevent(x, v) = PDMP.nextevent_bps(mvg, x, v)\n\n# all factors have that same likelihood\nchainfactor(i) = Factor(nextevent,gll,i)\n\n# assemble into a chain graph\nchain = chaingraph([chainfactor(i) for i in 1:nfac])This is a simple graph with a known structure so that it's already defined through the chaingraph function (in src/local/factorgraph.jl). For an arbitrary graph, you would need to provide two things:the structure of the factor graph: a list of list where each elementcorresponds to a factor and the corresponding list contains the indices of the variables attached to that factorthe list of factorsThe rest is very similar to the global BPS:lambdaref  = .01\nmaxnevents = 10000\nT          = Inf\nnvars      = chain.structure.nvars\nx0         = randn(nvars)\nv0         = randn(nvars)\nv0        /= norm(v0)\n\nlsim = LocalSimulation(chain, x0, v0, T, maxnevents, lambdaref)\n\n(all_evlist, details) = simulate(lsim)The all_evlist object contains a list of EventList corresponding to what happened on each of the factors. It can also be sampled using samplelocalpath (cf. src/local/event.jl)."
+    "text": "The approach to using the local BPS is much the same as for the global one except that you need to specify a FactorGraph. That object will contain the structure of the factor graph (which factor is connected to which variables) as well as the list of all factors (which have a lgradll and nextevent since each factor can be seen individually as a small BPS).Let's declare a chain of bivariate gaussians:using PDMP\nnfac = 3 # number of factors\n\nmvg = MvGaussianStandard(zeros(2),eye(2))\n\n# all factors have that same likelihood\nchainfactor(i) = Factor(\n                    (x,v)->nextevent_bps(mvg, x, v),\n                    (x)->gradloglik(mvg, x),\n                    i )\n\n# assemble into a chain graph\nchain = chaingraph([chainfactor(i) for i in 1:nfac])This is a simple graph with a known structure so that it's already defined through the chaingraph function (in src/local/factorgraph.jl). For an arbitrary graph, you would need to provide two things:the structure of the factor graph: a list of list where each elementcorresponds to a factor and the corresponding list contains the indices of the variables attached to that factorthe list of factorsThe rest is very similar to the global BPS:srand(123)\nlambdaref  = .01\nmaxnevents = 10000\nT          = Inf\nnvars      = chain.structure.nvars\nx0         = randn(nvars)\nv0         = randn(nvars)\nv0        /= norm(v0)\n\nlsim = LocalSimulation(chain, x0, v0, T, maxnevents, lambdaref)\n\n(all_evlist, details) = simulate(lsim)The all_evlist object contains a list of EventList corresponding to what happened on each of the factors. It can also be sampled using samplelocalpath (cf. src/local/event.jl)."
 },
 
 {
@@ -134,6 +134,38 @@ var documenterSearchIndex = {"docs": [
     "title": "Specific types (local)",
     "category": "section",
     "text": "eventEvent{T<:AllowedVarType} (immutable) a triple (x,v,t) corresponding to an event for one of the node.\nEventList{T<:AllowedVarType} list of events (stored as lists of xs, vs, ts in order to be traversed more effectively than a Vector{Event}).\nAllEventList container for the EventList of all the nodesfactorgraphFactor (immutable) attaches the nextevent function (sampling from IPP), the gradient of the corresponding log-likelihood (gll) and an index\nFactorGraphStruct (immutable) contains the pattern of connections between nodes via flist and vlist (storing what variable is attached to what factor and vice-versa) nfactors and nvars keep track of the number of factors and the number of nodes (variables)\nFactorGraph (immutable) container for all the Factor and the FactorGraphStructsimulateLocalSimulation (immutable) container for the parameters of a local simulation (the factor graph, initial positions, etc)"
+},
+
+{
+    "location": "contributing/examples.html#",
+    "page": "Examples",
+    "title": "Examples",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "contributing/examples.html#Adding-examples-1",
+    "page": "Examples",
+    "title": "Adding examples",
+    "category": "section",
+    "text": "Examples are a great way to showcase how to make use of a specific feature. We consider two types of examples:a simple example (running in < 30 seconds)\na complex example (anything that's not in the first category)The simple examples are usually to be preferred since they can also be used as tests. For a big simulation (e.g.: use of LBPS for Probabilistic Matrix Factorisation) we recommend the use of separate Github repos including notebooks analysing the results.A simple example can often be considered as a form of test by itself except with more documentation in order to clarify what is being done. The process in this project is thereforewrite the example as a test (see this example for reference)\nrun readexamples.jl in doc/src which will generate a markdown file whichcan be served by the documentation website."
+},
+
+{
+    "location": "contributing/examples.html#Syntax-of-the-test-file-1",
+    "page": "Examples",
+    "title": "Syntax of the test file",
+    "category": "section",
+    "text": "The part of the test you want to appear in the documentation should be between two tags #@startexample and #@endexample:using Base.Test\n#@startexample\n...\n#@endexample\n@test ...Typically the part between the tags will contain no tests and will just showcase how to use a specific set of features while the part outside of the tags may ensure that the results obtained are correct.The text that will be in the documentation should be written as multiline comments i.e.:#=\nEverything here will be written as Markdown in the doc.\n=#The rest of the code and comments that are in between the tags #@startexample and #@endexample will be copied in the doc as code blocks. A very simple example would be:using Base.Test\n#@startexample\n#=\n# Name of the Test\n\nIn this example we will show how to find the maximum over a collection of random\nnumbers in Julia for all the numbers that are negative.\n=#\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n#=\nThat's it!\n=#\n#@endexample\n@test m < 0.0This will be converted to Markdown:# Name of the Test\n\nIn this example we will show how to find the maximum over a collection of random\nnumbers in Julia for all the numbers that are negative.\n ```julia\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n ```\nThat's it!Remark, the spaces in front of the triple backticks in the snippet above are not actually generated when you use readexamples.jl. The spaces are used here in order to escape these triple backticks so that the snippet does not end up being unduly fragmented in three pieces."
+},
+
+{
+    "location": "contributing/examples.html#Full-workflow-1",
+    "page": "Examples",
+    "title": "Full workflow",
+    "category": "section",
+    "text": "Write the example in the PDMP/test/ directory following the examplespresent there and using the syntax mentioned above. Use the name convention ex_NAME.jl.Make sure this runs and tests pass.\nAdd the test at the bottom of PDMP/test/runtests.jl following code alreadypresent there.Navigate to PDMP/docs in your terminal and julia readexamples. This willgenerate the .md file corresponding to your example and place it in PDMP/docs/src/examples/. It will also do the same with all other examples (effectively refreshing those).In PDMP/docs/make.jl add the page name ex_NAME.md in the list underExamples following code already present there.Git add, commit and push."
 },
 
 ]}
