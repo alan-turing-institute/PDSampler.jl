@@ -9,7 +9,10 @@ makedocs(
     authors = "Thibaut Lienart",
     pages = Any[
         "Introduction" => "index.md",
-        "Examples" => "examples/".*listofexamples,
+        "Examples" => Any[
+            "examples/ex_gbps1.md",
+            "examples/ex_lbps1.md"
+        ],
         "Technical Documentation" => Any[
             "Types" => "techdoc/types.md"
         ]
