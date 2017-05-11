@@ -1,0 +1,45 @@
+listofexamples = []
+
+baseURL = "https://github.com/alan-turing-institute/PDMP.jl/blob/master/"
+tests   = readdir("../test/")
+for name in tests
+    if ismatch(Regex("^ex_"),name) && name[end-2:end]==".jl"
+        #########################
+        pathin  = "../test/$name"
+        URL     = baseURL * "test/$name"
+        mdname  = "$(name[1:end-3]).md"
+        pathout = "src/examples/$mdname"
+        push!(listofexamples, "examples/$mdname")
+        open(pathin) do fi
+            open(pathout, "w") do fo
+                write(fo, "(*the code for this example can be found [here]($URL)*)\n\n")
+                skip    = true
+                iscode  = false
+                llclose = false
+                for ln in eachline(fi)
+                    # Chomp markers
+                    if ismatch(Regex("^#@startexample"),ln)
+                        skip = false
+                    elseif ismatch(Regex("^#@endexample"),ln)
+                        break
+                    elseif ismatch(Regex("^#="),ln)
+                        if iscode
+                            # close the block
+                            write(fo, "```\n")
+                            iscode = false
+                        end
+                    elseif ismatch(Regex("^=#"),ln)
+                        iscode  = true
+                        llclose = true
+                    else
+                        if iscode && llclose
+                            write(fo, "```julia\n")
+                            llclose = false
+                        end
+                        skip?nothing:write(fo, ln)
+                    end
+                end
+            end
+        end
+    end
+end
