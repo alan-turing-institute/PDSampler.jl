@@ -1,7 +1,5 @@
 using Documenter, PDMP
 
-listofexamples = filter(e->e[end-2:end]==".md",readdir("src/examples/"))
-
 makedocs(
     modules = [PDMP],
     format = :html,
