@@ -6,19 +6,21 @@ The approach to using the local BPS is much the same as for the global one
 except that you need to specify a `FactorGraph`.
 That object will contain the structure of the factor graph (which factor is
 connected to which variables) as well as the list of all factors (which have a
-`gll` and `nextevent` since each factor can be seen individually as a small BPS).
+`lgradll` and `nextevent` since each factor can be seen individually as a small
+BPS).
 
 Let's declare a chain of bivariate gaussians:
 ```julia
 using PDMP
 nfac = 3 # number of factors
 
-mvg             = PDMP.MvGaussianStandard(zeros(2),eye(2))
-gll(x)          = PDMP.gradloglik(mvg, x)
-nextevent(x, v) = PDMP.nextevent_bps(mvg, x, v)
+mvg = MvGaussianStandard(zeros(2),eye(2))
 
 # all factors have that same likelihood
-chainfactor(i) = Factor(nextevent,gll,i)
+chainfactor(i) = Factor(
+                    (x,v)->nextevent_bps(mvg, x, v),
+                    (x)->gradloglik(mvg, x),
+                    i )
 
 # assemble into a chain graph
 chain = chaingraph([chainfactor(i) for i in 1:nfac])
@@ -32,6 +34,7 @@ variables attached to that factor
 2. the list of factors
 The rest is very similar to the global BPS:
 ```julia
+srand(123)
 lambdaref  = .01
 maxnevents = 10000
 T          = Inf

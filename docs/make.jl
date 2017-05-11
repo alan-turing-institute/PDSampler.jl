@@ -13,6 +13,9 @@ makedocs(
         ],
         "Technical Documentation" => Any[
             "Types" => "techdoc/types.md"
+        ],
+        "Contributing" => Any[
+            "Examples" => "contributing/examples.md"
         ]
     ]
 )
