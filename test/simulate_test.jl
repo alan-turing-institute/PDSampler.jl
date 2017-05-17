@@ -8,7 +8,7 @@ w = 5*rand(p)       # true vector of parameters
 # observations according to a logistic thresholded to {-1,1}
 y = (logistic.(X*w) .> rand(n)) .* 2.0 .- 1.0
 # proxy for N*L upper bound
-b = sum( mapslices(_->norm(_)^2,X,1) )/4
+b = sum( mapslices(e->norm(e)^2,X,1) )/4
 
 # DATA MODEL
 dm = LogReg(X,y,b)

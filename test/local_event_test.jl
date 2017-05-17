@@ -87,7 +87,7 @@ for k in 1:nvars
     end
 end
 i = rand(1:nvars)
-@test abs(
+@test abs.(
         pathmean(Path(all_evlist.evl[i].xs', all_evlist.evl[i].ts)) -
         pathmean(all_evlist, all_evlist.evl[i].ts[end])[i]
         )[1] <= 1e-10

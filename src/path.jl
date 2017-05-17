@@ -10,7 +10,7 @@ export
 Syntactic sugar for union type of Vector{Float} and LinSpace{Float} (types
 accepted for the `samplelocalpath` function).
 """
-AllowedTimeType = Union{Vector{Float}, LinSpace{Float}}
+AllowedTimeType = Union{Vector{Float}, Range{Float}}
 
 
 """

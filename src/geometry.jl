@@ -48,7 +48,7 @@ function nextboundary{T<:Vector{Float}}(pd::Polygonal,x::T, v::T
     hits = (pd.intercepts-pd.normals*x) ./ nsv
     # hard threshold times with nsv ~ 0 (near-parallel case),
     # remove negative times and times ~ 0 (for numerical stability)
-    hits[ map(|, abs(nsv) .< 1e-10, hits .< 1e-10) ] = Inf
+    hits[ map(|, abs.(nsv) .< 1e-10, hits .< 1e-10) ] = Inf
     # get time of hit + index of corresponding boundary
     (t_hit, j) = findmin(hits)
     # return time of hit + normal vector to boundary

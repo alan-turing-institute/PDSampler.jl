@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDMP, Base.Test, QuadGK.quadgk
 
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing)
