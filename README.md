@@ -15,8 +15,8 @@ Please refer to [**the documentation**](https://alan-turing-institute.github.io/
 
 Requirements:
 
-* Julia 0.5 (strict)
-* 64-bit architecture (flexible)
+* Julia >= 0.5
+* 64-bit architecture
 
 In the Julia REPL:
 
@@ -24,4 +24,3 @@ In the Julia REPL:
 Pkg.clone("https://github.com/alan-turing-institute/PDMP.jl.git")
 using PDMP
 ```
-
