@@ -145,12 +145,12 @@ srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
 @test pq[fidx] == t+bounce.tau
 
 ### Testing LS_RANDOM
-evl1 = EventList{Float}()
+evl1 = EventList(Float)
 push!(evl1.xs, randn())
 push!(evl1.vs, randn())
 push!(evl1.ts, abs(randn()))
 
-evl2 = EventList{Vector{Float}}()
+evl2 = EventList(Vector{Float})
 push!(evl2.xs, randn(2))
 push!(evl2.vs, randn(2))
 push!(evl2.ts, abs(randn()))

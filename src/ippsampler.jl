@@ -4,8 +4,8 @@ export
     nextevent_bps,
     nextevent_zz
 
-abstract IPPSamplingMethod
-abstract Thinning <: IPPSamplingMethod
+@compat abstract type IPPSamplingMethod end
+@compat abstract type Thinning <: IPPSamplingMethod end
 
 # TODO: complete
 """

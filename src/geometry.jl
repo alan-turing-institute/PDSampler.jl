@@ -3,7 +3,7 @@ export
     Polygonal,
     nextboundary
 
-abstract Domain
+@compat abstract type Domain end
 
 """
     Unconstrained

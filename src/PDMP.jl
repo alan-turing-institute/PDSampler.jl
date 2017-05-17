@@ -9,6 +9,8 @@ __precompile__(true) # TODO set to true in releases
 
 module PDMP
 
+using Compat
+
 const Int   = Int64
 const Float = Float64
 

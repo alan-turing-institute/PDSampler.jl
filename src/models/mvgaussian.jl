@@ -5,7 +5,7 @@ export
     MvGaussianCanon,
     MvGaussianNatural
 
-abstract MvGaussian
+@compat abstract type MvGaussian end
 
 """
     MvGaussianStandard(mu, cov)
@@ -75,10 +75,10 @@ end
 ### Helper functions for efficient computations
 # the type aliases are not exposed
 
-typealias MvGS MvGaussianStandard
-typealias MvGC MvGaussianCanon
-typealias MvGN MvGaussianNatural
-typealias MvDG MvDiagonalGaussian
+const MvGS = MvGaussianStandard
+const MvGC = MvGaussianCanon
+const MvGN = MvGaussianNatural
+const MvDG = MvDiagonalGaussian
 
 mvg_mu(g::MvGC)::Vector{Float} = g.mu
 mvg_mu(g::MvGN)::Vector{Float} = -g.negprec\g.precmu

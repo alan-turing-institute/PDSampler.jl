@@ -45,8 +45,10 @@ type EventList{T <: AllowedVarType}
     xs::Vector{T}     # coordinates
     vs::Vector{T}     # associated velocities
     ts::Vector{Float} # associated times
-    # Constructor
-    EventList() = new(Vector{T}(0), Vector{T}(0), Vector{Float}(0))
+end
+function EventList(TT::Type)
+    @assert TT <: AllowedVarType
+    EventList(Vector{TT}(0), Vector{TT}(0), Vector{Float}(0))
 end
 
 """
@@ -62,8 +64,8 @@ type AllEventList
     evl::Vector{EventList}
     types::Vector{DataType}
     function AllEventList(types::Vector{DataType})
-        new([EventList{types[i]}() for i in 1:length(types)],
-            types)
+        new( [EventList(types[i]) for i in 1:length(types)],
+             types )
     end
 end
 AllEventList(T::DataType, nvars::Int) = AllEventList([T for i in 1:nvars])
