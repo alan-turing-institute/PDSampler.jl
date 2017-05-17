@@ -1,4 +1,4 @@
-using Base.Collections:
+using DataStructures:
         PriorityQueue,
         enqueue!,
         dequeue!,

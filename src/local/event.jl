@@ -57,8 +57,8 @@ end
 Storage for all the `EventList` objects corresponding to a factor graph in a
 local BPS setting. The element `evl` can be accessed by the variable index so
 `a.evl[k]` will return the eventlist associated with variable `k`. Note that
-the different `EventList` may have different types (in particular, different dimensions).
-See also: `Event`, `EventList`.
+the different `EventList` may have different types (in particular, different
+dimensions). See also: `Event`, `EventList`.
 """
 type AllEventList
     evl::Vector{EventList}

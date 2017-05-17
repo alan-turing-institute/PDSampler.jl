@@ -40,7 +40,6 @@ include("path.jl")
 include("kernels.jl")
 include("simulate.jl")
 
-# include("local/factor.jl")
 include("local/event.jl")
 include("local/factorgraph.jl")
 include("local/simulate.jl")
