@@ -21,7 +21,7 @@ safemaximum(x,s) = length(s)==1?max(x,s):max(x,s[1])
 
 @test maximum(logistic(x)-1.0/(1.0+exp(-x)) for x in xvals) <= 1e-10
 vals = [loglogistic(x)-(-log(1.0+exp(-x))) for x in xvals]
-@test maximum(vals[.!isinf.(vals)]) <= 1e-10
+@test maximum(vals[broadcast(!,isinf.(vals))]) <= 1e-10
 @test maximum(norm(gradloglogistic(x)-1.0/(1.0+exp(x))) for x in xvals) <= 1e-10
 
 # Generate data for Likelihood testing etc.
