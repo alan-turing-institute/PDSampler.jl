@@ -2,7 +2,8 @@ export
     Path,
     samplepath,
     quadpathpoly,
-    pathmean
+    pathmean,
+    esspath
 
 """
     AllowedTimeType
@@ -60,7 +61,7 @@ getsegment(p::Path, j::Int) = Segment(p.ts[j],p.ts[j+1],p.xs[:,j],p.xs[:,j+1])
     samplepath(p, t)
 
 Sample the piecewise linear trajectory defined by the corners `xs` and the
-times `ts` at given time `t`.
+times `ts` at given time `t`. The matrix returned has dimensions `p*length(t)`.
 """
 function samplepath(p::Path, t::AllowedTimeType)::Matrix{Float}
     @assert t[1] >= p.ts[1] && t[end] <= p.ts[end]
@@ -124,3 +125,35 @@ function quadpathpoly(path::Path, pol::Poly)::Vector{Float}
     res/T
 end
 pathmean(path::Path) = quadpathpoly(path, Poly([0.0,1.0]))
+
+"""
+    esspath(path, ns, rtol, limitfrac)
+
+Increase the number of sample points on the path. The hope is that the ESS for
+each dimension divided by the number of samples becomes larger than `limfrac`.
+"""
+function esspath(path::Path; ns::Int=1000, rtol::Float=0.1,
+                limfrac::Float=0.2)::Tuple{Vector{Float},Int}
+
+    Tp = 0.999 * path.ts[end]
+    gg = linspace(0, Tp, ns)
+
+    spath  = samplepath(path, gg)
+    oldess = [ess(spath[i,:]) for i in 1:path.p]
+    flag   = any( oldess./ns .> limfrac )
+    curess = flag ? similar(oldess) : oldess
+
+    while flag && (ns < 25000)
+        ns    *= 2
+        gg     = linspace(0, Tp, ns)
+        spath  = samplepath(path, gg)
+        curess = [ess(spath[i,:]) for i in 1:path.p]
+
+        # cond1 : check whether the ESS/NS is big enough
+        # cond2 : check whether the ESS changed significantly
+        flag   = any( curess./ns .> limfrac) ||
+                 any( (abs.(curess - oldess) ./ oldess) .> rtol )
+        oldess = curess
+    end
+    (curess, ns)
+end

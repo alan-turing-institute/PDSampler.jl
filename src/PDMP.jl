@@ -10,6 +10,7 @@ __precompile__(true) # TODO set to true in releases
 module PDMP
 
 using Compat
+using Klara.ess
 
 const Int   = Int64
 const Float = Float64
