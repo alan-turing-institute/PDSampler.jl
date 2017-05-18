@@ -105,5 +105,5 @@ the relative error is below 5%.
 =#
 #@endexample
 @test norm(pathmean(path)-mt)/norm(mt) < 0.05
-ess = esspath(path; ns=100)
+ess,ns = esspath(path; ns=100)
 @test minimum(ess) > 150

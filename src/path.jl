@@ -132,8 +132,8 @@ pathmean(path::Path) = quadpathpoly(path, Poly([0.0,1.0]))
 Increase the number of sample points on the path. The hope is that the ESS for
 each dimension divided by the number of samples becomes larger than `limfrac`.
 """
-function esspath(path::Path; ns::Int=1000, rtol::Float=0.1,
-                limfrac::Float=0.2)::Tuple{Vector{Float},Int}
+function esspath(path::Path; ns::Int=1000, rtol::Float=0.1, limfrac::Float=0.2,
+                maxns::Int=100000)::Tuple{Vector{Float},Int}
 
     Tp = 0.999 * path.ts[end]
     gg = linspace(0, Tp, ns)
@@ -143,7 +143,7 @@ function esspath(path::Path; ns::Int=1000, rtol::Float=0.1,
     flag   = any( oldess./ns .> limfrac )
     curess = flag ? similar(oldess) : oldess
 
-    while flag && (ns < 25000)
+    while flag && (ns < maxns/2)
         ns    *= 2
         gg     = linspace(0, Tp, ns)
         spath  = samplepath(path, gg)
