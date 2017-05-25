@@ -1,7 +1,18 @@
 # About PDMP samplers
 
-### Global Samplers
+This page aims at giving a very brief introduction to the concept of PDMP samplers and give insight of how it is implemented although we cover the implementation in more details in the technical documentation. This is not meant to be a rigorous presentation of the algorithm (for this, please see the references at the bottom of this page). Rather, we focus here on the "large building blocks" behind the algorithm.
 
+The purpose of the algorithm is to be able to evaluate expected values with respect to an arbitrary target distribution which we assume admits a probability density function  $\pi$. For simplicity, we assume that $\pi:C\to \mathbb R^+$ with $C\subseteq \mathbb R^p$, convex. The objective is therefore to compute a weighted integral of the form:
+
+\begin{equation}
+    \mathbb E_{\pi}[\varphi(X)] = \int_{C} \varphi(x)\pi(x)\,\mathrm{d}x
+\end{equation}
+
+
+
+
+
+### Global Samplers
 
 
 ### Local Samplers

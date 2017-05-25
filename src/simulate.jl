@@ -151,7 +151,6 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
         if tau == bounce.tau
             # there will be an evaluation of the gradient
             gradeval += 1
-            nbounce  += 1
             # updating position/time
             t += tau
             x += tau*v
@@ -160,6 +159,8 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
             # ---- BOUNCE ----
             g = sim.gll(x)
             if bounce.dobounce(g, v) # e.g.: thinning, acc/rej
+                # if accept
+                nbounce += 1
                 if sim.algname == "BPS"
                     if length(mass)>0
                         v = reflect_bps!(g, v, mass)
