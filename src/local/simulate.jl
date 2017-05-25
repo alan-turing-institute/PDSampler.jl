@@ -29,7 +29,7 @@ immutable LocalSimulation
                     x0 == :undefined ||
                     v0 == :undefined ||
                     T  == :undefined )
-        @assert cond "Essential arguments undefined"
+        @assert cond "One or more essential argument undefined"
         cond = (length(x0) == length(v0) == fg.structure.nvars > 0)
         @assert cond "inconsistent dims"
         cond = (T > 0.0 && maxnevents > 0 && lambdaref > 0.0)
@@ -136,11 +136,9 @@ function ls_init(sim::LocalSimulation
     pq   = PriorityQueue(Int, Float)
     tref = randexp()/sim.lambdaref
     # filling of the priority queue with initial position
-    for (fidx, factor) in enumerate(sim.fg.factors)
-        vars   = assocvariables(sim.fg, fidx)
-        xf, vf = sim.x0[vars], sim.v0[vars]
-        g      = factor.gll(vcat(xf...))
-        pq     = ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, 0.0)
+    for fidx in 1:sim.fg.structure.nfactors
+        (xf, vf, g) = ls_retrieve(sim.fg, fidx, all_evlist, 0.0)
+        ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, 0.0)
     end
     (start, all_evlist, pq, tref)
 end
@@ -158,7 +156,7 @@ function ls_firstbranch!(fg::FactorGraph, fidx::Int, all_evlist::AllEventList,
     ls_saveupdate!(all_evlist, vars, xf, vf, t)
     ls_updatepq!(pq, fg, fidx, xf, vf, g, t)
     # same story for linked factors (fp)
-    Threads.@threads for fpidx in linkedfactors(fg, fidx)
+    for fpidx in linkedfactors(fg, fidx)
         # we don't need to retrieve `vars` here
         (xfp, vfp, gp) = ls_retrieve(fg, fpidx, all_evlist, t)
         ls_updatepq!(pq, fg, fpidx, xfp, vfp, gp, t)
@@ -180,9 +178,9 @@ function ls_reshape{V<:Vector{AllowedVarType}}(u::Vector{Float}, v::V)::V
     # offsets to know where to look for next block of information
     offset = 0
     for i in 1:length(v)
-        tmpi    = length(v[i])
+        tmpi = length(v[i])
         # if length is 1, return only single point, otherwise vector
-        w[i]    = (tmpi==1) ? u[offset+1] : u[offset+(1:tmpi)]
+        @inbounds w[i] = (tmpi==1) ? u[offset+1] : u[offset+(1:tmpi)]
         offset += tmpi
     end
     w
@@ -204,7 +202,6 @@ function ls_retrieve(fg::FactorGraph, fidx::Int,
     # don't necessarily have the same types
     vf = Vector{AllowedVarType}(length(vars))
     xf = similar(vf)
-
     # shortcut to initial event
     if t == 0.0
         for (i, k) in enumerate(vars)
@@ -294,7 +291,7 @@ function ls_refreshment(fg::FactorGraph, t::Float,
     # draw a new bunch of velocities for each node
     v = Vector{AllowedVarType}(fg.structure.nvars)
     for i in 1:fg.structure.nvars
-        v[i] = ls_random(all_evlist.evl[i])
+        @inbounds v[i] = ls_random(all_evlist.evl[i])
     end
     # Instantiate a new priority queue
     pq = PriorityQueue(Int,Float)

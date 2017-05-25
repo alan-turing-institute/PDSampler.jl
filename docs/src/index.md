@@ -4,6 +4,13 @@
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 See [the references](#references) at the bottom of this page.
 
+```@contents
+Pages = [
+    "aboutpdmp.md",
+    ]
+Depth = 2
+```
+
 The package is currently under construction (Spring 2017).
 The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
 If you have comments or wish to collaborate, please send an email to `tlienart Ïƒ turing > ac > uk`.
@@ -11,10 +18,13 @@ If you have comments or wish to collaborate, please send an email to `tlienart Ï
 ### Using the Package
 
 To install the (currently unregistered) package, use the following command inside the Julia REPL:
+
 ```julia
 Pkg.clone("git://github.com/alan-turing-institute/PDMP.jl.git")
 ```
+
 To load the package, use the command:
+
 ```julia
 using PDMP
 ```
@@ -27,8 +37,8 @@ The following examples will introduce you to the functionalities of the package.
 
 ```@contents
 Pages = [
-    "examples/bps_mvg_constr.md",
-    "examples/lbps_gchain.md"
+    "examples/ex_gbps1.md",
+    "examples/ex_lbps1.md"
     ]
 Depth = 2
 ```
@@ -40,8 +50,18 @@ This is useful if you are looking into expanding the code yourself to add a capa
 
 ```@contents
 Pages = [
+    "techdoc/structure.md",
     "techdoc/types.md"
     ]
+Depth = 2
+```
+
+### Contributing
+
+```@contents
+Pages = [
+    "contributing/addingexample.md",
+]
 Depth = 2
 ```
 

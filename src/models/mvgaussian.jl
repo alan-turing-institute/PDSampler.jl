@@ -22,7 +22,7 @@ immutable MvGaussianStandard <: MvGaussian
     prec::Matrix{Float}
     precmu::Vector{Float}
     function MvGaussianStandard(mu, cov)
-        L    = cholfact(Hermitian(cov))[:L] # stored+considered as lower triangular
+        L    = cholfact(Symmetric(cov))[:L] # stored+considered as lower triangular
         Li   = inv(L)
         prec = Li'*Li # going through CholFact is more stable + guarantees PD
         new(mu,cov,length(mu),prec,prec*mu)

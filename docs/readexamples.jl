@@ -9,13 +9,17 @@ for name in tests
         pathout = "src/examples/$mdname"
         open(pathin) do fi
             open(pathout, "w") do fo
-                write(fo, "(*the code for this example can be found [here]($URL)*)\n\n")
                 skip    = true
                 iscode  = false
                 llclose = false
                 for ln in eachline(fi)
                     # Chomp markers
                     if ismatch(Regex("^#@startexample"),ln)
+                        write(fo, "#"*match(Regex("^#@startexample(.*)"),ln)[1]*"\n\n")
+                        write(fo, "(*the code for this example can be found "*
+                                  "[here]($URL)*, note that the doc rendered "* "here was automatically generated, if you "*
+                                  "want to fix it, please do it in the "*
+                                  "julia code directly*)\n\n")
                         skip = false
                     elseif ismatch(Regex("^#@endexample"),ln)
                         break

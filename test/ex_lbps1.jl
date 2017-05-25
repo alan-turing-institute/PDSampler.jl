@@ -1,8 +1,6 @@
 using Base.Test
-#@startexample
+#@startexample Local BPS (Chain of Gaussians)
 #=
-# Local BPS (Chain of Gaussians)
-
 The approach to using the local BPS is much the same as for the global one
 except that you need to specify a `FactorGraph`.
 That object will contain the structure of the factor graph (which factor is

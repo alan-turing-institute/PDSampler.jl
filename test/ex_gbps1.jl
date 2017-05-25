@@ -1,8 +1,6 @@
 using Base.Test
-#@startexample
+#@startexample Global BPS (Truncated Gaussian)
 #=
-# Global BPS (Truncated Gaussian)
-
 In this example we **XXXXXXX**
 
 Start by loading the library:

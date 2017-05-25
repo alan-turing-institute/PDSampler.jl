@@ -1,6 +1,6 @@
-(*the code for this example can be found [here](https://github.com/alan-turing-institute/PDMP.jl/blob/master/test/ex_gbps1.jl)*)
-
 # Global BPS (Truncated Gaussian)
+
+(*the code for this example can be found [here](https://github.com/alan-turing-institute/PDMP.jl/blob/master/test/ex_gbps1.jl)*, note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)
 
 In this example we **XXXXXXX**
 
