@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "PDMP.jl Documentation",
     "category": "section",
-    "text": "PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on Piecewise Deterministic Markov Processes and their applications. This includes the Bouncy Particle Sampler and the Zig-Zag Sampler. See the references at the bottom of this page.The package is currently under construction (Spring 2017). The project is hosted and maintained by the Alan Turing Institute (ATI) and currently developed by Thibaut Lienart. If you encounter problems, please open an issue on Github. If you have comments or wish to collaborate, please send an email to tlienart σ turing > ac > uk."
+    "text": "PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on Piecewise Deterministic Markov Processes and their applications. This includes the Bouncy Particle Sampler and the Zig-Zag Sampler. See the references at the bottom of this page.Pages = [\n    \"aboutpdmp.md\",\n    ]\nDepth = 2The package is currently under construction (Spring 2017). The project is hosted and maintained by the Alan Turing Institute (ATI) and currently developed by Thibaut Lienart. If you encounter problems, please open an issue on Github. If you have comments or wish to collaborate, please send an email to tlienart σ turing > ac > uk."
 },
 
 {
@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Examples",
     "category": "section",
-    "text": "The following examples will introduce you to the functionalities of the package.Pages = [\n    \"examples/bps_mvg_constr.md\",\n    \"examples/lbps_gchain.md\"\n    ]\nDepth = 2"
+    "text": "The following examples will introduce you to the functionalities of the package.Pages = [\n    \"examples/ex_gbps1.md\",\n    \"examples/ex_lbps1.md\"\n    ]\nDepth = 2"
 },
 
 {
@@ -37,7 +37,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Code documentation",
     "category": "section",
-    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/types.md\"\n    ]\nDepth = 2"
+    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/types.md\"\n    ]\nDepth = 2"
+},
+
+{
+    "location": "index.html#Contributing-1",
+    "page": "Introduction",
+    "title": "Contributing",
+    "category": "section",
+    "text": "Pages = [\n    \"contributing/addingexample.md\",\n]\nDepth = 2"
 },
 
 {
@@ -49,35 +57,107 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "examples/ex_gbps1.html#",
-    "page": "Global BPS (Truncated Gaussian)",
-    "title": "Global BPS (Truncated Gaussian)",
+    "location": "aboutpdmp.html#",
+    "page": "About PDMP",
+    "title": "About PDMP",
     "category": "page",
-    "text": "(the code for this example can be found here)"
+    "text": ""
+},
+
+{
+    "location": "aboutpdmp.html#About-PDMP-samplers-1",
+    "page": "About PDMP",
+    "title": "About PDMP samplers",
+    "category": "section",
+    "text": "This page aims at giving a very brief introduction to the concept of PDMP samplers (below we will refer to the algorithm but it should be understood as a class of algorithms). We also give some insight into how it is implemented although we cover the implementation in more details in the technical documentation. This is not meant to be a rigorous presentation of the algorithm (for this, please see the references at the bottom of this page). Rather, we focus here on the \"large building blocks\" behind the algorithm."
+},
+
+{
+    "location": "aboutpdmp.html#Basic-idea-(global-samplers)-1",
+    "page": "About PDMP",
+    "title": "Basic idea (global samplers)",
+    "category": "section",
+    "text": "The purpose of the algorithm is to be able to evaluate expected values with respect to an arbitrary target distribution which we assume admits a probability density function  pi. For simplicity, we assume that piCto mathbb R^+ with Csubseteq mathbb R^p, convex. The objective is therefore to compute a weighted integral of the form:\\begin{equation}     \\mathbb E_{\\pi}[\\varphi(X)] = \\int_{C} \\varphi(x)\\pi(x)\\,\\mathrm{d}x \\end{equation}The samples considered generate a piecewise-linear path\\begin{equation}     x(t) = x^{(i)} + v^{(i)}(t-t_i) \\quad \\text{for}\\quad t\\in[t_i, t_{i+1}] \\end{equation}determined by an initial position x^(0) and velocity v^(0) and a set of positive event times t_1t_2dots. Under some conditions for the generation of the times and the velocities, the expected value can be approximated with\\begin{eqnarray}     \\mathbb E_{\\pi}[\\varphi(X)] &\\approx& {1\\over T} \\int_0^T\\varphi(x(t))\\mathrm{d}t \\end{eqnarray}and the integral in the right hand side can be expressed as a sum of integrals along each linear segment."
+},
+
+{
+    "location": "aboutpdmp.html#Generating-times-and-velocities-1",
+    "page": "About PDMP",
+    "title": "Generating times and velocities",
+    "category": "section",
+    "text": "As we have seen, this class of samplers generate triples of the form (t^(i) x^(i) v^(i)). Let us assume that the algorithm is currently at one of those event points. Then, the algorithm considers the ray\\begin{equation}     x(t) = x^{(i)} + (t-t^{(i)})v^{(i)} \\end{equation}for tt_i. The next event will happen on this ray at a time t_i+tau and be located at x^(i+1) = (x^(i)+tau v^(i)). We will see in a moment how tau should be generated. At that new point, the velocity will be recomputed following one of three possible action:a bounce with tau = tau_b where a velocity is recomputed following the value of the gradient of the log-likelihood of the target (see below),\na boundary bounce with tau=tau_h where the velocity is reflected against a boundary of the domain C,\na refreshment with tau=tau_r where the velocity is \"refreshed\".A time tau is drawn, if  taule min(tau_htau_r), step (1) is applied. If tau ge tau_r step (3) is applied. Otherwise step (2). Both tau_h and tau_r should be considered given. The first one, tau_h is the hitting time between the ray and the closest boundary of C (for simple domains like a polygonal domain it can be computed analytically). The second one, tau_r is drawn from an exponential distribution (this allows to guarantee that the algorithm explores the whole space).It remains to explain how to generate tau and how the velocity is updated.The time tau is the first arrival time of an Inhomogenous Poisson Process (IPP) with an intensity that should verify some properties. The Bouncy Particle Sampler (BPS) in particular considers the following intensity with U the log-likelihood of the (unnormalised) target pi:\\begin{eqnarray}     \\lambda(t; x, v) = \\langle \\nabla U(x + tv ), v \\rangle^+ \\end{eqnarray}where x^+=max(x0). Sampling from an IPP is not trivial in general, a few methods can be applied as discussed in the next point.The update of the velocity goes as follows for the BPS:(bounce) the new velocity is obtained by computing a specular reflection of the velocity against the tangent to the gradient of the log-likelihood at x(t+tau_b) is computed\\begin{equation}     v \\leftarrow v - 2\\langle \\nabla U(x), v\\rangle{\\nabla U(x)\\over \\|\\nabla U(x)\\|^2} \\end{equation}(boundary hit) the new velocity is obtained by computing a specular reflection against the tangent to the boundary at the hitting point.\n(refresh) the new velocity is obtained by sampling from a \"refreshment distribution\" for example a mathcal N(0 I).The illustration below illustrates the specular reflexion, starting at the red point and going along the ray (red, dashed line), we could have a new event corresponding to bounce or a hit (blue dot). In both case a specular reflection is executed (blue dashed line).(Image: )"
+},
+
+{
+    "location": "aboutpdmp.html#Sampling-from-an-IPP-1",
+    "page": "About PDMP",
+    "title": "Sampling from an IPP",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "aboutpdmp.html#Local-Samplers-1",
+    "page": "About PDMP",
+    "title": "Local Samplers",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "aboutpdmp.html#References-1",
+    "page": "About PDMP",
+    "title": "References",
+    "category": "section",
+    "text": "Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method, arXiv preprint, 2015.\nJoris Bierkens, Alexandre Bouchard-Côté, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer, Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains, arXiv preprint, 2017.\nJoris Bierkens, Paul Fearnhead and Gareth Roberts, The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data, arXiv preprint, 2016."
+},
+
+{
+    "location": "examples/ex_gbps1.html#",
+    "page": "Global BPS",
+    "title": "Global BPS",
+    "category": "page",
+    "text": ""
 },
 
 {
     "location": "examples/ex_gbps1.html#Global-BPS-(Truncated-Gaussian)-1",
-    "page": "Global BPS (Truncated Gaussian)",
+    "page": "Global BPS",
     "title": "Global BPS (Truncated Gaussian)",
     "category": "section",
-    "text": "In this example we XXXXXXXStart by loading the library:using PDMPyou will then need to define two elements:a geometry (boundaries)\nan energy (gradient of the log-likelihood of the target)At the moment, the package can handle unconstrained geometries and polygonal domains (see XXXXX). Let's say we want to be constrained to the positive orthan in 2D:p = 2\n# normal to faces and intercepts\nns, a = eye(p), zeros(p)\ngeom  = Polygonal(ns, a)\n# for a given ray, which boundary does it hit?\nnextbd(x, v) = nextboundary(geom, x, v)Here ns and a are the normals and the intercepts of the faces. The type Polygonal encapsulates the geometry. The function nextboundary returns the next boundary on the current ray [x,x+tv] with t>0 as well as the time of the hit.We then need to specify a model: we need to define a function of the form gradll(x) which can return the gradient of the log-likelihood at some point x. Here, let us consider a 2D gaussian.# build a valid precision matrix, the cholesky decomposition of\n# the covariance matrix will be useful later to build a sensible\n# starting point.\nsrand(12)\nP1  = randn(p,p)\nP1 *= P1'\nP1 += norm(P1)/100*eye(p)\nC1  = inv(P1); C1 += C1'; C1/=2;\nL1  = cholfact(C1)\nmu  = zeros(p)+1.\nmvg = MvGaussianCanon(mu, P1)Here, we have defined the gaussian through the \"Canonical\" representation (see XXXXX) i.e.: by specifying a mean and a precision matrix.The gradient of the log-likelihood is then given bygradll(x) = gradloglik(mvg, x)Remark: if you want to implement your own model, you should define your model in (XXXXXX) and make sure it implements a gradloglik function.Next, we need to define the function which can return the first arrival time of the Inhomogenous Poisson Process (cf. algorithm). Note that you could be using nextevent_zz here as well if you wanted to use the Zig-Zag sampler (and you could implement other kernels as well, see HERE XXXXX).nextev(x, v) = nextevent_bps(mvg, x, v)For a Gaussian (and some other simple distributions), this is analytical through an inversion-like method (cf. algorithm). Another approach is the thinning approach using a bounding intensity. At the moment thinning with a linear bound is implemented (cf XXXXX).Finally, you need to specify the parameters of the simulation such as the starting point and velocity, the length of the path generated, the rate of refreshment and the maximum number of gradient evaluations. (see discussion)T    = 1000.0   # length of path generated\nlref = 2.0      # rate of refreshment\nx0   = mu+L1[:L]*randn(p) # sensible starting point\nv0   = randn(p) # starting velocity\nv0  /= norm(v0) # put it on the sphere (not necessary)\n# Define a simulation\nsim = Simulation( x0, v0, T, nextev, gradll,\n            nextbd, lref ; maxgradeval = 10000)And finally, generate the path and recover some details about the simulation.(path, details) = simulate(sim)The path object belongs to the type Path and can be sampled using samplepath.A crude test is to check that the estimated mean obtained through quadrature along the path yields a similar result as a basic Monte Carlo estimator.# Building a basic MC estimator\nsN = 1000\ns  = repmat(mu,1,sN)+L1[:L]*randn(p,sN)\nmt = zeros(2)\nnp = 0\n# Sum for all samples in the positive orthan\nss = [s; ones(sN)']\nmt = sum(ss[:,i] for i in 1:sN if !any(e->e<0, ss[1:p,i]))\nmt = mt[1:p]/mt[end]You can now compare the norm of mt to pathmean(path) and you will see that the relative error is below 5%."
+    "text": "(the code for this example can be found here, note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)In this example we XXXXXXXStart by loading the library:using PDMPyou will then need to define two elements:a geometry (boundaries)\nan energy (gradient of the log-likelihood of the target)At the moment, the package can handle unconstrained geometries and polygonal domains (see XXXXX). Let's say we want to be constrained to the positive orthan in 2D:p = 2\n# normal to faces and intercepts\nns, a = eye(p), zeros(p)\ngeom  = Polygonal(ns, a)\n# for a given ray, which boundary does it hit?\nnextbd(x, v) = nextboundary(geom, x, v)Here ns and a are the normals and the intercepts of the faces. The type Polygonal encapsulates the geometry. The function nextboundary returns the next boundary on the current ray [x,x+tv] with t>0 as well as the time of the hit.We then need to specify a model: we need to define a function of the form gradll(x) which can return the gradient of the log-likelihood at some point x. Here, let us consider a 2D gaussian.# build a valid precision matrix, the cholesky decomposition of\n# the covariance matrix will be useful later to build a sensible\n# starting point.\nsrand(12)\nP1  = randn(p,p)\nP1 *= P1'\nP1 += norm(P1)/100*eye(p)\nC1  = inv(P1); C1 += C1'; C1/=2;\nL1  = cholfact(C1)\nmu  = zeros(p)+1.\nmvg = MvGaussianCanon(mu, P1)Here, we have defined the gaussian through the \"Canonical\" representation (see XXXXX) i.e.: by specifying a mean and a precision matrix.The gradient of the log-likelihood is then given bygradll(x) = gradloglik(mvg, x)Remark: if you want to implement your own model, you should define your model in (XXXXXX) and make sure it implements a gradloglik function.Next, we need to define the function which can return the first arrival time of the Inhomogenous Poisson Process (cf. algorithm). Note that you could be using nextevent_zz here as well if you wanted to use the Zig-Zag sampler (and you could implement other kernels as well, see HERE XXXXX).nextev(x, v) = nextevent_bps(mvg, x, v)For a Gaussian (and some other simple distributions), this is analytical through an inversion-like method (cf. algorithm). Another approach is the thinning approach using a bounding intensity. At the moment thinning with a linear bound is implemented (cf XXXXX).Finally, you need to specify the parameters of the simulation such as the starting point and velocity, the length of the path generated, the rate of refreshment and the maximum number of gradient evaluations. (see discussion)T    = 1000.0   # length of path generated\nlref = 2.0      # rate of refreshment\nx0   = mu+L1[:L]*randn(p) # sensible starting point\nv0   = randn(p) # starting velocity\nv0  /= norm(v0) # put it on the sphere (not necessary)\n# Define a simulation\nsim = Simulation( x0, v0, T, nextev, gradll,\n            nextbd, lref ; maxgradeval = 10000)And finally, generate the path and recover some details about the simulation.(path, details) = simulate(sim)The path object belongs to the type Path and can be sampled using samplepath.A crude test is to check that the estimated mean obtained through quadrature along the path yields a similar result as a basic Monte Carlo estimator.# Building a basic MC estimator\nsN = 1000\ns  = repmat(mu,1,sN)+L1[:L]*randn(p,sN)\nmt = zeros(2)\nnp = 0\n# Sum for all samples in the positive orthan\nss = [s; ones(sN)']\nmt = sum(ss[:,i] for i in 1:sN if !any(e->e<0, ss[1:p,i]))\nmt = mt[1:p]/mt[end]You can now compare the norm of mt to pathmean(path) and you will see that the relative error is below 5%."
 },
 
 {
     "location": "examples/ex_lbps1.html#",
-    "page": "Local BPS (Chain of Gaussians)",
-    "title": "Local BPS (Chain of Gaussians)",
+    "page": "Local BPS",
+    "title": "Local BPS",
     "category": "page",
-    "text": "(the code for this example can be found here)"
+    "text": ""
 },
 
 {
     "location": "examples/ex_lbps1.html#Local-BPS-(Chain-of-Gaussians)-1",
-    "page": "Local BPS (Chain of Gaussians)",
+    "page": "Local BPS",
     "title": "Local BPS (Chain of Gaussians)",
     "category": "section",
-    "text": "The approach to using the local BPS is much the same as for the global one except that you need to specify a FactorGraph. That object will contain the structure of the factor graph (which factor is connected to which variables) as well as the list of all factors (which have a lgradll and nextevent since each factor can be seen individually as a small BPS).Let's declare a chain of bivariate gaussians:using PDMP\nnfac = 3 # number of factors\n\nmvg = MvGaussianStandard(zeros(2),eye(2))\n\n# all factors have that same likelihood\nchainfactor(i) = Factor(\n                    (x,v)->nextevent_bps(mvg, x, v),\n                    (x)->gradloglik(mvg, x),\n                    i )\n\n# assemble into a chain graph\nchain = chaingraph([chainfactor(i) for i in 1:nfac])This is a simple graph with a known structure so that it's already defined through the chaingraph function (in src/local/factorgraph.jl). For an arbitrary graph, you would need to provide two things:the structure of the factor graph: a list of list where each elementcorresponds to a factor and the corresponding list contains the indices of the variables attached to that factorthe list of factorsThe rest is very similar to the global BPS:srand(123)\nlambdaref  = .01\nmaxnevents = 10000\nT          = Inf\nnvars      = chain.structure.nvars\nx0         = randn(nvars)\nv0         = randn(nvars)\nv0        /= norm(v0)\n\nlsim = LocalSimulation(chain, x0, v0, T, maxnevents, lambdaref)\n\n(all_evlist, details) = simulate(lsim)The all_evlist object contains a list of EventList corresponding to what happened on each of the factors. It can also be sampled using samplelocalpath (cf. src/local/event.jl)."
+    "text": "(the code for this example can be found here, note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)The approach to using the local BPS is much the same as for the global one except that you need to specify a FactorGraph. That object will contain the structure of the factor graph (which factor is connected to which variables) as well as the list of all factors (which have a lgradll and nextevent since each factor can be seen individually as a small BPS).Let's declare a chain of bivariate gaussians:using PDMP\nnfac = 3 # number of factors\n\nmvg = MvGaussianStandard(zeros(2),eye(2))\n\n# all factors have that same likelihood\nchainfactor(i) = Factor(\n                    (x,v)->nextevent_bps(mvg, x, v),\n                    (x)->gradloglik(mvg, x),\n                    i )\n\n# assemble into a chain graph\nchain = chaingraph([chainfactor(i) for i in 1:nfac])This is a simple graph with a known structure so that it's already defined through the chaingraph function (in src/local/factorgraph.jl). For an arbitrary graph, you would need to provide two things:the structure of the factor graph: a list of list where each elementcorresponds to a factor and the corresponding list contains the indices of the variables attached to that factorthe list of factorsThe rest is very similar to the global BPS:srand(123)\nlambdaref  = .01\nmaxnevents = 10000\nT          = Inf\nnvars      = chain.structure.nvars\nx0         = randn(nvars)\nv0         = randn(nvars)\nv0        /= norm(v0)\n\nlsim = LocalSimulation(chain, x0, v0, T, maxnevents, lambdaref)\n\n(all_evlist, details) = simulate(lsim)The all_evlist object contains a list of EventList corresponding to what happened on each of the factors. It can also be sampled using samplelocalpath (cf. src/local/event.jl)."
+},
+
+{
+    "location": "techdoc/structure.html#",
+    "page": "Code structure",
+    "title": "Code structure",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "techdoc/structure.html#Structure-of-the-code-1",
+    "page": "Code structure",
+    "title": "Structure of the code",
+    "category": "section",
+    "text": "blah blah"
 },
 
 {
@@ -137,7 +217,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "contributing/examples.html#",
+    "location": "contributing/addingexample.html#",
     "page": "Examples",
     "title": "Examples",
     "category": "page",
@@ -145,27 +225,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "contributing/examples.html#Adding-examples-1",
+    "location": "contributing/addingexample.html#Adding-an-example-1",
     "page": "Examples",
-    "title": "Adding examples",
+    "title": "Adding an example",
     "category": "section",
-    "text": "Examples are a great way to showcase how to make use of a specific feature. We consider two types of examples:a simple example (running in < 30 seconds)\na complex example (anything that's not in the first category)The simple examples are usually to be preferred since they can also be used as tests. For a big simulation (e.g.: use of LBPS for Probabilistic Matrix Factorisation) we recommend the use of separate Github repos including notebooks analysing the results.A simple example can often be considered as a form of test by itself except with more documentation in order to clarify what is being done. The process in this project is thereforewrite the example as a test (see this example for reference)\nrun readexamples.jl in doc/src which will generate a markdown file whichcan be served by the documentation website."
+    "text": "Examples are a great way to showcase how to make use of a specific feature. We consider two types of examples:a simple example (running in < 10 seconds)\na complex example (the complement of the first category)The first category is great as they can be used as tests and as documentation.The process is somewhat automated here and essentially all you have to do is write the example in the test directory and comment it accordingly, we show this below."
 },
 
 {
-    "location": "contributing/examples.html#Syntax-of-the-test-file-1",
+    "location": "contributing/addingexample.html#Syntax-for-the-example-1",
     "page": "Examples",
-    "title": "Syntax of the test file",
+    "title": "Syntax for the example",
     "category": "section",
-    "text": "The part of the test you want to appear in the documentation should be between two tags #@startexample and #@endexample:using Base.Test\n#@startexample\n...\n#@endexample\n@test ...Typically the part between the tags will contain no tests and will just showcase how to use a specific set of features while the part outside of the tags may ensure that the results obtained are correct.The text that will be in the documentation should be written as multiline comments i.e.:#=\nEverything here will be written as Markdown in the doc.\n=#The rest of the code and comments that are in between the tags #@startexample and #@endexample will be copied in the doc as code blocks. A very simple example would be:using Base.Test\n#@startexample\n#=\n# Name of the Test\n\nIn this example we will show how to find the maximum over a collection of random\nnumbers in Julia for all the numbers that are negative.\n=#\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n#=\nThat's it!\n=#\n#@endexample\n@test m < 0.0This will be converted to Markdown:# Name of the Test\n\nIn this example we will show how to find the maximum over a collection of random\nnumbers in Julia for all the numbers that are negative.\n ```julia\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n ```\nThat's it!Remark, the spaces in front of the triple backticks in the snippet above are not actually generated when you use readexamples.jl. The spaces are used here in order to escape these triple backticks so that the snippet does not end up being unduly fragmented in three pieces."
+    "text": "Let's say you have an example which can be run in a few seconds and uses a new feature. You can effectively use it as a unit test by itself. To respect conventions, please name your example ex_NAME.jl and put it in test/.Start your code byusing Base.TestThen a few markers should be considered:#@startexample NAME_OF_EXAMPLE indicates that you start the code of the example proper, everything between that mark and the end flag will appear in the doc.\nEncapsulates all the explanations you want to appear in markdown between #= and =#, all the other comments will be taken as part of the julia code and shown in code blocks.\n#@endexample to indicate that the example is finished\nwrite a few tests that check that the example produces the right answer (unit test)So it should look like (a full example can be seen here)using Base.Test\n#@startexample A simple example\n#=\nIn this example we will show how to find the maximum over a collection of\nrandom numbers in Julia for all the numbers that are *negative*.\n=#\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n#=\nThat's it!\n=#\n#@endexample\n@test m < 0.0Make sure the tests pass! This will generate the following markdown (see next point for the command that generates it):# Name of the Test\n\nIn this example we will show how to find the maximum over a collection of\nrandom numbers in Julia for all the numbers that are negative.\n ```julia\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n ```\nThat's it!Remark, the spaces in front of the triple backticks in the markdown snippet above are not actually generated when you use readexamples.jl. The spaces are used here in order to escape these triple backticks so that the snippet does not end up being unduly fragmented in three pieces."
 },
 
 {
-    "location": "contributing/examples.html#Full-workflow-1",
+    "location": "contributing/addingexample.html#Declaring-your-example-1",
     "page": "Examples",
-    "title": "Full workflow",
+    "title": "Declaring your example",
     "category": "section",
-    "text": "Write the example in the PDMP/test/ directory following the examplespresent there and using the syntax mentioned above. Use the name convention ex_NAME.jl.Make sure this runs and tests pass.\nAdd the test at the bottom of PDMP/test/runtests.jl following code alreadypresent there.Navigate to PDMP/docs in your terminal and julia readexamples. This willgenerate the .md file corresponding to your example and place it in PDMP/docs/src/examples/. It will also do the same with all other examples (effectively refreshing those).In PDMP/docs/make.jl add the page name ex_NAME.md in the list underExamples following code already present there.Git add, commit and push."
+    "text": "You have to mention your example in a few spots:in test/runtests.jl, add a line at the bottom following the examples already present i.e. something like @testset \"ex_NAME\"    begin include(\"ex_NAME.jl\") end (make sure this passes!)\nin docs/src/make.jl, add a line under \"Examples\" following the syntax of examples already present so something like: \"Name of your expl\" => \"examples/ex_name_of_example.jl\"Finally, to generate the markdown run the following command (this will act for all the examples at once so it will also refresh any other modification you may have added to other examples):julia docs/readexamples.jl"
 },
 
 ]}
