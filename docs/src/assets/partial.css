@@ -1,0 +1,17 @@
+html, body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 17px;
+}
+
+h1,h2,h3,h4,h5 {
+    font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+}
+
+h4 {
+    font-style: italic;
+    font-size: 14pt;
+}
+
+nav.toc {
+    background-color: #F1F0F0;
+}

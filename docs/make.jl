@@ -19,7 +19,8 @@ makedocs(
         "Contributing" => Any[
             "Examples" => "contributing/addingexample.md"
         ]
-    ]
+    ],
+    assets = String["assets/partial.css", "assets/BPS.svg"],
 )
 
 deploydocs(
