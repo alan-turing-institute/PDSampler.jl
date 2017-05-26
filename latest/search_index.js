@@ -121,6 +121,22 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "aboutpdmp.html#Basics-of-factor-graphs-1",
+    "page": "About PDMP",
+    "title": "Basics of factor graphs",
+    "category": "section",
+    "text": "PDMP samplers can be adapted to explore the structure of the target distribution if it factorizes according to a factor graph i.e.:\\begin{equation}     \\pi(x) \\propto \\prod_{f\\in F} \\gamma_f (x_f), \\end{equation}where gamma_f are non-negative functions of the variables x_f=(x_f_1dotsx_f_2dots), a subset of all the variables. A very simple example is a Hidden Markov Model corresponding to a factor graph in the form of a chain as illustrated below:(Image: )Distributions that factorize according to that factor graph have the form:\\begin{equation}     \\pi(x) \\propto \\gamma_1(x_1,x_2)\\gamma_2(x_2,x_3)\\gamma_3(x_3,x_4). \\end{equation}The idea behind the local samplers is to try to exploit the conditional dependence structure represented by the factor graph."
+},
+
+{
+    "location": "aboutpdmp.html#Local-BPS-1",
+    "page": "About PDMP",
+    "title": "Local BPS",
+    "category": "section",
+    "text": "A rough idea of how the local BPS works is that it corresponds to an interacting collection of global BPS samplers, one for each of the factors. Each iteration of the algorithm fundamentally works as follows:it picks a factor fin F following a priority queue,\na new event is computed for x_f following a global BPS-type procedure,\nthe priority queue is updated for the entries corresponding to f, and all fin F that share a variable with f. "
+},
+
+{
     "location": "aboutpdmp.html#References-1",
     "page": "About PDMP",
     "title": "References",
