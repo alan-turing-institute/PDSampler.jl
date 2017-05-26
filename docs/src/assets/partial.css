@@ -8,7 +8,7 @@ body {
 
 article#docs h1 {
     counter-reset: h2;
-    border-bottom: 3px double gray;
+    border-bottom: 3px double #e5e5e5;
 }
 h2 {
     counter-reset: h3;
@@ -29,10 +29,12 @@ h3:before {
 h1,h2,h3,h4 {
     font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
-
 h4 {
     font-style: italic;
     font-size: 14pt;
+}
+h2,h3,h4 {
+    border-bottom: 1px solid #e5e5e5;
 }
 
 nav.toc {

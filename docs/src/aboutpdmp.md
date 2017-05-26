@@ -47,40 +47,32 @@ The first (and most important) one, $\tau_b$, is the first arrival time of an *I
 
 where $x$ and $v$ are the current points and $f^+=\max(f,0)$. Sampling from an IPP is not trivial in general but there are a few well known techniques that can be applied depending on the target.
 
-#### Computing a new velocity
+The other two times are easy to compute:
 
-As mentioned above, we take $\tau = \min(\tau_b, \tau_h, \tau_r)$
+* the first, $\tau_h$, is the time of first hit with the boundary of the domain $C$ along the current ray $x(t)=x^{(i)}+(t-t_i)v^{(i)}$ for $t>t_i$. This guarantees that the trajectory stays in $C$.
+* the second, $\tau_r$, is a *refreshment time* sampled from an exponential distribution with a fixed rate. This guarantees full exploration of $C$ (see BPS paper for details).
 
-1. a **bounce** with $\tau = \tau_b$ where a velocity is recomputed following the value of the gradient of the log-likelihood of the target (see below),
-2. a **boundary bounce** with $\tau=\tau_{h}$ where the velocity is reflected against a boundary of the domain $C$,
-3. a **refreshment** with $\tau=\tau_r$ where the velocity is "refreshed".
+#### Computing a new velocity (BPS)
 
-A time $\tau$ is drawn, if  $\tau\le \min(\tau_h,\tau_r)$, step (1) is applied. If $\tau \ge \tau_r$ step (3) is applied. Otherwise step (2).
-Both $\tau_h$ and $\tau_r$ should be considered given. The first one, $\tau_h$ is the hitting time between the ray and the closest boundary of $C$ (for simple domains like a polygonal domain it can be computed analytically). The second one, $\tau_r$ is drawn from an exponential distribution (this allows to guarantee that the algorithm explores the whole space).
+*Below we discuss the case of the BPS, the computations can be different for different samplers (such as the ZZ) but the essence of the method is the same.*
 
-It remains to explain how to generate $\tau$ and how the velocity is updated.
+As mentioned above, we take $\tau = \min(\tau_b, \tau_h, \tau_r)$. Depending on the case, three actions can be taken
 
+1. a **bounce** with $\tau = \tau_b$ where the new velocity is obtained by specular reflection against the tangent to the gradient of the log-likelihood at the point $x(\tau_b)$,
+2. a **boundary bounce** with $\tau=\tau_{h}$ where the new velocity is obtained by specular reflection against the tangent to the boundary at the point of hit $x(\tau_h)$,
+3. a **refreshment** with $\tau=\tau_r$ where the new velocity is drawn from a reference process such as a spherical Gaussian.
 
-
-The update of the velocity goes as follows for the BPS:
-
-* (**bounce**) the new velocity is obtained by computing a specular reflection of the velocity against the tangent to the gradient of the log-likelihood at $x(t+\tau_b)$ is computed
+The update of the velocity goes as follows for the BPS (specular reflection):
 
 \begin{equation}
-    v \leftarrow v - 2\langle \nabla U(x), v\rangle{\nabla U(x)\over \|\nabla U(x)\|^2}
+    v \leftarrow v - 2\langle \nabla U(x), v\rangle{\nabla U(x)\over \|\nabla U(x)\|^2}.
 \end{equation}
 
-* (**boundary hit**) the new velocity is obtained by computing a specular reflection against the tangent to the boundary at the hitting point.
-* (**refresh**) the new velocity is obtained by sampling from a "refreshment distribution" for example a $\mathcal N(0, I)$.
-
-The illustration below illustrates the specular reflexion, starting at the red point and going along the ray (red, dashed line), we could have a new event corresponding to bounce or a hit (blue dot). In both case a specular reflection is executed (blue dashed line).
+The figure below illustrates the specular reflexion, starting at the red point and going along the current ray (red, dashed line), we have a new event corresponding to a bounce or a hit (blue dot). In both case a specular reflection is executed (blue dashed line). The black line represents the tangent to either the boundary at that point or to the log-likelihood depending on the case.
 
 ![](assets/BPS.svg)
 
-
-### Sampling from an IPP
-
-
+### Putting the pieces together
 
 ## Local Samplers
 
