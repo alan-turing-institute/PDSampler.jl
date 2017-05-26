@@ -1,9 +1,32 @@
 html, body {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 17px;
+    font-size: 18px;
+}
+body {
+    counter-reset: h1;
 }
 
-h1,h2,h3,h4,h5 {
+article#docs h1 {
+    counter-reset: h2;
+    border-bottom: 3px double gray;
+}
+h2 {
+    counter-reset: h3;
+}
+h3 {
+    counter-reset: h4;
+}
+
+h2:before {
+    counter-increment: h2;
+    content: counter(h2) ". "
+}
+h3:before {
+    counter-increment: h3;
+    content: counter(h2) "." counter(h3) ". "
+}
+
+h1,h2,h3,h4 {
     font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 
@@ -14,4 +37,22 @@ h4 {
 
 nav.toc {
     background-color: #F1F0F0;
+}
+
+article#docs ol li p {
+    -webkit-margin-before: 4px;
+    -webkit-margin-after:  0px;
+}
+article#docs ul li p {
+    -webkit-margin-before: 4px;
+    -webkit-margin-after:  0px;
+}
+
+ul {
+    list-style-type: square;
+}
+
+img {
+    display: block;
+    margin: auto;
 }

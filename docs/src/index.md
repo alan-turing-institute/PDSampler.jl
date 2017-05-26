@@ -8,14 +8,14 @@ See the references at the bottom of this page.
 Pages = [
     "aboutpdmp.md",
     ]
-Depth = 2
+Depth = 1
 ```
 
 The package is currently under construction (Spring 2017).
 The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
 If you have comments or wish to collaborate, please send an email to `tlienart σ turing > ac > uk`.
 
-### Using the Package
+## Using the Package
 
 To install the (currently unregistered) package, use the following command inside the Julia REPL:
 
@@ -31,7 +31,7 @@ using PDMP
 
 You can also run the tests with ```Pkg.test("PDMP")``` and update to the latest Github version with ```Pkg.update("PDMP")```.
 
-### Examples
+## Examples
 
 The following examples will introduce you to the functionalities of the package.
 
@@ -40,7 +40,7 @@ Pages = [
     "examples/ex_gbps1.md",
     "examples/ex_lbps1.md"
     ]
-Depth = 2
+Depth = 1
 ```
 
 ### Code documentation
@@ -53,19 +53,19 @@ Pages = [
     "techdoc/structure.md",
     "techdoc/types.md"
     ]
-Depth = 2
+Depth = 1
 ```
 
-### Contributing
+## Contributing
 
 ```@contents
 Pages = [
     "contributing/addingexample.md",
 ]
-Depth = 2
+Depth = 1
 ```
 
-### References
+## References
 
 * Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, [*The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method*](https://arxiv.org/abs/1510.02451), arXiv preprint, 2015.
 * Joris Bierkens, Alexandre Bouchard-Côté, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer, [*Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains*](https://arxiv.org/pdf/1701.04244.pdf), arXiv preprint, 2017.
