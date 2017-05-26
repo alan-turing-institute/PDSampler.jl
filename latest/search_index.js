@@ -109,7 +109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "About PDMP",
     "title": "Putting the pieces together",
     "category": "section",
-    "text": ""
+    "text": "The simple global sampler can be expressed as follows:Initialize (x^(0) v^(0)) and T the trajectory length\nFor i=12dots, consider the ray x^(i-1)+tau v^(i-1)\nSimulate tau_b from an IPP along the ray\nCompute tau_h, simulate tau_r and let tau=min(tau_htau_rtau_b)\nFollowing the case in (2.) compute the new velocity v^(i)\nStore the new triple (t_i-1+tau x^(i-1)+tau v^(i-1) v^(i))\nif t_i ge T stop.\nReturn the path: (t_i x^(i) v^(i))_i=01dotsHere are a few key building blocks that can be found in the codeA way to sample from an IPP (see ippsampler.jl)\nA way to define the geometry and in particular to compute the next boundary hit when traveling along a given ray"
 },
 
 {

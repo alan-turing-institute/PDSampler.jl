@@ -54,7 +54,19 @@ ul {
     list-style-type: square;
 }
 
+article#docs ol ol {
+    list-style-type: lower-latin;
+}
+
 img {
     display: block;
     margin: auto;
+}
+
+blockquote {
+    font-style: italic;
+    border-left: 3px solid gray;
+    background-color: rgba(229,229,229,0.48);
+    padding-top: 1pt;
+    padding-bottom: 1pt;
 }
