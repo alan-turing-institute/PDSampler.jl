@@ -85,10 +85,15 @@ The simple global sampler can be expressed as follows:
 >     1. if $t_i \ge T$ stop.
 > 3. Return the path: $\{(t_i, x^{(i)}, v^{(i)})\}_{i=0,1,\dots}$
 
-Here are a few key building blocks that can be found in the code
+Following this representation, here are the key files of the code:
 
-* A way to sample from an IPP (see `ippsampler.jl`)
-* A way to define the geometry and in particular to compute the next boundary hit when traveling along a given ray
+* A way to sample from an IPP:  [**ippsampler.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/ippsampler.jl).
+* A way to define the geometry and in particular to compute the next boundary hit when traveling along a given ray: [**geometry.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/geometry.jl).
+* A way to define how the velocity needs to be updated (reflection, refreshments): [**kernels.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/kernels.jl).
+* A way to store a path formed of triples and compute integrals along it: [**path.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/path.jl).
+* A core loop: [**simulate.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/simulate.jl).
+
+We describe those in details and give explanations as to how to expand the toolbox in the technical documentation part.
 
 ## Local Samplers
 
