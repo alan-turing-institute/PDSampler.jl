@@ -74,7 +74,25 @@ The figure below illustrates the specular reflexion, starting at the red point a
 
 ### Putting the pieces together
 
+The simple global sampler can be expressed as follows:
+
+> 1. Initialize $(x^{(0)}, v^{(0)})$ and $T$ the trajectory length
+> 2. For $i=1,2,\dots$, consider the ray $x^{(i-1)}+\tau v^{(i-1)}$
+>     1. Simulate $\tau_b$ from an IPP along the ray
+>     1. Compute $\tau_h$, simulate $\tau_r$ and let $\tau=\min(\tau_h,\tau_r,\tau_b)$
+>     1. Following the case in (2.) compute the new velocity $v^{(i)}$
+>     1. Store the new triple $(t_{i-1}+\tau, x^{(i-1)}+\tau v^{(i-1)}, v^{(i)})$
+>     1. if $t_i \ge T$ stop.
+> 3. Return the path: $\{(t_i, x^{(i)}, v^{(i)})\}_{i=0,1,\dots}$
+
+Here are a few key building blocks that can be found in the code
+
+* A way to sample from an IPP (see `ippsampler.jl`)
+* A way to define the geometry and in particular to compute the next boundary hit when traveling along a given ray
+
 ## Local Samplers
+
+
 
 ## References
 
