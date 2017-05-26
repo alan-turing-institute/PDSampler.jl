@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "PDMP.jl Documentation",
     "category": "section",
-    "text": "PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on Piecewise Deterministic Markov Processes and their applications. This includes the Bouncy Particle Sampler and the Zig-Zag Sampler. See the references at the bottom of this page.Pages = [\n    \"aboutpdmp.md\",\n    ]\nDepth = 2The package is currently under construction (Spring 2017). The project is hosted and maintained by the Alan Turing Institute (ATI) and currently developed by Thibaut Lienart. If you encounter problems, please open an issue on Github. If you have comments or wish to collaborate, please send an email to tlienart σ turing > ac > uk."
+    "text": "PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on Piecewise Deterministic Markov Processes and their applications. This includes the Bouncy Particle Sampler and the Zig-Zag Sampler. See the references at the bottom of this page.Pages = [\n    \"aboutpdmp.md\",\n    ]\nDepth = 1The package is currently under construction (Spring 2017). The project is hosted and maintained by the Alan Turing Institute (ATI) and currently developed by Thibaut Lienart. If you encounter problems, please open an issue on Github. If you have comments or wish to collaborate, please send an email to tlienart σ turing > ac > uk."
 },
 
 {
@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Examples",
     "category": "section",
-    "text": "The following examples will introduce you to the functionalities of the package.Pages = [\n    \"examples/ex_gbps1.md\",\n    \"examples/ex_lbps1.md\"\n    ]\nDepth = 2"
+    "text": "The following examples will introduce you to the functionalities of the package.Pages = [\n    \"examples/ex_gbps1.md\",\n    \"examples/ex_lbps1.md\"\n    ]\nDepth = 1"
 },
 
 {
@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Code documentation",
     "category": "section",
-    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/types.md\"\n    ]\nDepth = 2"
+    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/types.md\"\n    ]\nDepth = 1"
 },
 
 {
@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Contributing",
     "category": "section",
-    "text": "Pages = [\n    \"contributing/addingexample.md\",\n]\nDepth = 2"
+    "text": "Pages = [\n    \"contributing/addingexample.md\",\n]\nDepth = 1"
 },
 
 {
@@ -77,7 +77,7 @@ var documenterSearchIndex = {"docs": [
     "page": "About PDMP",
     "title": "Basic idea (global samplers)",
     "category": "section",
-    "text": "The purpose of the algorithm is to be able to evaluate expected values with respect to an arbitrary target distribution which we assume admits a probability density function  pi. For simplicity, we assume that piCto mathbb R^+ with Csubseteq mathbb R^p, convex. The objective is therefore to compute a weighted integral of the form:\\begin{equation}     \\mathbb E_{\\pi}[\\varphi(X)] = \\int_{C} \\varphi(x)\\pi(x)\\,\\mathrm{d}x \\end{equation}The samples considered generate a piecewise-linear path\\begin{equation}     x(t) = x^{(i)} + v^{(i)}(t-t_i) \\quad \\text{for}\\quad t\\in[t_i, t_{i+1}] \\end{equation}determined by an initial position x^(0) and velocity v^(0) and a set of positive event times t_1t_2dots. Under some conditions for the generation of the times and the velocities, the expected value can be approximated with\\begin{eqnarray}     \\mathbb E_{\\pi}[\\varphi(X)] &\\approx& {1\\over T} \\int_0^T\\varphi(x(t))\\mathrm{d}t \\end{eqnarray}and the integral in the right hand side can be expressed as a sum of integrals along each linear segment."
+    "text": "The purpose of the algorithm is to be able to evaluate expected values with respect to an arbitrary target distribution which we assume admits a probability density function  pi. For simplicity, we assume that piCto mathbb R^+ with Csubseteq mathbb R^p, convex. The objective is therefore to compute a weighted integral of the form:\\begin{equation}     \\mathbb E_{\\pi}[\\varphi(X)] = \\int_{C} \\varphi(x)\\pi(x)\\,\\mathrm{d}x \\end{equation}The samples considered generate a piecewise-linear path\\begin{equation}     x(t) = x^{(i)} + v^{(i)}(t-t_i) \\quad \\text{for}\\quad t\\in[t_i, t_{i+1}] \\end{equation}determined by an initial position x^(0) and velocity v^(0) at time t_0=0 and a set of positive event times t_1t_2dots. Under some conditions for the generation of the times and the velocities, the expected value can be approximated with\\begin{eqnarray}     \\mathbb E_{\\pi}[\\varphi(X)] &\\approx& {1\\over T} \\int_0^T\\varphi(x(t))\\mathrm{d}t \\end{eqnarray}and the integral in the right hand side can be expressed as a sum of one-dimensional integrals along each linear segment."
 },
 
 {
@@ -85,13 +85,29 @@ var documenterSearchIndex = {"docs": [
     "page": "About PDMP",
     "title": "Generating times and velocities",
     "category": "section",
-    "text": "As we have seen, this class of samplers generate triples of the form (t^(i) x^(i) v^(i)). Let us assume that the algorithm is currently at one of those event points. Then, the algorithm considers the ray\\begin{equation}     x(t) = x^{(i)} + (t-t^{(i)})v^{(i)} \\end{equation}for tt_i. The next event will happen on this ray at a time t_i+tau and be located at x^(i+1) = (x^(i)+tau v^(i)). We will see in a moment how tau should be generated. At that new point, the velocity will be recomputed following one of three possible action:a bounce with tau = tau_b where a velocity is recomputed following the value of the gradient of the log-likelihood of the target (see below),\na boundary bounce with tau=tau_h where the velocity is reflected against a boundary of the domain C,\na refreshment with tau=tau_r where the velocity is \"refreshed\".A time tau is drawn, if  taule min(tau_htau_r), step (1) is applied. If tau ge tau_r step (3) is applied. Otherwise step (2). Both tau_h and tau_r should be considered given. The first one, tau_h is the hitting time between the ray and the closest boundary of C (for simple domains like a polygonal domain it can be computed analytically). The second one, tau_r is drawn from an exponential distribution (this allows to guarantee that the algorithm explores the whole space).It remains to explain how to generate tau and how the velocity is updated.The time tau is the first arrival time of an Inhomogenous Poisson Process (IPP) with an intensity that should verify some properties. The Bouncy Particle Sampler (BPS) in particular considers the following intensity with U the log-likelihood of the (unnormalised) target pi:\\begin{eqnarray}     \\lambda(t; x, v) = \\langle \\nabla U(x + tv ), v \\rangle^+ \\end{eqnarray}where x^+=max(x0). Sampling from an IPP is not trivial in general, a few methods can be applied as discussed in the next point.The update of the velocity goes as follows for the BPS:(bounce) the new velocity is obtained by computing a specular reflection of the velocity against the tangent to the gradient of the log-likelihood at x(t+tau_b) is computed\\begin{equation}     v \\leftarrow v - 2\\langle \\nabla U(x), v\\rangle{\\nabla U(x)\\over \\|\\nabla U(x)\\|^2} \\end{equation}(boundary hit) the new velocity is obtained by computing a specular reflection against the tangent to the boundary at the hitting point.\n(refresh) the new velocity is obtained by sampling from a \"refreshment distribution\" for example a mathcal N(0 I).The illustration below illustrates the specular reflexion, starting at the red point and going along the ray (red, dashed line), we could have a new event corresponding to bounce or a hit (blue dot). In both case a specular reflection is executed (blue dashed line).(Image: )"
+    "text": "The algorithm generates a sequence of triples of the form (t^(i) x^(i) v^(i)). Let us assume that the algorithm is currently at one of those event points and show how to compute the next triple. To do so, the algorithm executes the following steps:it generates a travel time tau drawing from a specific process,\nthe next position is obtained by traveling along the current ray for the travel time tau i.e.: x^(i+1) = x^(i) + tau v^(i),\na new velocity v^(i+1) is generated.First we will explore how the travel time is generated and then how the new velocity is computed."
 },
 
 {
-    "location": "aboutpdmp.html#Sampling-from-an-IPP-1",
+    "location": "aboutpdmp.html#Sampling-a-travel-time-1",
     "page": "About PDMP",
-    "title": "Sampling from an IPP",
+    "title": "Sampling a travel time",
+    "category": "section",
+    "text": "The travel time tau is obtained as the minimum of three times which we will denote by tau_b tau_h tau_r. Following the case, the computation of the new velocity will be different.The first (and most important) one, tau_b, is the first arrival time of an Inhomogenous Poisson Process (IPP) with an intensity that should verify some properties with respect to the target distribution. The Bouncy Particle Sampler (BPS) in particular considers the following intensity with U the log-likelihood of the (unnormalised) target pi:\\begin{eqnarray}     \\lambda(\\tau; x, v) = \\langle \\nabla U(x + \\tau v ), v \\rangle^+ \\end{eqnarray}where x and v are the current points and f^+=max(f0). Sampling from an IPP is not trivial in general but there are a few well known techniques that can be applied depending on the target.The other two times are easy to compute:the first, tau_h, is the time of first hit with the boundary of the domain C along the current ray x(t)=x^(i)+(t-t_i)v^(i) for tt_i. This guarantees that the trajectory stays in C.\nthe second, tau_r, is a refreshment time sampled from an exponential distribution with a fixed rate. This guarantees full exploration of C (see BPS paper for details)."
+},
+
+{
+    "location": "aboutpdmp.html#Computing-a-new-velocity-(BPS)-1",
+    "page": "About PDMP",
+    "title": "Computing a new velocity (BPS)",
+    "category": "section",
+    "text": "Below we discuss the case of the BPS, the computations can be different for different samplers (such as the ZZ) but the essence of the method is the same.As mentioned above, we take tau = min(tau_b tau_h tau_r). Depending on the case, three actions can be takena bounce with tau = tau_b where the new velocity is obtained by specular reflection against the tangent to the gradient of the log-likelihood at the point x(tau_b),\na boundary bounce with tau=tau_h where the new velocity is obtained by specular reflection against the tangent to the boundary at the point of hit x(tau_h),\na refreshment with tau=tau_r where the new velocity is drawn from a reference process such as a spherical Gaussian.The update of the velocity goes as follows for the BPS (specular reflection):\\begin{equation}     v \\leftarrow v - 2\\langle \\nabla U(x), v\\rangle{\\nabla U(x)\\over \\|\\nabla U(x)\\|^2}. \\end{equation}The figure below illustrates the specular reflexion, starting at the red point and going along the current ray (red, dashed line), we have a new event corresponding to a bounce or a hit (blue dot). In both case a specular reflection is executed (blue dashed line). The black line represents the tangent to either the boundary at that point or to the log-likelihood depending on the case.(Image: )"
+},
+
+{
+    "location": "aboutpdmp.html#Putting-the-pieces-together-1",
+    "page": "About PDMP",
+    "title": "Putting the pieces together",
     "category": "section",
     "text": ""
 },
