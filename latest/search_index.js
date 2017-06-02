@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Code documentation",
     "category": "section",
-    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/types.md\"\n    ]\nDepth = 1"
+    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/coretools.md\",\n    \"techdoc/models.md\",\n    \"techdoc/global.md\",\n    \"techdoc/local.md\",\n    \"techdoc/types.md\"\n    ]\nDepth = 1"
 },
 
 {
@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Contributing",
     "category": "section",
-    "text": "Pages = [\n    \"contributing/addingexample.md\",\n]\nDepth = 1"
+    "text": "Pages = [\n    \"contributing/addingexample.md\",\n    \"contributing/addingfeature.md\"\n]\nDepth = 1"
 },
 
 {
@@ -133,7 +133,31 @@ var documenterSearchIndex = {"docs": [
     "page": "About PDMP",
     "title": "Local BPS",
     "category": "section",
-    "text": "A rough idea of how the local BPS works is that it corresponds to an interacting collection of global BPS samplers, one for each of the factors. In essence, each iteration of the algorithm works as follows:it picks a factor fin F following a priority queue,\na new event is computed for x_f following a global BPS-type procedure,\nthe priority queue is updated for the entries corresponding to f, and all fin F that share a variable with f.The priority queue therefore has one entry for each factor. These entries correspond to first arrival times of IPPs corresponding to the factor. "
+    "text": "A rough idea of how the local BPS works is that it corresponds to an interacting collection of global BPS samplers, one for each of the factors. In essence, each iteration of the algorithm works as follows:it picks a factor fin F following a priority queue,\na new event is computed for x_f following a global BPS-type procedure,\nthe priority queue is updated for the entries corresponding to f, and all fin F that share a variable with f.The priority queue therefore has one entry for each factor. These entries correspond to first arrival times of IPPs corresponding to the factor."
+},
+
+{
+    "location": "aboutpdmp.html#Sampling-from-an-IPP-1",
+    "page": "About PDMP",
+    "title": "Sampling from an IPP",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "aboutpdmp.html#Inversion-1",
+    "page": "About PDMP",
+    "title": "Inversion",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "aboutpdmp.html#Thinning-1",
+    "page": "About PDMP",
+    "title": "Thinning",
+    "category": "section",
+    "text": ""
 },
 
 {
@@ -185,11 +209,203 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "techdoc/structure.html#Structure-of-the-code-1",
+    "location": "techdoc/structure.html#Code-structure-1",
     "page": "Code structure",
-    "title": "Structure of the code",
+    "title": "Code structure",
     "category": "section",
-    "text": "blah blah"
+    "text": "In this part, we discuss briefly how the code is organised and the role of the key files as well as the workflow for extending the code."
+},
+
+{
+    "location": "techdoc/structure.html#General-notes-1",
+    "page": "Code structure",
+    "title": "General notes",
+    "category": "section",
+    "text": "A few design choices have been made and should be respected (or modified with a good reason and this section scrapped):Float stands for Float64 assuming that everything is done on 64-bit architecture.\nWhen possible, abstract types are created to suggest a hierarchy of type. This also helps generalisation (see for example in geometry.jl, abstract type: Domain and Unconstrained <: Domain)"
+},
+
+{
+    "location": "techdoc/structure.html#Source-files-1",
+    "page": "Code structure",
+    "title": "Source files",
+    "category": "section",
+    "text": "The structure of the src/ folder is as follows:├── PDMP.jl\n├── geometry.jl\n├── ippsampler.jl\n├── kernels.jl\n├── local\n│   ├── event.jl\n│   ├── factorgraph.jl\n│   └── simulate.jl\n├── models\n│   ├── logreg.jl\n│   ├── mvgaussian.jl\n│   └── pmf.jl\n├── path.jl\n└── simulate.jlThe central file is PDMP.jl which serves one key purpose: declaring what the package needs (Compat, Polynomials, ...) and including the files that contain the effective pieces of code. It also exports some generic functions that are used throughout.Note: in Julia everything should be wrapped around by a module. The using PkgName indicates that we want to have access to the functions exported by the package PkgName in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The export functionName indicates that if another user wants to use our module (by entering using PDMP) s/he will have access to all of those functions directly.Here is a high-level overview of the rest of the folder structure:geometry, ippsampler, kernels (specific documentation): generic tools used throughout the package\npath, simulate (specific documentation): tools to describe the path and how the simulation is run in the global case.\nmodels/* (specific documentation): to define specific models, their likelihood, gradient of log-likelihood etc.\nlocal/* (specific documentation): to define events, factor graphs and how to run the algorithm in the local case."
+},
+
+{
+    "location": "techdoc/structure.html#Test-files-1",
+    "page": "Code structure",
+    "title": "Test files",
+    "category": "section",
+    "text": "The test/ folder contains a number of test files:├── ex_gbps1.jl\n├── ex_lbps1.jl\n├── gaussian_test.jl\n├── geometry_test.jl\n├── ippsampler_test.jl\n├── kernels_test.jl\n├── local_event_test.jl\n├── local_factorgraph_test.jl\n├── local_simulate_test.jl\n├── logreg_test.jl\n├── path_test.jl\n├── pmf_test.jl\n├── runtests.jl\n└── simulate_test.jlNote that a few start with ex_ these are executable examples which also serve as partial tests and as documentation. The philosophy here is to have as many tests as possible that would break if anything is introduced in the code that could break other parts. These tests are not perfect and some may indeed need to be reinforced/fixed but at least provide some safeguards against harmful code modifications."
+},
+
+{
+    "location": "techdoc/structure.html#Doc-files-1",
+    "page": "Code structure",
+    "title": "Doc files",
+    "category": "section",
+    "text": "The docs/ folder contains a large number of files. The part that is of interest is represented below:├── build\n│   ├── ...\n├── make.jl\n├── readexamples.jl\n├── site\n│   ├── ...\n└── src\n    ├── aboutpdmp.md\n    ├── assets\n    │   ├── ...\n    ├── contributing\n    │   ├── addingexample.md\n    │   └── addingfeature.md\n    ├── examples\n    │   ├── ex_gbps1.md\n    │   └── ex_lbps1.md\n    ├── index.md\n    └── techdoc\n        ├── coretools.md\n        ├── global.md\n        ├── local.md\n        ├── models.md\n        ├── structure.md\n        └── types.mdThe make.jl file is the central file which dictates how the documentation is to be built. It can be executed in a Julia repl (provided you have added the Documenter package) and you can then locally see the updated version of the documentation by opening build/index.html. The readexamples.jl file transforms the example files test/ex_* into publishable examples.Note: if you are compiling the Documentation, the recommendation is to keep your REPL open. The first compiling will be a bit slow (Documenter warming up) the next ones will be instantaneous with possibly a lot of warning messages about docstrings not having been found for every function, you can safely ignore all of that and just refresh the page build/index.html."
+},
+
+{
+    "location": "techdoc/coretools.html#",
+    "page": "Core tools",
+    "title": "Core tools",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "techdoc/coretools.html#td-coretools-1",
+    "page": "Core tools",
+    "title": "Core tools",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/coretools.html#Geometry-1",
+    "page": "Core tools",
+    "title": "Geometry",
+    "category": "section",
+    "text": "The geometry.jl code exports the following immutable types:Unconstrained <: Domain,\nPolygonal <: Domain.and a functionnextboundaryAny geometry type needs to have a nextboundary function associated with it of the form nextboundary(g, x, v) where g refers to the geometry, x to the position and v to the velocity. The aim of that function is to:return a time of first hit tau_h (following the ray x+vt, for t0),\nreturn the normal to the boundary at that hitting point.So for example, the Unconstrained is an empty type and the associated nextboundary function just returns (NaN, NaN) indeed a boundary will never be crossed and there is no normal. These NaN are processed by calling functions.The Polygonal domain requires the definition of the normals and the intercepts. The nextboundary function is pretty simple (intersection of lines). Note a few tricks for numerical stability:near parallel case can be ignored (the crossing time will be huge compared to bouncing time or refreshment time and therefore we can just ignore it)\nnegative times can be ignored (we're only going forward)\ntimes that are very close to zero are ignored (means that we are currently already very close to the boundary meaning that we will bounce away)"
+},
+
+{
+    "location": "techdoc/coretools.html#Sampling-from-an-IPP-1",
+    "page": "Core tools",
+    "title": "Sampling from an IPP",
+    "category": "section",
+    "text": "The ippsampler.jl exports the following immutable types:NextEvent\nLinearBound <: Thinning <: IPPSamplingMethod "
+},
+
+{
+    "location": "techdoc/coretools.html#Kernels-1",
+    "page": "Core tools",
+    "title": "Kernels",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#",
+    "page": "Models",
+    "title": "Models",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#td-models-1",
+    "page": "Models",
+    "title": "Local sampler",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#Generic-model-1",
+    "page": "Models",
+    "title": "Generic model",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#Logistic-Regression-1",
+    "page": "Models",
+    "title": "Logistic Regression",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#Multivariate-Gaussian-1",
+    "page": "Models",
+    "title": "Multivariate Gaussian",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#Probabilistic-Matrix-Factorisation-1",
+    "page": "Models",
+    "title": "Probabilistic Matrix Factorisation",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/global.html#",
+    "page": "Global sampler",
+    "title": "Global sampler",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "techdoc/global.html#td-globalsampler-1",
+    "page": "Global sampler",
+    "title": "Global sampler",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/global.html#Path-1",
+    "page": "Global sampler",
+    "title": "Path",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/global.html#Simulate-1",
+    "page": "Global sampler",
+    "title": "Simulate",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/local.html#",
+    "page": "Local sampler",
+    "title": "Local sampler",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "techdoc/local.html#td-localsampler-1",
+    "page": "Local sampler",
+    "title": "Local sampler",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/local.html#Event-1",
+    "page": "Local sampler",
+    "title": "Event",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/local.html#Factor-Graph-1",
+    "page": "Local sampler",
+    "title": "Factor Graph",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/local.html#Simulate-1",
+    "page": "Local sampler",
+    "title": "Simulate",
+    "category": "section",
+    "text": ""
 },
 
 {
@@ -250,15 +466,15 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "contributing/addingexample.html#",
-    "page": "Examples",
-    "title": "Examples",
+    "page": "New example",
+    "title": "New example",
     "category": "page",
     "text": ""
 },
 
 {
     "location": "contributing/addingexample.html#Adding-an-example-1",
-    "page": "Examples",
+    "page": "New example",
     "title": "Adding an example",
     "category": "section",
     "text": "Examples are a great way to showcase how to make use of a specific feature. We consider two types of examples:a simple example (running in < 10 seconds)\na complex example (the complement of the first category)The first category is great as they can be used as tests and as documentation.The process is somewhat automated here and essentially all you have to do is write the example in the test directory and comment it accordingly, we show this below."
@@ -266,7 +482,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "contributing/addingexample.html#Syntax-for-the-example-1",
-    "page": "Examples",
+    "page": "New example",
     "title": "Syntax for the example",
     "category": "section",
     "text": "Let's say you have an example which can be run in a few seconds and uses a new feature. You can effectively use it as a unit test by itself. To respect conventions, please name your example ex_NAME.jl and put it in test/.Start your code byusing Base.TestThen a few markers should be considered:#@startexample NAME_OF_EXAMPLE indicates that you start the code of the example proper, everything between that mark and the end flag will appear in the doc.\nEncapsulates all the explanations you want to appear in markdown between #= and =#, all the other comments will be taken as part of the julia code and shown in code blocks.\n#@endexample to indicate that the example is finished\nwrite a few tests that check that the example produces the right answer (unit test)So it should look like (a full example can be seen here)using Base.Test\n#@startexample A simple example\n#=\nIn this example we will show how to find the maximum over a collection of\nrandom numbers in Julia for all the numbers that are *negative*.\n=#\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n#=\nThat's it!\n=#\n#@endexample\n@test m < 0.0Make sure the tests pass! This will generate the following markdown (see next point for the command that generates it):# Name of the Test\n\nIn this example we will show how to find the maximum over a collection of\nrandom numbers in Julia for all the numbers that are negative.\n ```julia\na = randn(500)\n# we use a comprehension\nm = maximum(a[i] for i in 1:length(a) if a[i]<0)\n ```\nThat's it!Remark, the spaces in front of the triple backticks in the markdown snippet above are not actually generated when you use readexamples.jl. The spaces are used here in order to escape these triple backticks so that the snippet does not end up being unduly fragmented in three pieces."
@@ -274,10 +490,26 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "contributing/addingexample.html#Declaring-your-example-1",
-    "page": "Examples",
+    "page": "New example",
     "title": "Declaring your example",
     "category": "section",
     "text": "You have to mention your example in a few spots:in test/runtests.jl, add a line at the bottom following the examples already present i.e. something like @testset \"ex_NAME\"    begin include(\"ex_NAME.jl\") end (make sure this passes!)\nin docs/src/make.jl, add a line under \"Examples\" following the syntax of examples already present so something like: \"Name of your expl\" => \"examples/ex_name_of_example.jl\"Finally, to generate the markdown run the following command (this will act for all the examples at once so it will also refresh any other modification you may have added to other examples):julia docs/readexamples.jl"
+},
+
+{
+    "location": "contributing/addingfeature.html#",
+    "page": "New feature",
+    "title": "New feature",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "contributing/addingfeature.html#Adding-a-feature-1",
+    "page": "New feature",
+    "title": "Adding a feature",
+    "category": "section",
+    "text": ""
 },
 
 ]}
