@@ -29,6 +29,8 @@ The `Polygonal` domain requires the definition of the normals and the intercepts
 The `ippsampler.jl` exports the following **immutable** types:
 
 * `NextEvent`
-* `LinearBound <: Thinning <: IPPSamplingMethod` 
+* `LinearBound <: Thinning <: IPPSamplingMethod`
+
+and the following functions 
 
 ## Kernels
