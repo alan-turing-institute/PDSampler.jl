@@ -51,6 +51,10 @@ This is useful if you are looking into expanding the code yourself to add a capa
 ```@contents
 Pages = [
     "techdoc/structure.md",
+    "techdoc/coretools.md",
+    "techdoc/models.md",
+    "techdoc/global.md",
+    "techdoc/local.md",
     "techdoc/types.md"
     ]
 Depth = 1
@@ -61,6 +65,7 @@ Depth = 1
 ```@contents
 Pages = [
     "contributing/addingexample.md",
+    "contributing/addingfeature.md"
 ]
 Depth = 1
 ```

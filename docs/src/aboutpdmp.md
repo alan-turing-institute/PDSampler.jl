@@ -126,7 +126,13 @@ In essence, each iteration of the algorithm works as follows:
 1. a new event is computed for $x_f$ following a global BPS-type procedure,
 1. the priority queue is updated for the entries corresponding to $f$, and all $f'\in F$ that share a variable with $f$.
 
-The priority queue therefore has one entry for each factor. These entries correspond to first arrival times of IPPs corresponding to the factor. 
+The priority queue therefore has one entry for each factor. These entries correspond to first arrival times of IPPs corresponding to the factor.
+
+## Sampling from an IPP
+
+### Inversion
+
+### Thinning
 
 ## References
 
