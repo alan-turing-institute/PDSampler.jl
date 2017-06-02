@@ -1,5 +1,13 @@
 using Documenter, PDMP
 
+try
+    # refreshes all the examples
+    include("readexamples.jl")
+catch e
+    # probably on travis CI
+    println(e)
+end
+
 makedocs(
     modules = [PDMP],
     format = :html,
@@ -20,7 +28,10 @@ makedocs(
             "Examples" => "contributing/addingexample.md"
         ]
     ],
-    assets = String["assets/partial.css", "assets/BPS.svg"],
+    assets = String[
+                "assets/partial.css",
+                "assets/BPS.svg",
+                "asserts/truncatedgaussian.png"],
 )
 
 deploydocs(

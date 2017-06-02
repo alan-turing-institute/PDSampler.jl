@@ -1,38 +1,37 @@
 using Base.Test
 #@startexample Global BPS (Truncated Gaussian)
 #=
-In this example we **XXXXXXX**
+In this example we use the global Bouncy Particle Sampler on 2D Gaussian truncated to the positive orthan to show how to declare a BPS model.
+
+![](../assets/truncatedgaussian.png)
 
 Start by loading the library:
 =#
 using PDMP
 #=
-you will then need to define two elements:
+you then need to define two elements:
 1. a geometry (boundaries)
 2. an energy (gradient of the log-likelihood of the target)
-At the moment, the package can handle unconstrained geometries and polygonal
-domains (**see XXXXX**).
-Let's say we want to be constrained to the positive orthan in 2D:
+
+The positive orthan corresponds to a simple Polygonal domain where the boundaries are the axes. The normal to these boundaries (`ns`) are therefore unit vectors and the intercepts (`a`) are zero.
+A polygonal domain is then declared with the constructor `Polygonal`.
 =#
 p = 2
 # normal to faces and intercepts
 ns, a = eye(p), zeros(p)
 geom  = Polygonal(ns, a)
-# for a given ray, which boundary does it hit?
+#=
+The function `nextboundary` returns a function that can compute the next boundary on the current ray `[x,x+tv]` with `t>0` as well as the time of the hit.
+=#
 nextbd(x, v) = nextboundary(geom, x, v)
 #=
-Here `ns` and `a` are the normals and the intercepts of the faces. The type
-`Polygonal` encapsulates the geometry.
-The function `nextboundary` returns the next boundary on the current ray
-`[x,x+tv]` with `t>0` as well as the time of the hit.
-
-We then need to specify a model: we need to define a function of the form
+The model then needs to be specified: you need to define a function of the form
 `gradll(x)` which can return the gradient of the log-likelihood at some point `x`.
 Here, let us consider a 2D gaussian.
 =#
-# build a valid precision matrix, the cholesky decomposition of
+# here we build a valid precision matrix. The cholesky decomposition of
 # the covariance matrix will be useful later to build a sensible
-# starting point.
+# starting point for the algorithm.
 srand(12)
 P1  = randn(p,p)
 P1 *= P1'
@@ -42,32 +41,26 @@ L1  = cholfact(C1)
 mu  = zeros(p)+1.
 mvg = MvGaussianCanon(mu, P1)
 #=
-Here, we have defined the gaussian through the "Canonical" representation
-(**see XXXXX**) i.e.: by specifying a mean and a precision matrix.
+Here, we have defined the gaussian through the *Canonical* representation i.e.: by specifying a mean and a precision matrix.
 
-The gradient of the log-likelihood is then given by
+Every model must implement a `gradloglik` function returning the gradient of the log-likelihood at a point `x`.
 =#
 gradll(x) = gradloglik(mvg, x)
 #=
-**Remark**: if you want to implement your own model, you should define your
-model in (**XXXXXX**) and make sure it implements a `gradloglik` function.
+Next, you need to define the function which can return the first arrival time of
+the corresponding Inhomogenous Poisson Process.
 
-Next, we need to define the function which can return the first arrival time of
-the Inhomogenous Poisson Process (**cf. algorithm**).
 Note that you could be using `nextevent_zz` here as well if you wanted to use
-the Zig-Zag sampler (and you could implement other kernels as well, see
-**HERE XXXXX**).
+the Zig-Zag sampler (and you could implement other kernels as well).
 =#
 nextev(x, v) = nextevent_bps(mvg, x, v)
 #=
 For a Gaussian (and some other simple distributions), this is analytical through
-an inversion-like method (**cf. algorithm**).
-Another approach is the thinning approach using a bounding intensity.
-At the moment thinning with a linear bound is implemented (**cf XXXXX**).
+an inversion-like method.
 
 Finally, you need to specify the parameters of the simulation such as the
 starting point and velocity, the length of the path generated, the rate of
-refreshment and the maximum number of gradient evaluations. (**see discussion**)
+refreshment and the maximum number of gradient evaluations.
 =#
 T    = 1000.0   # length of path generated
 lref = 2.0      # rate of refreshment
@@ -76,7 +69,7 @@ v0   = randn(p) # starting velocity
 v0  /= norm(v0) # put it on the sphere (not necessary)
 # Define a simulation
 sim = Simulation( x0, v0, T, nextev, gradll,
-            nextbd, lref ; maxgradeval = 10000)
+                  nextbd, lref ; maxgradeval = 10000)
 #=
 And finally, generate the path and recover some details about the simulation.
 =#
@@ -85,10 +78,10 @@ And finally, generate the path and recover some details about the simulation.
 The `path` object belongs to the type `Path` and can be sampled using
 `samplepath`.
 
-A crude test is to check that the estimated mean obtained through quadrature
-along the path yields a similar result as a basic Monte Carlo estimator.
+A crude sanity check is for example to check that the estimated mean obtained through quadrature along the path yields a similar result as a basic Monte Carlo estimator.
 =#
 # Building a basic MC estimator
+# (taking samples from 2D MVG that are in positive orthan)
 sN = 1000
 s  = repmat(mu,1,sN)+L1[:L]*randn(p,sN)
 mt = zeros(2)
@@ -98,7 +91,7 @@ ss = [s; ones(sN)']
 mt = sum(ss[:,i] for i in 1:sN if !any(e->e<0, ss[1:p,i]))
 mt = mt[1:p]/mt[end]
 #=
-You can now compare the norm of `mt` to `pathmean(path)` and you will see that
+You can now compare the norm of `mt` (a crude MC estimator) to `pathmean(path)` (computing the integrals along the segments of the path) and you will see that
 the relative error is below 5%.
 =#
 #@endexample

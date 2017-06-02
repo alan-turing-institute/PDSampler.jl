@@ -17,7 +17,7 @@ for name in tests
                     if ismatch(Regex("^#@startexample"),ln)
                         write(fo, "#"*match(Regex("^#@startexample(.*)"),ln)[1]*"\n\n")
                         write(fo, "(*the code for this example can be found "*
-                                  "[here]($URL)*, note that the doc rendered "* "here was automatically generated, if you "*
+                                  "[here]($URL), note that the doc rendered "* "here was automatically generated, if you "*
                                   "want to fix it, please do it in the "*
                                   "julia code directly*)\n\n")
                         skip = false
