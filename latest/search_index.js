@@ -277,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Core tools",
     "title": "Sampling from an IPP",
     "category": "section",
-    "text": "The ippsampler.jl exports the following immutable types:NextEvent\nLinearBound <: Thinning <: IPPSamplingMethod "
+    "text": "The ippsampler.jl exports the following immutable types:NextEvent\nLinearBound <: Thinning <: IPPSamplingMethodand the following functions "
 },
 
 {
