@@ -561,11 +561,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "techdoc/local.html#Reshape-1",
+    "location": "techdoc/local.html#Reshape,-Random-1",
     "page": "Local sampler",
-    "title": "Reshape",
+    "title": "Reshape, Random",
     "category": "section",
-    "text": "Once a factor is selected, the operations are very similar to the global BPS. But once an event is generated, it is necessary to slice it according to the different nodes so that they all store the relevant portion of information. The reshape function reshapes a generated object into the appropriate format."
+    "text": "Once a factor is selected, the operations are very similar to the global BPS. But once an event is generated, it is necessary to slice it according to the different nodes so that they all store the relevant portion of information. The ls_reshape function reshapes a generated object into the appropriate format.The ls_random generates random numbers of the appropriate dimensions corresponding to an event list."
 },
 
 {
@@ -573,7 +573,31 @@ var documenterSearchIndex = {"docs": [
     "page": "Local sampler",
     "title": "Retrieve",
     "category": "section",
-    "text": "The retrieve function is called to access a specific factor. For that factor it retrieves:The positions xf, a list of positions for each nodes associated with the factor interpolated at a time t\nThe velocities vf, a list of velocities for each nodes associated with the factor\nThe gradient at xf (as seen from the factor)\nThe index of the variables associated with the factorThe interpolation is done following the method highlighted in the paper (recover the last event and follow the ray for required time). "
+    "text": "The ls_retrieve function is called to access a specific factor. For that factor it retrieves:The positions xf, a list of positions for each nodes associated with the factor interpolated at a time t\nThe velocities vf, a list of velocities for each nodes associated with the factor\nThe gradient at xf (as seen from the factor)\nThe index of the variables associated with the factorThe interpolation is done following the method highlighted in the paper (recover the last event and follow the ray for required time)."
+},
+
+{
+    "location": "techdoc/local.html#Update-Priority-Queue-1",
+    "page": "Local sampler",
+    "title": "Update Priority Queue",
+    "category": "section",
+    "text": "For a given factor, the ls_updatepq! updates the current priority queue by generating an event (possibly with thinning) for the required factor and storing it in the priority queue then returning that priority queue.That function is usually called after a call of ls_retrieve: i.e. the interpolated position is recovered then correspondingly an event is generated and stored in the priority queue using ls_updatepq!."
+},
+
+{
+    "location": "techdoc/local.html#Save-update-1",
+    "page": "Local sampler",
+    "title": "Save update",
+    "category": "section",
+    "text": "Once a factor has been triggered and a new event computed, it is pushed in the relevant EventList objects using this ls_saveupdate! function which updates the all_eventlist object corresponding to the general simulation."
+},
+
+{
+    "location": "techdoc/local.html#Refreshment-1",
+    "page": "Local sampler",
+    "title": "Refreshment",
+    "category": "section",
+    "text": "The function ls_refreshment triggers a refreshment for the current factor and the corresponding refreshment of the priority queue."
 },
 
 {
