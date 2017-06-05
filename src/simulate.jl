@@ -126,6 +126,9 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
     # mass matrix?
     mass = copy(sim.mass) # store it here as we may want to adapt it
 
+    # check if nextevent takes 2 or 3 parameters
+    nevtakes2 = (length(methods(sim.nextevent).ms[1].sig.parameters)-1)==2
+
     # compute current reference bounce time
     lambdaref = sim.lambdaref
     tauref    = randexp()/lambdaref
@@ -143,10 +146,9 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
         # increment the counter to keep track of the number of effective loops
         lcnt += 1
         # simulate first arrival from IPP
-        bounce = sim.nextevent(x, v)
+        bounce = nevtakes2 ? sim.nextevent(x, v) : sim.nextevent(x, v, tauref)
         # find next event (unconstrained case taubd=NaN (ignored))
         tau = min(bounce.tau,taubd,tauref)
-
         # standard bounce
         if tau == bounce.tau
             # there will be an evaluation of the gradient

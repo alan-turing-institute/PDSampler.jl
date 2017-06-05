@@ -11,6 +11,7 @@ module PDMP
 
 using Compat
 using Klara.ess
+using ApproxFun
 
 const Int   = Int64
 const Float = Float64

@@ -1,5 +1,7 @@
 using PDMP, Base.Test
 
+# This tests the Simulation object (not the simulate function)
+
 srand(1777)
 n = 1000           # n observations
 p = 5              # n dimensions (covariates)

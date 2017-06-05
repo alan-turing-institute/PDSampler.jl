@@ -11,3 +11,5 @@ sandbox/
 docs/build/
 docs/site
 benchmarks/
+*.ipynb
+test/simulate_test2.jl
