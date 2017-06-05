@@ -13,7 +13,6 @@ accepted for the `samplelocalpath` function).
 """
 AllowedTimeType = Union{Vector{Float}, Range{Float}}
 
-
 """
     Path
 

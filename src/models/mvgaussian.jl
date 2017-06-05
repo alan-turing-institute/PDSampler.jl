@@ -50,12 +50,12 @@ and the precision matrix. This is the preferred representation.
 """
 immutable MvGaussianCanon <: MvGaussian
     mu::Vector{Float}     # mean
-    precmu::Vector{Float} # Precision*mean
     prec::Matrix{Float}   # Precision
+    precmu::Vector{Float} # Precision*mean
     p::Int                # Dimensions
     function MvGaussianCanon(mu, prec)
         @assert length(mu)==size(prec,1)==size(prec,2)
-        new(mu,prec*mu,prec,length(mu))
+        new(mu,prec,prec*mu,length(mu))
     end
 end
 

@@ -2,7 +2,7 @@ export
     PMFGaussian
 
 immutable PMFGaussian
-    r::Float       # Rating
+    r::Float   # Rating
     sigma::Float
     d::Int   # Dimension of latent space
 end

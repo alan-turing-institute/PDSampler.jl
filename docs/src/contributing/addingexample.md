@@ -9,7 +9,7 @@ The first category is great as they can be used as *tests* and as documentation.
 
 The process is somewhat automated here and essentially all you have to do is write the example in the test directory and comment it accordingly, we show this below.
 
-### Syntax for the example
+## Syntax for the example
 
 Let's say you have an example which can be run in a few seconds and uses a new feature. You can effectively use it as a unit test by itself.
 To respect conventions, please name your example `ex_NAME.jl` and put it in `test/`.
@@ -65,7 +65,7 @@ That's it!
 The spaces are used here in order to escape these triple backticks so that the
 snippet does not end up being unduly fragmented in three pieces.
 
-### Declaring your example
+## Declaring your example
 
 You have to mention your example in a few spots:
 

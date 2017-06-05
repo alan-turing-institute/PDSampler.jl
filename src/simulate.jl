@@ -162,8 +162,10 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
                 # if accept
                 nbounce += 1
                 if sim.algname == "BPS"
+                    # if a mass matrix is provided
                     if length(mass)>0
                         v = reflect_bps!(g, v, mass)
+                    # standard BPS bounce
                     else
                         v = reflect_bps!(g,v)
                     end
