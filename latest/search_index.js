@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Code documentation",
     "category": "section",
-    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/coretools.md\",\n    \"techdoc/models.md\",\n    \"techdoc/global.md\",\n    \"techdoc/local.md\",\n    \"techdoc/types.md\"\n    ]\nDepth = 1"
+    "text": "These pages introduce you to the core of the package and its interface. This is useful if you are looking into expanding the code yourself to add a capacity or a specific model.Pages = [\n    \"techdoc/structure.md\",\n    \"techdoc/coretools.md\",\n    \"techdoc/models.md\",\n    \"techdoc/global.md\",\n    \"techdoc/local.md\"\n    ]\nDepth = 1"
 },
 
 {
@@ -221,7 +221,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Code structure",
     "title": "General notes",
     "category": "section",
-    "text": "A few design choices have been made and should be respected (or modified with a good reason and this section scrapped):Float stands for Float64 assuming that everything is done on 64-bit architecture.\nWhen possible, abstract types are created to suggest a hierarchy of type. This also helps generalisation (see for example in geometry.jl, abstract type: Domain and Unconstrained <: Domain)"
+    "text": "A few design choices have been made and should be respected (or modified with a good reason and this section scrapped):Float stands for Float64 assuming that everything is done on 64-bit architecture.\nWhen possible, abstract types are created to suggest a hierarchy of types. This helps readability and generalisation (see for example in ippsampler.jl, abstract type: IPPSamplingMethod and Thinning <: IPPSamplingMethod and LinearBound <: Thinning)"
 },
 
 {
@@ -229,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Code structure",
     "title": "Source files",
     "category": "section",
-    "text": "The structure of the src/ folder is as follows:├── PDMP.jl\n├── geometry.jl\n├── ippsampler.jl\n├── kernels.jl\n├── local\n│   ├── event.jl\n│   ├── factorgraph.jl\n│   └── simulate.jl\n├── models\n│   ├── logreg.jl\n│   ├── mvgaussian.jl\n│   └── pmf.jl\n├── path.jl\n└── simulate.jlThe central file is PDMP.jl which serves one key purpose: declaring what the package needs (Compat, Polynomials, ...) and including the files that contain the effective pieces of code. It also exports some generic functions that are used throughout.Note: in Julia everything should be wrapped around by a module. The using PkgName indicates that we want to have access to the functions exported by the package PkgName in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The export functionName indicates that if another user wants to use our module (by entering using PDMP) s/he will have access to all of those functions directly.Here is a high-level overview of the rest of the folder structure:geometry, ippsampler, kernels (specific documentation): generic tools used throughout the package\npath, simulate (specific documentation): tools to describe the path and how the simulation is run in the global case.\nmodels/* (specific documentation): to define specific models, their likelihood, gradient of log-likelihood etc.\nlocal/* (specific documentation): to define events, factor graphs and how to run the algorithm in the local case."
+    "text": "The structure of the src/ folder is as follows:├── PDMP.jl\n├── geometry.jl\n├── ippsampler.jl\n├── kernels.jl\n├── local\n│   ├── event.jl\n│   ├── factorgraph.jl\n│   └── simulate.jl\n├── models\n│   ├── logreg.jl\n│   ├── mvgaussian.jl\n│   └── pmf.jl\n├── path.jl\n└── simulate.jlThe central file is PDMP.jl which serves one key purpose: declaring what the package needs (Compat, Polynomials, ...) and including the files that contain the effective pieces of code. It also exports some generic functions that are used throughout the package.Note: in Julia everything should be wrapped around by a module. The using PkgName indicates that we want to have access to the functions exported by the package PkgName in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The export functionName indicates that if another user wants to use our module (by entering using PDMP) s/he will have access to all of those functions directly.Here is a high-level overview of the rest of the folder structure:geometry, ippsampler, kernels (specific documentation): generic tools used throughout the package\npath, simulate (specific documentation): tools to describe the path and how the simulation is run in the global case.\nmodels/* (specific documentation): to define specific models, their likelihood, gradient of log-likelihood etc.\nlocal/* (specific documentation): to define events, factor graphs and how to run the algorithm in the local case."
 },
 
 {
@@ -237,7 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Code structure",
     "title": "Test files",
     "category": "section",
-    "text": "The test/ folder contains a number of test files:├── ex_gbps1.jl\n├── ex_lbps1.jl\n├── gaussian_test.jl\n├── geometry_test.jl\n├── ippsampler_test.jl\n├── kernels_test.jl\n├── local_event_test.jl\n├── local_factorgraph_test.jl\n├── local_simulate_test.jl\n├── logreg_test.jl\n├── path_test.jl\n├── pmf_test.jl\n├── runtests.jl\n└── simulate_test.jlNote that a few start with ex_ these are executable examples which also serve as partial tests and as documentation. The philosophy here is to have as many tests as possible that would break if anything is introduced in the code that could break other parts. These tests are not perfect and some may indeed need to be reinforced/fixed but at least provide some safeguards against harmful code modifications."
+    "text": "The test/ folder contains a number of test files (one for each source file and one per executable example):├── ex_gbps1.jl\n├── ex_lbps1.jl\n├── gaussian_test.jl\n├── geometry_test.jl\n├── ippsampler_test.jl\n├── kernels_test.jl\n├── local_event_test.jl\n├── local_factorgraph_test.jl\n├── local_simulate_test.jl\n├── logreg_test.jl\n├── path_test.jl\n├── pmf_test.jl\n├── runtests.jl\n└── simulate_test.jlNote that a few start with ex_ these are executable examples which also serve as partial tests and as documentation. The philosophy here is to have as many tests as possible that would break if anything is introduced in the code that could break other parts. These tests are not perfect and some may indeed need to be reinforced/fixed but at least provide some safeguards against harmful code modifications."
 },
 
 {
@@ -245,7 +245,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Code structure",
     "title": "Doc files",
     "category": "section",
-    "text": "The docs/ folder contains a large number of files. The part that is of interest is represented below:├── build\n│   ├── ...\n├── make.jl\n├── readexamples.jl\n├── site\n│   ├── ...\n└── src\n    ├── aboutpdmp.md\n    ├── assets\n    │   ├── ...\n    ├── contributing\n    │   ├── addingexample.md\n    │   └── addingfeature.md\n    ├── examples\n    │   ├── ex_gbps1.md\n    │   └── ex_lbps1.md\n    ├── index.md\n    └── techdoc\n        ├── coretools.md\n        ├── global.md\n        ├── local.md\n        ├── models.md\n        ├── structure.md\n        └── types.mdThe make.jl file is the central file which dictates how the documentation is to be built. It can be executed in a Julia repl (provided you have added the Documenter package) and you can then locally see the updated version of the documentation by opening build/index.html. The readexamples.jl file transforms the example files test/ex_* into publishable examples.Note: if you are compiling the Documentation, the recommendation is to keep your REPL open. The first compiling will be a bit slow (Documenter warming up) the next ones will be instantaneous with possibly a lot of warning messages about docstrings not having been found for every function, you can safely ignore all of that and just refresh the page build/index.html."
+    "text": "The docs/ folder contains a large number of files. The part that is of interest is represented below:├── build\n│   ├── ...\n├── make.jl\n├── readexamples.jl\n├── site\n│   ├── ...\n└── src\n    ├── aboutpdmp.md\n    ├── assets\n    │   ├── ...\n    ├── contributing\n    │   ├── addingexample.md\n    │   └── addingfeature.md\n    ├── examples\n    │   ├── ex_gbps1.md\n    │   └── ex_lbps1.md\n    ├── index.md\n    └── techdoc\n        ├── coretools.md\n        ├── global.md\n        ├── local.md\n        ├── models.md\n        ├── structure.md\n        └── types.mdThe make.jl file is the central file which dictates how the documentation is to be built. It can be executed in a Julia REPL (provided you have added the Documenter package) and you can then locally see the updated version of the documentation by opening build/index.html. The readexamples.jl file transforms the example files test/ex_* into publishable examples.Note: if you are editing the documentation and wish to compile it, the recommendation is to keep your REPL open. The first compiling will be a bit slow (Documenter warming up) the next ones will be pretty much instantaneous with possibly a lot of warning messages about docstrings not having been found for every function, you can safely ignore all of that and just refresh the page build/index.html in your browser."
 },
 
 {
@@ -261,7 +261,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Core tools",
     "title": "Core tools",
     "category": "section",
-    "text": ""
+    "text": "Link to the source files:geometry.jl\nippsampler.jl\nkernels.jl"
 },
 
 {
@@ -269,7 +269,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Core tools",
     "title": "Geometry",
     "category": "section",
-    "text": "The geometry.jl code exports the following immutable types:Unconstrained <: Domain,\nPolygonal <: Domain.and a functionnextboundaryAny geometry type needs to have a nextboundary function associated with it of the form nextboundary(g, x, v) where g refers to the geometry, x to the position and v to the velocity. The aim of that function is to:return a time of first hit tau_h (following the ray x+vt, for t0),\nreturn the normal to the boundary at that hitting point.So for example, the Unconstrained is an empty type and the associated nextboundary function just returns (NaN, NaN) indeed a boundary will never be crossed and there is no normal. These NaN are processed by calling functions.The Polygonal domain requires the definition of the normals and the intercepts. The nextboundary function is pretty simple (intersection of lines). Note a few tricks for numerical stability:near parallel case can be ignored (the crossing time will be huge compared to bouncing time or refreshment time and therefore we can just ignore it)\nnegative times can be ignored (we're only going forward)\ntimes that are very close to zero are ignored (means that we are currently already very close to the boundary meaning that we will bounce away)"
+    "text": "The geometry.jl code exports the following immutable types:Unconstrained <: Domain,\nPolygonal <: Domain.and a functionnextboundaryAny geometry type needs to have a nextboundary function associated with it of the form nextboundary(g, x, v) where g refers to a geometry object, x to the position and v to the velocity. The aim of that function is to:return a time of first hit tau_h (following the ray x+vt, for t0),\nreturn the normal to the boundary at that hitting point.So for example, the Unconstrained is an empty type and the associated nextboundary function just returns (NaN, NaN) indeed a boundary will never be crossed and there is no normal. These NaN are processed by calling functions.The Polygonal domain requires the definition of the normals and the intercepts. The nextboundary function is pretty simple (intersection of lines). Note a few tricks for numerical stability:near parallel case can be ignored (the crossing time will be huge compared to bouncing time or refreshment time and therefore we can just ignore it)\nnegative times can be ignored (we're only going forward)\ntimes that are very close to zero are ignored (means that we are currently already very close to the boundary meaning that we will bounce away)"
 },
 
 {
@@ -277,7 +277,23 @@ var documenterSearchIndex = {"docs": [
     "page": "Core tools",
     "title": "Sampling from an IPP",
     "category": "section",
-    "text": "The ippsampler.jl exports the following immutable types:NextEvent\nLinearBound <: Thinning <: IPPSamplingMethodand the following functions "
+    "text": "The ippsampler.jl exports the following immutable types:NextEvent,\nLinearBound <: Thinning <: IPPSamplingMethod,and the following functionsnextevent_bps,\nnextevent_zz.The NextEvent type encapsulates an object returned when sampling from the IPP is required. It contains:a bouncing time\na function returning whether the bouncing time should be accepted or not (see Thinning)\na flipindex (see nextevent_zz)The functions nextevent_* are overloaded for the different possible sampling cases."
+},
+
+{
+    "location": "techdoc/coretools.html#Exact-sampling-1",
+    "page": "Core tools",
+    "title": "Exact sampling",
+    "category": "section",
+    "text": "Exact sampling is possible for specific distributions. In that case, the dobounce function returns true all the time. An example is the MvGaussian model for which we can indeed sample from the corresponding IPP analytically. See for example the definition ofnextevent_bps{T<:Vector{Float}}(g::MvGaussian, x::T, v::T)::NextEventNote the signature of the function. The first parameter indicates how the sampling should be done and the information to do so. The second and third parameters indicate the ray along which the bouncing time should be produced."
+},
+
+{
+    "location": "techdoc/coretools.html#Sampling-via-thinning-1",
+    "page": "Core tools",
+    "title": "Sampling via thinning",
+    "category": "section",
+    "text": "The LinearBound type allows to define a linear upper bound on the intensity of the IPP when you have access to a global bound on the eigenvalues of the Hessian (see this paper for more details). An accept reject step can then be performed in the nextevent_* function (dobounce).An example is the Bayesian logistic regression for which you do have such a bound.In that case the nextevent_bps returns a bouncing time computed thanks to the upper bound and the dobounce corresponds to a simple accept/reject step."
 },
 
 {
@@ -285,7 +301,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Core tools",
     "title": "Kernels",
     "category": "section",
-    "text": ""
+    "text": "The kernels.jl code exports a few functions, all of which define how the velocity should be updated in a variety of circumstances. Some of these functions have an exclamation mark attached to them indicating that the transformation is done in place (for efficiency). The refresh_* functions help indicate how the velocity should be refreshed (e.g. drawn from a spherical gaussian). The reflect_* indicate how the velocity should bounce (e.g. specular reflection)."
 },
 
 {
@@ -301,13 +317,37 @@ var documenterSearchIndex = {"docs": [
     "page": "Models",
     "title": "Local sampler",
     "category": "section",
-    "text": ""
+    "text": "Link to the source files:mvgaussian.jl\nlogreg.jl\nmvgaussian.jl"
 },
 
 {
     "location": "techdoc/models.html#Generic-model-1",
     "page": "Models",
     "title": "Generic model",
+    "category": "section",
+    "text": "A model must be an immutable type with an associated gradloglik function. It is important this function be coded as efficiently as possible since it is called a large number of time in any simulation."
+},
+
+{
+    "location": "techdoc/models.html#Multivariate-Gaussian-1",
+    "page": "Models",
+    "title": "Multivariate Gaussian",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "techdoc/models.html#Hierarchy-of-types-1",
+    "page": "Models",
+    "title": "Hierarchy of types",
+    "category": "section",
+    "text": "Multiple parametrisation are possible. Some being more efficient than others while some are maybe more intuitive than others.MvGaussian (abstract)\n| — MvGaussianStandard\n| — MvDiagonalGaussian\n| — MvGaussianCanon\n| — MvGaussianNaturalIn the sequel we write mu the mean, Sigma the covariance matrix and Omega the precision matrix. The parametrisation are then as follows:MvGaussianStandard: direct: (mu Sigma), indirect: (\\Omega\\mu,\\Omega)\nMvDiagonalGaussian: direct: (mu sigma)Note: \"direct\" means that these are the parameters passed to the constructor while \"indirect\" means that these values are computed when the constructor is called."
+},
+
+{
+    "location": "techdoc/models.html#Auxiliary-functions-1",
+    "page": "Models",
+    "title": "Auxiliary functions",
     "category": "section",
     "text": ""
 },
@@ -316,14 +356,6 @@ var documenterSearchIndex = {"docs": [
     "location": "techdoc/models.html#Logistic-Regression-1",
     "page": "Models",
     "title": "Logistic Regression",
-    "category": "section",
-    "text": ""
-},
-
-{
-    "location": "techdoc/models.html#Multivariate-Gaussian-1",
-    "page": "Models",
-    "title": "Multivariate Gaussian",
     "category": "section",
     "text": ""
 },
@@ -406,62 +438,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Simulate",
     "category": "section",
     "text": ""
-},
-
-{
-    "location": "techdoc/types.html#",
-    "page": "Types",
-    "title": "Types",
-    "category": "page",
-    "text": ""
-},
-
-{
-    "location": "techdoc/types.html#PDMP.FactorGraph",
-    "page": "Types",
-    "title": "PDMP.FactorGraph",
-    "category": "Type",
-    "text": "FactorGraph\n\nEncapsulation of a factor graph. It is made out of a structure (FactorGraphStruct) and an array of factors corresponding to the given structure. See also: Factor, FactorGraphStruct.\n\n\n\n"
-},
-
-{
-    "location": "techdoc/types.html#PDMP-Types-1",
-    "page": "Types",
-    "title": "PDMP Types",
-    "category": "section",
-    "text": "(/!\\WIP/!\\)FactorGraphInt for Int64 – in PDMP.jl\nFloat for Float64 – in PDMP.jl\nAllowedVarType for Union{Float, Vector{Float}} (variable types in the local BPS) – in local/event.jl\nAllowedTimeType for Union{Vector{Float}, LinSpace{Float}} (format of collections of times that can be passed to extract samples from events) – in path.jl"
-},
-
-{
-    "location": "techdoc/types.html#Abstract-types-1",
-    "page": "Types",
-    "title": "Abstract types",
-    "category": "section",
-    "text": "MvGaussian for multivariate gaussians – in models/mvgaussian.jl\nDomain for domain description (in global BPS) – in geometry.jl\nIPPSamplingMethod for sampling methods of an IPP – in ippsampler.jl\nThinning <: IPPSamplingMethod for thinning methods of an IPP – in ippsampler.jl"
-},
-
-{
-    "location": "techdoc/types.html#Specific-types-(global)-1",
-    "page": "Types",
-    "title": "Specific types (global)",
-    "category": "section",
-    "text": "geometryUnconstrained <: Domain (immutable) defines a domain without boundary (signature only)\nPolygonal <: Domain (immutable) defines a domain with affine boundaries determined by normals and interceptsippsamplerLinearBound <: Thinning (immutable) thinning method using a linear bound following a uniform bound on the eigenvalues of the Hessian\nNextEvent object returned when sampling from the IPP (contains a bouncing time, whether to bounce or not and a flipindex (ZZ case))pathPath container for a path of the global sampling (stores list of corners and times)\nSegment (immutable) container to store the two corners of a linear segment, makes it easier to sample from a PathsimulateSimulation container for the parameters of a global simulation"
-},
-
-{
-    "location": "techdoc/types.html#Model-types-(global)-1",
-    "page": "Types",
-    "title": "Model types (global)",
-    "category": "section",
-    "text": "LogReg (immutable) model for a logistic regression"
-},
-
-{
-    "location": "techdoc/types.html#Specific-types-(local)-1",
-    "page": "Types",
-    "title": "Specific types (local)",
-    "category": "section",
-    "text": "eventEvent{T<:AllowedVarType} (immutable) a triple (x,v,t) corresponding to an event for one of the node.\nEventList{T<:AllowedVarType} list of events (stored as lists of xs, vs, ts in order to be traversed more effectively than a Vector{Event}).\nAllEventList container for the EventList of all the nodesfactorgraphFactor (immutable) attaches the nextevent function (sampling from IPP), the gradient of the corresponding log-likelihood (gll) and an index\nFactorGraphStruct (immutable) contains the pattern of connections between nodes via flist and vlist (storing what variable is attached to what factor and vice-versa) nfactors and nvars keep track of the number of factors and the number of nodes (variables)\nFactorGraph (immutable) container for all the Factor and the FactorGraphStructsimulateLocalSimulation (immutable) container for the parameters of a local simulation (the factor graph, initial positions, etc)"
 },
 
 {
