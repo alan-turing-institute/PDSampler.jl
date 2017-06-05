@@ -26,7 +26,7 @@ makedocs(
             "Models"         => "techdoc/models.md",
             "Global sampler" => "techdoc/global.md",
             "Local sampler"  => "techdoc/local.md",
-            "Types"          => "techdoc/types.md",
+#            "Types"          => "techdoc/types.md",
         ],
         "Contributing" => Any[
             "New example" => "contributing/addingexample.md"

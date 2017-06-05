@@ -7,7 +7,7 @@ In this part, we discuss briefly how the code is organised and the role of the k
 A few design choices have been made and should be respected (or modified with a good reason and this section scrapped):
 
 * `Float` stands for `Float64` assuming that everything is done on 64-bit architecture.
-* When possible, abstract types are created to suggest a hierarchy of type. This also helps generalisation (see for example in `geometry.jl`, abstract type: `Domain` and `Unconstrained <: Domain`)
+* When possible, abstract types are created to suggest a hierarchy of types. This helps readability and generalisation (see for example in `ippsampler.jl`, abstract type: `IPPSamplingMethod` and `Thinning <: IPPSamplingMethod` and `LinearBound <: Thinning`)
 
 ## Source files
 
@@ -30,7 +30,7 @@ The structure of the `src/` folder is as follows:
 └── simulate.jl
 ```
 
-The central file is `PDMP.jl` which serves one key purpose: declaring what the package needs (`Compat`, `Polynomials`, ...) and including the files that contain the effective pieces of code. It also *exports* some generic functions that are used throughout.
+The central file is `PDMP.jl` which serves one key purpose: declaring what the package needs (`Compat`, `Polynomials`, ...) and including the files that contain the effective pieces of code. It also *exports* some generic functions that are used throughout the package.
 
 **Note**: in Julia everything should be wrapped around by a *module*. The `using PkgName` indicates that we want to have access to the functions exported by the package `PkgName` in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The `export functionName` indicates that if another user wants to use our module (by entering `using PDMP`) s/he will have access to all of those functions directly.
 
@@ -43,7 +43,7 @@ Here is a high-level overview of the rest of the folder structure:
 
 ## Test files
 
-The `test/` folder contains a number of test files:
+The `test/` folder contains a number of test files (one for each source file and one per executable example):
 
 ```
 ├── ex_gbps1.jl
@@ -96,7 +96,7 @@ The `docs/` folder contains a large number of files. The part that is of interes
         └── types.md
 ```
 
-The `make.jl` file is the central file which dictates how the documentation is to be built. It can be executed in a Julia repl (provided you have added the `Documenter` package) and you can then locally see the updated version of the documentation by opening `build/index.html`.
+The `make.jl` file is the central file which dictates how the documentation is to be built. It can be executed in a Julia REPL (provided you have added the `Documenter` package) and you can then locally see the updated version of the documentation by opening `build/index.html`.
 The `readexamples.jl` file transforms the example files `test/ex_*` into publishable examples.
 
-**Note**: if you are compiling the Documentation, the recommendation is to keep your REPL open. The first compiling will be a bit slow (Documenter warming up) the next ones will be instantaneous with possibly a lot of warning messages about docstrings not having been found for every function, you can safely ignore all of that and just refresh the page `build/index.html`.
+**Note**: if you are editing the documentation and wish to compile it, the recommendation is to keep your REPL open. The first compiling will be a bit slow (Documenter warming up) the next ones will be pretty much instantaneous with possibly a lot of warning messages about docstrings not having been found for every function, you can safely ignore all of that and just refresh the page `build/index.html` in your browser.

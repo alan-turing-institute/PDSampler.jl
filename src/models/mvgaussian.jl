@@ -35,11 +35,11 @@ end
 Representation of a multivariate diagonal gaussian (diagonal covariance).
 """
 immutable MvDiagonalGaussian <: MvGaussian
-    mu::Vector{Float} # mean
-    sigma::Float      # standard deviation
-    sigma2::Float     # standard deviation squared
-    p::Int            # dimensions
-    MvDiagonalGaussian(mu, sigma) = new(mu, sigma, sigma^2, length(mu))
+    mu::Vector{Float}     # mean
+    sigma::Vector{Float}  # standard deviation
+    sigma2::Vector{Float} # standard deviation squared
+    p::Int                # dimensions
+    MvDiagonalGaussian(mu, sigma) = new(mu, sigma, sigma.^2, length(mu))
 end
 
 """
@@ -88,12 +88,12 @@ mvg_mu(g::MvDG)::Vector{Float} = g.mu
 mvg_precmu(g::MvGC)::Vector{Float} = g.precmu
 mvg_precmu(g::MvGN)::Vector{Float} = g.precmu
 mvg_precmu(g::MvGS)::Vector{Float} = g.precmu
-mvg_precmu(g::MvDG)::Vector{Float} = g.mu/g.sigma2
+mvg_precmu(g::MvDG)::Vector{Float} = g.mu./g.sigma2
 
 mvg_precmult(g::MvGC, x::Vector{Float})::Vector{Float} =  g.prec * x
 mvg_precmult(g::MvGN, x::Vector{Float})::Vector{Float} = -g.negprec * x
 mvg_precmult(g::MvGS, x::Vector{Float})::Vector{Float} =  g.prec * x
-mvg_precmult(g::MvDG, x::Vector{Float})::Vector{Float} =  x/g.sigma2
+mvg_precmult(g::MvDG, x::Vector{Float})::Vector{Float} =  x./g.sigma2
 
 # ------------------------------------------------------------------------------
 

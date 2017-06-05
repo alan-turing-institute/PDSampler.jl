@@ -21,7 +21,7 @@ mvg       = MvGaussianCanon(mu, P1)
 mvg2      = MvGaussianNatural(P1*mu,-P1)
 mvg_distr = Distributions.MvNormal(mu, C1)
 mvg_da    = MvGaussianCanon(mu, 0.25 * eye(length(mu)))
-mvg_db    = MvDiagonalGaussian(mu, 2)
+mvg_db    = MvDiagonalGaussian(mu, 2.0*ones(p))
 
 # we don't care about constants, but in Distributions
 # they do so we need to compensate for that

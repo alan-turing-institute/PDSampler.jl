@@ -54,8 +54,7 @@ Pages = [
     "techdoc/coretools.md",
     "techdoc/models.md",
     "techdoc/global.md",
-    "techdoc/local.md",
-    "techdoc/types.md"
+    "techdoc/local.md"
     ]
 Depth = 1
 ```
