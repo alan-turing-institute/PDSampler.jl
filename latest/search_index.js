@@ -317,7 +317,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Models",
     "title": "Local sampler",
     "category": "section",
-    "text": "Link to the source files:mvgaussian.jl\nlogreg.jl\nmvgaussian.jl"
+    "text": "Link to the source files:models/mvgaussian.jl\nmodels/logreg.jl\nmodels/pmf.jl"
 },
 
 {
@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Models",
     "title": "Hierarchy of types",
     "category": "section",
-    "text": "Multiple parametrisation are possible. Some being more efficient than others while some are maybe more intuitive than others.MvGaussian (abstract)\n| — MvGaussianStandard\n| — MvDiagonalGaussian\n| — MvGaussianCanon\n| — MvGaussianNaturalIn the sequel we write mu the mean, Sigma the covariance matrix and Omega the precision matrix. The parametrisation are then as follows:MvGaussianStandard: direct: (mu Sigma), indirect: (\\Omega\\mu,\\Omega)\nMvDiagonalGaussian: direct: (mu sigma)Note: \"direct\" means that these are the parameters passed to the constructor while \"indirect\" means that these values are computed when the constructor is called."
+    "text": "Multiple parametrisation are possible. Some being more efficient than others while some are maybe more intuitive than others.MvGaussian (abstract)\n| — MvGaussianStandard\n| — MvDiagonalGaussian\n| — MvGaussianCanon\n| — MvGaussianNaturalIn the sequel we write mu the mean, Sigma the covariance matrix and Omega the precision matrix. The different way to parametrise the distributions are as follows:MvGaussianStandard, direct: (mu Sigma), indirect: (\\Omega\\mu,\\Omega)\nMvDiagonalGaussian, direct: (mu (sigma_i)), indirect: (sigma_i^2)\nMvGaussianCanon, direct: (mu Omega), indirect: (Omegamu)\nMvGaussianNatural, direct: (Omegamu-Omega)The preferred way is the \"canonical\" representation (most efficient).Note: \"direct\" means that these are the parameters passed to the constructor while \"indirect\" means that these values are computed when the constructor is called."
 },
 
 {
@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Models",
     "title": "Auxiliary functions",
     "category": "section",
-    "text": ""
+    "text": "Internally, the types mentioned above are shortened to MvGS, MvDG etc. Then a number of simplifying functions are defined (these simplify the computation of the log-likelihood and gradient of the log-likelihood)mvg_mu to recover mu\nmvg_precmu to recover Omegamu\nmvg_precmult taking a point and multiplying it by Omegagradloglik is then trivial to compute."
 },
 
 {
@@ -357,7 +357,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Models",
     "title": "Logistic Regression",
     "category": "section",
-    "text": ""
+    "text": "The logistic regression considers a feature matrix X, a response y, the Lipschitz constant associated to it and dimensionality parameters."
+},
+
+{
+    "location": "techdoc/models.html#Auxiliary-functions-2",
+    "page": "Models",
+    "title": "Auxiliary functions",
+    "category": "section",
+    "text": "A number of auxiliary functions are defined to prevent numerical instabilities and ensure that the computation of the log-likelihood and gradient of the log-likelihood can be expressed simply.The gradloglik_cv considers a control-variate gradient developed around a given point (see this paper for more details).Note: the response is in -11."
 },
 
 {
@@ -365,7 +373,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Models",
     "title": "Probabilistic Matrix Factorisation",
     "category": "section",
-    "text": ""
+    "text": "This model considers a normal distribution on every entry of a matrix r_ij:\\begin{equation} \\mathcal N(r_{ij}; \\langle u,v\\rangle , \\sigma^2) \\end{equation}The resulting intensity can be shown to be a truncated cubic for which we can in fact also do exact sampling.The pmf_case* correspond to the various possible cases depending on where the roots of the cubic are."
 },
 
 {
@@ -381,7 +389,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Global sampler",
     "title": "Global sampler",
     "category": "section",
-    "text": ""
+    "text": "Link to the source files:path.jl\nsimulate.jl"
 },
 
 {
@@ -389,7 +397,23 @@ var documenterSearchIndex = {"docs": [
     "page": "Global sampler",
     "title": "Path",
     "category": "section",
-    "text": ""
+    "text": "The path.jl file exports a type Path and a few functions that apply on such an object.A Path object encapsulatesxs a matrix of size p times N_e where p is the dimension and N_e are the number of events recorded\nts a vectof of times associated with the events\np the dimension\nnseg the number of segments"
+},
+
+{
+    "location": "techdoc/global.html#Auxiliary-type-1",
+    "page": "Global sampler",
+    "title": "Auxiliary type",
+    "category": "section",
+    "text": "The type Segment is useful to encapsulate the information contained between two events. It contains:ta, tb the times at the two events\nxa, xb the positions\ntau (implicit) the travel time corresponding to the segment or (t_b-t_a)\nv (implicit) the velocity along the segment"
+},
+
+{
+    "location": "techdoc/global.html#Auxiliary-functions-1",
+    "page": "Global sampler",
+    "title": "Auxiliary functions",
+    "category": "section",
+    "text": "getsegment retrieves a segment starting at time Path.ts[j]\nsamplepath takes a time or a list of times and returns the position along the Path object at those times\nquadpathpoly does a simple analytical integration along the path for simple test functions of the form varphi(x)=P(x) where P is a polynomial (for each dimension)\npathmean computes the mean using quadpathpoly where the polynomial is just x\nesspath computation of the ESS corresponding to a number of samples equally spaced along the path. It tries to achieve a specific ratio and increases the number of samples until it achieves it."
 },
 
 {
@@ -397,7 +421,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Global sampler",
     "title": "Simulate",
     "category": "section",
-    "text": ""
+    "text": "The simulate.jl file is the main file for the Global Sampler. It contains one main immutable object which contains all of the parameters of the simulation. This is convenient if multiple parameters need to be tested.A number of default parameters are pre-encoded but some parameters are essential (starting point, starting velocity, etc)."
+},
+
+{
+    "location": "techdoc/global.html#Simulate-function-1",
+    "page": "Global sampler",
+    "title": "Simulate function",
+    "category": "section",
+    "text": "This function should mimic rather closely the original paper. Note in the main loop:tau = min(bounce.tau, taubd, tauref)corresponds to finding which action needs to be executed (normal bounce, boundary bounce or refreshment). After this one of three branches is executed:if tau==bounce.tau\n    ...\nelseif tau==taubd\n    ...\nelse\n    ...\nendThe first branch corresponds to a bounce against the level set of the log-likelihood, the second to a boundary bounce and third a refreshment.In the first branch, an explicit call to bounce.dobounce checks whether to thin the event or not. If the time is accepted then the velocity is refreshed otherwise the whole loop is ignored."
 },
 
 {
@@ -413,7 +445,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Local sampler",
     "title": "Local sampler",
     "category": "section",
-    "text": ""
+    "text": "Link to the source files:local/event.jl\nlocal/factorgraph.jl\nlocal/simulate.jl"
 },
 
 {
@@ -422,6 +454,38 @@ var documenterSearchIndex = {"docs": [
     "title": "Event",
     "category": "section",
     "text": ""
+},
+
+{
+    "location": "techdoc/local.html#Hierarchy-of-types-1",
+    "page": "Local sampler",
+    "title": "Hierarchy of types",
+    "category": "section",
+    "text": "The events in the local settings are triples of the form (x,v,t). These can be encapsulated in the immutable Event type. Every node in the graph has a list of such events attached to it. For efficiency reasons, the list of event is not actually a list of Event but rather another type EventList which allows traversing the corresponding data structure efficiently.The list of EventList (i.e. all events that have happened on the graph) is encapsulated in another type AllEventList."
+},
+
+{
+    "location": "techdoc/local.html#EventList-1",
+    "page": "Local sampler",
+    "title": "EventList",
+    "category": "section",
+    "text": "The EventList type corresponds to what is stored by a single node of the factor graph. It contains the list of positions xs, the list of velocities vs and the list of times ts associated with that node.The function getevent, getlastevent, pushevent!, getlocalsegment, samplelocalpath, quadpathpoly and pathmean all work on an EventList object.In other words, an EventList is analogous to the Path object of the global sampler."
+},
+
+{
+    "location": "techdoc/local.html#AllEventList-1",
+    "page": "Local sampler",
+    "title": "AllEventList",
+    "category": "section",
+    "text": "This is just a vector of EventList. It also keeps track of the types associated with each EventList. Indeed, each node may correspond to a variable of different dimensionality so these types make initialisation procedures simpler."
+},
+
+{
+    "location": "techdoc/local.html#Auxiliary-functions-1",
+    "page": "Local sampler",
+    "title": "Auxiliary functions",
+    "category": "section",
+    "text": "getevent retrieve an event in an EventList\ngetlastevent retrieve the last event of an EventList\npushevent! add an event to an EventList\ngetlocalsegment get an event and the subsequent event\nsamplelocalpath sample the variable corresponding to a node by taking samples along the path described by the corresponding EventList\nquadpathpoly integrate a polynomial along the path described by an EventList"
 },
 
 {
@@ -486,6 +550,22 @@ var documenterSearchIndex = {"docs": [
     "title": "Adding a feature",
     "category": "section",
     "text": ""
+},
+
+{
+    "location": "contributing/addingfeature.html#Adding-a-new-feature-to-the-code-1",
+    "page": "New feature",
+    "title": "Adding a new feature to the code",
+    "category": "section",
+    "text": "If you wish to add a feature, please follow the following few steps:Keep it concise (so that the relevant PR is readable)\nWrite a test for it and make sure it passes\nDocument it at least briefly\nIdeally write an executable example for itPlease try to follow the conventions around the code to make code review simpler to manage."
+},
+
+{
+    "location": "contributing/addingfeature.html#Replacing-a-part-of-the-code-1",
+    "page": "New feature",
+    "title": "Replacing a part of the code",
+    "category": "section",
+    "text": "If you want to generalise / modify / fix a part of the code, please make sure you follow similar steps:Make sure your modifications pass the tests or modify the relevant tests, add tests if the rewrite is more general\nMake sure the fix is documented appropriately (both in )"
 },
 
 ]}
