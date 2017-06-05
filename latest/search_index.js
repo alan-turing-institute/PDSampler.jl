@@ -497,11 +497,83 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "techdoc/local.html#Hierarchy-of-types-2",
+    "page": "Local sampler",
+    "title": "Hierarchy of types",
+    "category": "section",
+    "text": "All types are immutables (define the graph).The base type is a Factor\nThe connection pattern is a FactorGraphStruct\nThe list of factors + structure forms a FactorGraph"
+},
+
+{
+    "location": "techdoc/local.html#Factor-1",
+    "page": "Local sampler",
+    "title": "Factor",
+    "category": "section",
+    "text": "A Factor encapsulatesnextevent a function which is able to produce a first arrival time from the IPP corresponding to that factor\ngll the gradient of the loglikelihood attached to that factor\nindex this is a dummy index to be able to refer to specific factors in the factor graph"
+},
+
+{
+    "location": "techdoc/local.html#FactorGraphStruct-1",
+    "page": "Local sampler",
+    "title": "FactorGraphStruct",
+    "category": "section",
+    "text": "A FactorGraphStruct encapsulatesflist a list of list, every entry corresponds to a factor and the list of variables that factor is connected to.implicitly it also encapsulatesvlist a list of list, every entry corresponds to a variable and the list of factors that variable is connected to.\nnfactors, nvars the number of factors and variablesThe function chainstruct defines a returns a FactorGraphStruct corresponding to a chain with a given number of nodes (variables)."
+},
+
+{
+    "location": "techdoc/local.html#FactorGraph-1",
+    "page": "Local sampler",
+    "title": "FactorGraph",
+    "category": "section",
+    "text": "A FactorGraph encapsulatesstructure a FactorGraphStruct object\nfactors a vector of Factor objects"
+},
+
+{
+    "location": "techdoc/local.html#Auxiliary-functions-2",
+    "page": "Local sampler",
+    "title": "Auxiliary functions",
+    "category": "section",
+    "text": "assocvariables and assocfactors return the indices of the associated variables to a factor (resp. factors to a variable)\nlinkedfactors for a given factor returns the list of factors which share a variable with it"
+},
+
+{
     "location": "techdoc/local.html#Simulate-1",
     "page": "Local sampler",
     "title": "Simulate",
     "category": "section",
+    "text": "That file has the same structure as that for the global sampler with one major LocalSimulation object encapsulating all the parameters of a given simulation.The main loop uses a number of helper functions ls_* in order to make the logic appear more clearly. Focusing on the main loop for now, it should be clear that is centered around a priority queue.(fidx, tbounce) = peek(pq)\n...\nif t < tref\n    ...\nelse\n    ...\nendSo the minimum time is recovered from the priority queue as well as the index of the corresponding factor. Then, there is a check to see whether we are in the bouncing scenario (first branch) or the refreshment scenario (second branch)."
+},
+
+{
+    "location": "techdoc/local.html#Helper-functions-1",
+    "page": "Local sampler",
+    "title": "Helper functions",
+    "category": "section",
     "text": ""
+},
+
+{
+    "location": "techdoc/local.html#Initialisation-1",
+    "page": "Local sampler",
+    "title": "Initialisation",
+    "category": "section",
+    "text": "The function ls_init initialises an AllEventList object corresponding to the graph as well as a priority queue."
+},
+
+{
+    "location": "techdoc/local.html#Reshape-1",
+    "page": "Local sampler",
+    "title": "Reshape",
+    "category": "section",
+    "text": "Once a factor is selected, the operations are very similar to the global BPS. But once an event is generated, it is necessary to slice it according to the different nodes so that they all store the relevant portion of information. The reshape function reshapes a generated object into the appropriate format."
+},
+
+{
+    "location": "techdoc/local.html#Retrieve-1",
+    "page": "Local sampler",
+    "title": "Retrieve",
+    "category": "section",
+    "text": "The retrieve function is called to access a specific factor. For that factor it retrieves:The positions xf, a list of positions for each nodes associated with the factor interpolated at a time t\nThe velocities vf, a list of velocities for each nodes associated with the factor\nThe gradient at xf (as seen from the factor)\nThe index of the variables associated with the factorThe interpolation is done following the method highlighted in the paper (recover the last event and follow the ray for required time). "
 },
 
 {
