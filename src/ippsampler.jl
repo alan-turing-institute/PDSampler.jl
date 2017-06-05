@@ -24,11 +24,12 @@ immutable LinearBound <: Thinning
     end
 end
 
-# TODO: complete
 """
     NextEvent
 
-Object returned when calling a nextevent_ type function.
+Object returned when calling a `nextevent_*` type function. The bouncing time
+`tau` as well as whether it should be accepted or rejected `dobounce` (set to
+true always for analytical sampling). `flipindex` is to support ZZ sampling.
 """
 immutable NextEvent
     tau::Float         # candidate first arrival time
