@@ -95,6 +95,19 @@ You can now compare the norm of `mt` (a crude MC estimator) to `pathmean(path)` 
 the relative error is below 5%.
 =#
 #@endexample
+
+# all that's below won't show in doc
+
 @test norm(pathmean(path)-mt)/norm(mt) < 0.05
 ess,ns = esspath(path; ns=100)
 @test minimum(ess) > 150
+
+# Additional testing: this is for the quadrature test
+
+nextev2(x, v, t) = nextevent_bps_q(gradll, x, v, t; n=20)
+sim2 = Simulation( x0, v0, T, nextev2, gradll,
+                  nextbd, lref ; maxgradeval = 10000)
+
+(path2, details2) = simulate(sim2)
+
+@test norm(pathmean(path2)-mt)/norm(mt) < 0.05

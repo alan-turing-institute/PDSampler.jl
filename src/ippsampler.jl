@@ -147,16 +147,16 @@ function nextevent_bps{T<:Vector{Float}}(lb::LinearBound, x::T,v::T)::NextEvent
     NextEvent(tau, dobounce=(g,v)->(rand()<-dot(g,v)/lambdabar) )
 end
 
-# function nextevent_bps_q{T<:Vector{Float}}(gll::Function, x::T, v::T,
-#                                             tref::Float)::NextEvent
-#
-#     chi(t) = max(0.0, dot(gll(x+t*v),v))
-#     S      = Chebyshev(0.0..tref)
-#     p      = points(S, 100)
-#     v      = chi.(p)
-#     f      = Fun(S, ApproxFun.transform(S,v))
-#     If     = cumsum(f) # integral from 0 to t with t < = tref
-#     tau    = ApproxFun.roots(If - randexp())
-#     tau    = length(tau)>0 ? minimum(tau) : Inf
-#     NextEvent(tau)
-# end
+function nextevent_bps_q{T<:Vector{Float}}(gll::Function, x::T, v::T,
+                                            tref::Float; n=100)::NextEvent
+
+    chi(t) = max(0.0, dot(-gll(x+t*v),v))
+    S      = Chebyshev(0.0..tref)
+    p      = points(S, n)
+    v      = chi.(p)
+    f      = Fun(S, ApproxFun.transform(S,v))
+    If     = cumsum(f) # integral from 0 to t with t < = tref
+    tau    = ApproxFun.roots(If - randexp())
+    tau    = (length(tau)>0) ? minimum(tau) : Inf
+    NextEvent(tau)
+end
