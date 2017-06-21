@@ -172,7 +172,7 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
                         v = reflect_bps!(g,v)
                     end
                 elseif sim.algname == "GBPS"
-                    v = reflect_gbps!(g, v)
+                    v = reflect_gbps(g, v)
                 elseif sim.algname == "ZZ"
                     v = reflect_zz!(bounce.flipindex, v)
                 end
