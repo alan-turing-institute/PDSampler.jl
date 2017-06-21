@@ -5,7 +5,8 @@ export
     reflect_zz!,
     refresh_global!,
     refresh_restricted!,
-    refresh_partial!
+    refresh_partial!,
+    reflect_gbps
 
 # ------------------------------------------------------------------------------
 # BPS KERNELS
@@ -22,30 +23,29 @@ function reflect_bps!{T<:Vector{Float}}(n::T, v::T)::T
 end
 
 """
-    reflect_gbps!(n, v)
+    reflect_gbps(n, v)
 
 (Generalized) BPS specular reflection - flip normal component and resample orthogonal https://arxiv.org/abs/1706.04781
 """
 function reflect_gbps!{T<:Vector{Float}}(n::T, v::T)::T
-    p = dot(n, v)*n/norm(n)^2
-    v2 = rnorm(length(d))
-    v2 -= dot(n, v2)*n/norm(n)^2
-    v=-p+v2
+    v2  = randn(length(n))
+    v2 -= dot(n, v2 + v)*n/norm(n)^2
+    v2
 end
 
-"""
-    reflect_gbps_sphere!(n, v)
-
-(Generalized) BPS specular reflection flip normal component and resample orthogonal https://arxiv.org/abs/1706.04781
-
-"""
-function reflect_gbps_sphere!{T<:Vector{Float}}(n::T, v::T)::T
-    p = dot(n, v)*n/norm(n)^2
-    v -= dot(n, v)*n/norm(n)^2
-    v2 = rnorm(length(d))
-    v2 -= dot(n, v2)*n/norm(n)^2
-    v=-p+v2*norm(v)/norm(v2)
-end
+# """
+#     reflect_gbps_sphere!(n, v)
+#
+# (Generalized) BPS specular reflection flip normal component and resample orthogonal https://arxiv.org/abs/1706.04781
+#
+# """
+# function reflect_gbps_sphere!{T<:Vector{Float}}(n::T, v::T)::T
+#     p = dot(n, v)*n/norm(n)^2
+#     v -= dot(n, v)*n/norm(n)^2
+#     v2 = rnorm(length(d))
+#     v2 -= dot(n, v2)*n/norm(n)^2
+#     v=-p+v2*norm(v)/norm(v2)
+# end
 
 """
     reflect_bps!(n, v, mass)

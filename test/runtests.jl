@@ -15,6 +15,6 @@ using PDMP, Base.Test
 @testset "l_sim"       begin include("local_simulate_test.jl")     end
 
 @testset "ex_gbps1"    begin include("ex_gbps1.jl") end
-@testset "ex_Gbps"    begin include("ex_gbps1.jl") end
+@testset "ex_genbps"   begin include("ex_genbps.jl") end
 
 @testset "ex_lbps1"    begin include("ex_lbps1.jl") end

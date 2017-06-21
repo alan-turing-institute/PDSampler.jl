@@ -47,7 +47,7 @@ immutable Simulation
         # basic check to see that things are reasonable
         @assert length(x0)==length(v0)>0 "Inconsistent arguments"
         @assert T>0.0 "Simulation time must be positive"
-        @assert lambdaref > 0.0 "Refreshment rate must be greater than 0"
+        @assert lambdaref >= 0.0 "Refreshment rate must be >= 0"
         an = uppercase(algname)
         @assert (an in ["BPS", "ZZ","GBPS"]) "Unknown algorithm <$algname>"
         new( x0, v0, T,
@@ -131,7 +131,7 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
 
     # compute current reference bounce time
     lambdaref = sim.lambdaref
-    tauref    = randexp()/lambdaref
+    tauref    = (lambdaref>0.0) ? randexp()/lambdaref : Inf
     # Compute time to next boundary + normal
     (taubd, normalbd) = sim.nextboundary(x, v)
 
@@ -171,10 +171,10 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
                     else
                         v = reflect_bps!(g,v)
                     end
-                elseif sim.algname == "ZZ"
-                    v = reflect_zz!(bounce.flipindex, v)
                 elseif sim.algname == "GBPS"
                     v = reflect_gbps!(g, v)
+                elseif sim.algname == "ZZ"
+                    v = reflect_zz!(bounce.flipindex, v)
                 end
             else
                 # move closer to the boundary/refreshment time
@@ -192,7 +192,8 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
             # exploiting the memoryless property
             tauref -= tau
             # ---- BOUNCE (boundary) ----
-            if sim.algname == "BPS"
+            if sim.algname in ["BPS", "GBPS"]
+                # Specular reflection (possibly with mass matrix)
                 if length(mass)>0
                     v = reflect_bps!(normalbd, v, mass)
                 else
@@ -200,20 +201,24 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
                 end
             elseif sim.algname == "ZZ"
                 v = reflect_zz!(find((v.*normalbd).<0.0), v)
-            elseif sim.algname == "GBPS"
-                  v = reflect_gbps!(g, v)
             end
         # random refreshment
         else
-            #
-            nrefresh += 1
-            #
-            x += tau*v
-            t += tau
-            # ---- REFRESH ----
-            v = sim.refresh!(v)
-            # update tauref
-            tauref = randexp()/lambdaref
+            #= to be in this part, lambdaref should be greater than 0.0
+            because if lambdaref=0 then tauref=Inf. There may be a weird
+            corner case in which an infinity filters through which we would
+            skip =#
+            if !isinf(tau)
+                #
+                nrefresh += 1
+                #
+                x += tau*v
+                t += tau
+                # ---- REFRESH ----
+                v = sim.refresh!(v)
+                # update tauref
+                tauref = randexp()/lambdaref
+            end
         end
         # check when the next boundary hit will occur
         (taubd, normalbd) = sim.nextboundary(x, v)
