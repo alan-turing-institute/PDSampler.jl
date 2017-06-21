@@ -52,6 +52,8 @@ The other two times are easy to compute:
 * the first, $\tau_h$, is the time of first hit with the boundary of the domain $C$ along the current ray $x(t)=x^{(i)}+(t-t_i)v^{(i)}$ for $t>t_i$. This guarantees that the trajectory stays in $C$ and that if the path meets a boundary, it bounces against it.
 * the second, $\tau_r$, is a *refreshment time* sampled from an exponential distribution with a fixed rate. This guarantees full exploration of $C$ (see BPS paper for details).
 
+Note that in the Wu and Robert's *Generalized Bouncy Particle Sampler* (GBPS), no refreshment is needed.
+
 #### Computing a new velocity (BPS)
 
 *Below we discuss the case of the BPS, the computations can be different for different samplers (such as the ZZ) but the essence of the method is the same.*
@@ -71,6 +73,8 @@ The update of the velocity goes as follows for the BPS (specular reflection):
 The figure below illustrates the specular reflexion, starting at the red point and going along the current ray (red, dashed line), we have a new event corresponding to a bounce or a hit (blue dot). In both cases, a specular reflection is executed (blue dashed line). The black line represents the tangent to either the boundary at that point or to the log-likelihood depending on the case.
 
 ![](assets/BPS.svg)
+
+In Wu and Robert's Generalized Bouncy Particle Sampler, the update of the velocity for a standard "bounce" event, is a bit different and integrates a draw from a spherical gaussian which removes the need for refreshment (see references). This algorithm is implemented in the toolbox under the name "GBPS".
 
 ### Putting the pieces together
 
@@ -139,3 +143,4 @@ The priority queue therefore has one entry for each factor. These entries corres
 * Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, [*The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method*](https://arxiv.org/abs/1510.02451), arXiv preprint, 2015.
 * Joris Bierkens, Alexandre Bouchard-Côté, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer, [*Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains*](https://arxiv.org/pdf/1701.04244.pdf), arXiv preprint, 2017.
 * Joris Bierkens, Paul Fearnhead and Gareth Roberts, [*The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data*](https://arxiv.org/pdf/1607.03188.pdf), arXiv preprint, 2016.
+* Changye Wu, Christian Robert, [*Generalized Bouncy Particle Sampler*](https://arxiv.org/pdf/1706.04781.pdf), arXiv preprint, 2017.
