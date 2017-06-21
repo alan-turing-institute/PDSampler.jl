@@ -15,8 +15,8 @@ Please refer to [**the documentation**](https://alan-turing-institute.github.io/
 
 Requirements:
 
-* Julia >= 0.5
-* 64-bit architecture
+* Julia in `[0.5.x, 0.6.x]` (*Julia `0.7` introduces breaking changes to the syntax, since it's still a "nightly" release we are sticking to rc versions.*)
+* 64-bit architecture (*It may be possible to adapt the code to run on 32 bit but it would be a bit of a headache, if there is genuine interest for this, please open issue and explain.*)
 
 In the Julia REPL:
 
@@ -24,3 +24,12 @@ In the Julia REPL:
 Pkg.clone("https://github.com/alan-turing-institute/PDMP.jl.git")
 using PDMP
 ```
+
+## References
+
+* Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, [*The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method*](https://arxiv.org/abs/1510.02451), arXiv preprint, 2015.
+* Joris Bierkens, Alexandre Bouchard-Côté, Arnaud Doucet, Andrew B. Duncan, Paul Fearnhead, Gareth Roberts and Sebastian J. Vollmer, [*Piecewise Deterministic Markov Processes for Scalable Monte Carlo on Restricted Domains*](https://arxiv.org/pdf/1701.04244.pdf), arXiv preprint, 2017.
+* Joris Bierkens, Paul Fearnhead and Gareth Roberts, [*The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data*](https://arxiv.org/pdf/1607.03188.pdf), arXiv preprint, 2016.
+* Changye Wu, Christian Robert, [*Generalized Bouncy Particle Sampler*](https://arxiv.org/pdf/1706.04781.pdf), arXiv preprint, 2017.
+
+*Note*: if your paper is not listed here and you feel like it should, please open an issue (same goes if there is a mistake or if a preprint is now a proper-print). 
