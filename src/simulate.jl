@@ -16,7 +16,7 @@ immutable Simulation
     gll::Function          # Gradient of Log Lik (potentially CV)
     nextboundary::Function # Where/When is the next boundary hit
     lambdaref::Float       # Refreshment rate
-    algname::String        # BPS, ZZ
+    algname::String        # BPS, ZZ, GBPS
     # derived
     dim::Int               # dimensionality
     # optional named arguments
@@ -49,7 +49,7 @@ immutable Simulation
         @assert T>0.0 "Simulation time must be positive"
         @assert lambdaref > 0.0 "Refreshment rate must be greater than 0"
         an = uppercase(algname)
-        @assert (an in ["BPS", "ZZ"]) "Unknown algorithm <$algname>"
+        @assert (an in ["BPS", "ZZ","GBPS"]) "Unknown algorithm <$algname>"
         new( x0, v0, T,
              nextevent,
              gradloglik,
@@ -173,6 +173,8 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
                     end
                 elseif sim.algname == "ZZ"
                     v = reflect_zz!(bounce.flipindex, v)
+                elseif sim.algname == "GBPS"
+                    v = reflect_gbps!(g, v)
                 end
             else
                 # move closer to the boundary/refreshment time
@@ -198,6 +200,8 @@ function simulate(sim::Simulation)::Tuple{Path, Dict}
                 end
             elseif sim.algname == "ZZ"
                 v = reflect_zz!(find((v.*normalbd).<0.0), v)
+            elseif sim.algname == "GBPS"
+                  v = reflect_gbps!(g, v)
             end
         # random refreshment
         else
