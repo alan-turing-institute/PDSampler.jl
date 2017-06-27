@@ -18,3 +18,5 @@ using PDMP, Base.Test
 @testset "ex_genbps"   begin include("ex_genbps.jl") end
 
 @testset "ex_lbps1"    begin include("ex_lbps1.jl") end
+
+@test 1==2
