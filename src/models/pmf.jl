@@ -33,8 +33,7 @@ function pmf_base(rexp::Float, p::Poly)::Float
     #
     # start by dumping roots with a negative real parts
     # and roots that are "too imaginary"
-    prs = [r for r in rs
-               if real(r)>0.0 && imag(r)/abs(r)<1e-8 ]
+    prs = [r for r in rs if real(r)>0.0 && imag(r)/abs(r)<1e-8 ]
     # now pick the one with the smallest radius
     prs = sort(map(abs,prs))
     k   = searchsortedfirst(prs,0.0)

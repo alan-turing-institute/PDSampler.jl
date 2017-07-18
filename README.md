@@ -9,6 +9,8 @@ This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 
 Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDMP.jl/latest) for information on how to use/expand this package.
 
+If you find this toolbox useful please star the repo! If you use it in your work, please cite this code and send us an email so that we can cite your work here.
+
 ## Installation and requirements
 
 (This is explained in more details in the documentation)
@@ -32,4 +34,4 @@ using PDMP
 * Joris Bierkens, Paul Fearnhead and Gareth Roberts, [*The Zig-Zag Process and Super-Efficient Sampling for Bayesian Analysis of Big Data*](https://arxiv.org/pdf/1607.03188.pdf), arXiv preprint, 2016.
 * Changye Wu, Christian Robert, [*Generalized Bouncy Particle Sampler*](https://arxiv.org/pdf/1706.04781.pdf), arXiv preprint, 2017.
 
-*Note*: if your paper is not listed here and you feel like it should, please open an issue (same goes if there is a mistake or if a preprint is now a proper-print). 
+*Note*: if your paper is not listed here and you feel like it should, please open an issue (same goes if there is a mistake or if a preprint is now a proper-print).
