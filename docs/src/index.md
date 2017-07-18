@@ -11,7 +11,6 @@ Pages = [
 Depth = 1
 ```
 
-The package is currently under construction (Spring 2017).
 The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
 If you have comments or wish to collaborate, please send an email to `tlienart σ turing > ac > uk`.
 
