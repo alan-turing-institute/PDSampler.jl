@@ -104,7 +104,7 @@ function nextevent_bps{T<:Vector{Float}}(g::PMFGaussian, x::T, w::T)::NextEvent
             tau = pmf_caseB(rexp, p, tp)
         elseif tm <= 0 # case: |\_/
             tau = pmf_caseC(rexp, p, t0, tp)
-        else
+        else # case: |_/\_/
             tau = pmf_caseD(rexp, p, tm, t0, tp)
         end
     end
