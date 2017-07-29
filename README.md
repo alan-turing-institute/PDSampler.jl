@@ -28,6 +28,8 @@ Pkg.clone("https://github.com/alan-turing-institute/PDMP.jl.git")
 using PDMP
 ```
 
+Note that loading the package may take several seconds. This is not because of PDMP itself but rather its dependencies. We are looking into this issue. 
+
 ## References
 
 * Alexandre Bouchard-Côté, Sebastian J. Vollmer and Arnaud Doucet, [*The Bouncy Particle Sampler: A Non-Reversible Rejection-Free Markov Chain Monte Carlo Method*](https://arxiv.org/abs/1510.02451), arXiv preprint, 2015.
