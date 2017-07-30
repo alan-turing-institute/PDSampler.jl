@@ -1,5 +1,3 @@
-using Distributions: Beta
-
 export
     reflect_bps!,
     reflect_zz!,

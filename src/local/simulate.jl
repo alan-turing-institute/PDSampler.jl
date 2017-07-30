@@ -1,10 +1,3 @@
-using DataStructures:
-        PriorityQueue,
-        enqueue!,
-        dequeue!,
-        peek
-using ProgressMeter
-
 export
     LocalSimulation,
     simulate

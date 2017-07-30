@@ -1,17 +1,23 @@
-__precompile__(true) # TODO set to true in releases
-
-# =================================================================
-# TODO
-# at the moment pretty much all functions are listed.
-# this is useful to keep track of what's documented/tested
-# however in practice, it's not necessary to export all methods
-# =================================================================
+__precompile__(true)
 
 module PDMP
 
 using Compat
 using Klara.ess
 using ApproxFun
+using Polynomials:
+        Poly,
+        roots,
+        polyint,
+        polyval
+using DataStructures:
+        PriorityQueue,
+        enqueue!,
+        dequeue!,
+        peek
+using ProgressMeter
+using Distributions: Beta
+
 
 const Int   = Int64
 const Float = Float64
@@ -23,12 +29,6 @@ export
     loglik,
     gradloglik,
     gradloglik_cv
-
-using Polynomials:
-        Poly,
-        roots,
-        polyint,
-        polyval
 
 ### source files (keep the order)
 

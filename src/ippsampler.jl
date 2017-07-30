@@ -8,7 +8,6 @@ export
 @compat abstract type IPPSamplingMethod end
 @compat abstract type Thinning <: IPPSamplingMethod end
 
-# TODO: complete
 """
     LinearBound
 
