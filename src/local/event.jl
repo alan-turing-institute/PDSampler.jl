@@ -97,7 +97,7 @@ end
     pushevent!(evl, ev)
 
 Append an `Event` object `ev` to an `EventList` object `evl`. The `Event`
-object is unpacked and pushed to the vectors encapsulated by `evl`. 
+object is unpacked and pushed to the vectors encapsulated by `evl`.
 See also: `EventList`.
 """
 function pushevent!(evl::EventList, ev::Event)::EventList

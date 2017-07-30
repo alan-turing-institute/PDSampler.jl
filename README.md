@@ -21,6 +21,8 @@ Requirements:
 * Julia in `[0.5.x, 0.6.x]` (*Julia `0.7` introduces breaking changes to the syntax, since it's still a "nightly" release we are sticking to rc versions.*)
 * 64-bit architecture (*It may be possible to adapt the code to run on 32 bit but it would be a bit of a headache, if there is genuine interest for this, please open issue and explain.*)
 
+Note: at the moment (summer 2017) we recommend  Julia 0.5.2 (last Julia 0.5 release) as the loading time of `PDMP.jl` is less than half that when using `0.6.0`.
+
 In the Julia REPL:
 
 ```julia
