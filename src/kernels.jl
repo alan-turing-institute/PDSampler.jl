@@ -16,7 +16,7 @@ BPS specular reflection (in place) of a velocity `v` against a plane defined by
 its normal `n`.
 """
 function reflect_bps!{T<:Vector{Float}}(n::T, v::T)::T
-    v -= 2.0dot(n, v)*n/norm(n)^2
+    v -= 2.0dot(n, v)*n/dot(n,n)
     v
 end
 
@@ -27,7 +27,7 @@ end
 """
 function reflect_gbps{T<:Vector{Float}}(n::T, v::T)::T
     v2  = randn(length(n))
-    v2 -= dot(n, v2 + v)*n/norm(n)^2
+    v2 -= dot(n, v2 + v)*n/dot(n,n)
     v2
 end
 
