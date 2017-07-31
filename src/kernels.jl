@@ -23,7 +23,8 @@ end
 """
     reflect_gbps(n, v)
 
-(Generalized) BPS specular reflection - flip normal component and resample orthogonal https://arxiv.org/abs/1706.04781
+(Generalized) BPS specular reflection - flip normal component and resample
+orthogonal https://arxiv.org/abs/1706.04781
 """
 function reflect_gbps{T<:Vector{Float}}(n::T, v::T)::T
     v2  = randn(length(n))
