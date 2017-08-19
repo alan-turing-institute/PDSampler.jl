@@ -83,7 +83,7 @@ A crude sanity check is for example to check that the estimated mean obtained th
 # Building a basic MC estimator
 # (taking samples from 2D MVG that are in positive orthan)
 sN = 1000
-s  = repmat(mu,1,sN)+L1[:L]*randn(p,sN)
+s  = broadcast(+, mu, L1[:L]*randn(p,sN))
 mt = zeros(2)
 np = 0
 # Sum for all samples in the positive orthan

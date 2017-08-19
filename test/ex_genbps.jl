@@ -46,7 +46,7 @@ The rest is as before:
 (path, details) = simulate(sim)
 
 sN = 1000
-s  = repmat(mu,1,sN)+L1[:L]*randn(p,sN)
+s  = broadcast(+, mu, L1[:L]*randn(p,sN))
 mt = zeros(2)
 np = 0
 # Sum for all samples in the positive orthan
