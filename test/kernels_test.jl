@@ -38,13 +38,13 @@ srand(31); v1 = refresh_restricted!(v1)
 @test norm(v-v1) <= 1e-12
 
 beta  = PDMP.Beta(abs(randn()))
-srand(53);
-w     = randn(d)
-w    /= norm(w)
-w    *= tan( rand(beta) * 2 * pi )
-v     = v1 + w
-v    /= norm(v)
-srand(53);
+srand(53)
+w  = randn(d)
+w /= norm(w)
+w *= tan( rand(beta) * 2 * pi )
+v  = v1 + w
+v /= norm(v)
+srand(53)
 v1 = refresh_partial!(beta)(v1)
 
 @test norm(v-v1) <= 1e-12

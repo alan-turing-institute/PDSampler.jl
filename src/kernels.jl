@@ -83,11 +83,11 @@ function refresh_restricted!{T<:Vector{Float}}(v::T)::T
     v /= norm(v)
 end
 function refresh_partial!{T<:Vector{Float}}(v::T, beta::Beta{Float})::T
-    # sample an angle
-    angle = rand(beta) * 2 * pi
     # sample a vector with norm 1
     w  = randn(length(v))
     w /= norm(w)
+    # sample an angle
+    angle = rand(beta) * 2 * pi
     # scale it by tan(angle):
     #   /|
     # /__|
