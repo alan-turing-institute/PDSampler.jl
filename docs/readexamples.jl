@@ -26,7 +26,7 @@ for name in tests
                     elseif ismatch(Regex("^#="),ln)
                         if iscode
                             # close the block
-                            write(fo, "```\n")
+                            write(fo, "\n```\n")
                             iscode = false
                         end
                     elseif ismatch(Regex("^=#"),ln)
@@ -34,10 +34,10 @@ for name in tests
                         llclose = true
                     else
                         if iscode && llclose
-                            write(fo, "```julia\n")
+                            write(fo, "\n```julia\n")
                             llclose = false
                         end
-                        skip?nothing:write(fo, ln)
+                        skip?nothing:write(fo, ln*"\n")
                     end
                 end
             end
