@@ -12,7 +12,7 @@ This is a list complementing the opened issues for things that need to be improv
 
 ### Local BPS - specific
 
-- [A2] There is/seems to be an equivalence between LBPS working well and some form of sparsity of the graphical model being present (i.e.: updates don't require actions on too many factors). This should be discussed in more details / clarified. In particular there may be cases for which BPS > LBPS and vice versa, a non-expert user may want to know this beforehand.
+- [A3] There is/seems to be an equivalence between LBPS working well and some form of sparsity of the graphical model being present (i.e.: updates don't require actions on too many factors). This should be discussed in more details / clarified. In particular there may be cases for which BPS > LBPS and vice versa, a non-expert user may want to know this beforehand.
 
 ## [D] Documentation
 
