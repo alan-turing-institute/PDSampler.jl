@@ -1,5 +1,10 @@
 This is a list complementing the opened issues for things that need to be improved or clarified (i.e. require a bit more than just a few lines of code).
 
+## [C] Code base
+
+- [C1] get rid of dependency on Klara.jl
+- [C2] get rid of dependency on ApproxFuns.jl (or make it conditional in some way since very seldom use and slows down loading of PDMP hugely)
+
 ## [A] Algorithm / Theory
 
 - [A1] Clarifying the stopping criterion (+ adding a clear discussion of the topic). In theory the stopping criterion should be the "duration" of the trajectory. In practice it may be easier to control the number of gradient evaluations or number of events etc. A discussion and consequent adaptation would be useful.
