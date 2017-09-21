@@ -4,6 +4,7 @@ This is a list complementing the opened issues for things that need to be improv
 
 - [C1] get rid of dependency on Klara.jl
 - [C2] get rid of dependency on ApproxFuns.jl (or make it conditional in some way since very seldom use and slows down loading of PDMP hugely)
+- [C3] get help from someone to use Compat properly so that the syntax is forward looking whilst not breaking on Julia 0.5 ideally (or breaking on 0.5 and working with 0.7)
 
 ## [A] Algorithm / Theory
 
