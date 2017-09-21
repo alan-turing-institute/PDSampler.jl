@@ -174,7 +174,7 @@ v = Vector{PDMP.AllowedVarType}(chain.structure.nvars)
 for i in 1:length(v)
     v[i] = PDMP.ls_random(all_evlist.evl[i])
 end
-pq2 = PDMP.PriorityQueue{Int, Float}()
+pq2 = PDMP.PriorityQueue(Int, Float)
 for fidx in 1:chain.structure.nfactors
     (xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, t)
     PDMP.ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)
