@@ -126,7 +126,7 @@ function ls_init(sim::LocalSimulation
         pushevent!(all_evlist.evl[i], evi)
     end
     # initialisation of the priority queue and the refreshment time
-    pq   = PriorityQueue(Int, Float)
+    pq   = PriorityQueue{Int, Float}()
     tref = randexp()/sim.lambdaref
     # filling of the priority queue with initial position
     for fidx in 1:sim.fg.structure.nfactors
@@ -287,7 +287,7 @@ function ls_refreshment(fg::FactorGraph, t::Float,
         @inbounds v[i] = ls_random(all_evlist.evl[i])
     end
     # Instantiate a new priority queue
-    pq = PriorityQueue(Int,Float)
+    pq = PriorityQueue{Int, Float}()
     for fidx in 1:fg.structure.nfactors
         # retrieve xf, vf corresponding to factor
         (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t)
