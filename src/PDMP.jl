@@ -33,6 +33,7 @@ export
 ### source files (keep the order)
 
 include("models/mvgaussian.jl")
+include("models/tmvgaussian.jl")
 include("models/logreg.jl")
 include("models/pmf.jl")
 
