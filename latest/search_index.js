@@ -65,11 +65,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "aboutpdsampler.html#About-PDMP-samplers-1",
+    "location": "aboutpdsampler.html#About-PDSampler-samplers-1",
     "page": "About PDSampler",
-    "title": "About PDMP samplers",
+    "title": "About PDSampler samplers",
     "category": "section",
-    "text": "This page aims at giving a very brief introduction to the concept of PDMP samplers (below we will refer to the algorithm but it should be understood as a class of algorithms). We also give some insight into how it is implemented although we cover the implementation in more details in the technical documentation. This is not meant to be a rigorous presentation of the algorithm (for this, please see the references at the bottom of this page). Rather, we focus here on the \"large building blocks\" behind the algorithm."
+    "text": "This page aims at giving a very brief introduction to the concept of Piecewise Deterministic samplers (below we will refer to the algorithm but it should be understood as a class of algorithms). We also give some insight into how it is implemented although we cover the implementation in more details in the technical documentation. This is not meant to be a rigorous presentation of the algorithm (for this, please see the references at the bottom of this page). Rather, we focus here on the \"large building blocks\" behind the algorithm."
 },
 
 {
@@ -125,7 +125,7 @@ var documenterSearchIndex = {"docs": [
     "page": "About PDSampler",
     "title": "Basics of factor graphs",
     "category": "section",
-    "text": "PDMP samplers can be adapted to explore the structure of the target distribution if it factorizes according to a factor graph i.e.:\\begin{equation}     \\pi(x) \\propto \\prod_{f\\in F} \\gamma_f (x_f), \\end{equation}where gamma_f are non-negative functions of the variables x_f=(x_f_1x_f_2dots), a subset of all the variables. A very simple example is a Hidden Markov Model corresponding to a factor graph in the form of a chain as illustrated below:(Image: )Distributions that factorize according to that factor graph have the form:\\begin{equation}     \\pi(x) \\propto \\gamma_1(x_1,x_2)\\gamma_2(x_2,x_3)\\gamma_3(x_3,x_4). \\end{equation}The idea behind the local samplers is to try to exploit the conditional dependence structure represented by the factor graph."
+    "text": "Piecewise Deterministic samplers can be adapted to explore the structure of the target distribution if it factorizes according to a factor graph i.e.:\\begin{equation}     \\pi(x) \\propto \\prod_{f\\in F} \\gamma_f (x_f), \\end{equation}where gamma_f are non-negative functions of the variables x_f=(x_f_1x_f_2dots), a subset of all the variables. A very simple example is a Hidden Markov Model corresponding to a factor graph in the form of a chain as illustrated below:(Image: )Distributions that factorize according to that factor graph have the form:\\begin{equation}     \\pi(x) \\propto \\gamma_1(x_1,x_2)\\gamma_2(x_2,x_3)\\gamma_3(x_3,x_4). \\end{equation}The idea behind the local samplers is to try to exploit the conditional dependence structure represented by the factor graph."
 },
 
 {
