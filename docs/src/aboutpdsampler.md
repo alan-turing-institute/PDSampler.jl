@@ -1,6 +1,6 @@
-# About PDMP samplers
+# About PDSampler samplers
 
-This page aims at giving a very brief introduction to the concept of PDMP samplers (below we will refer to *the algorithm* but it should be understood as a class of algorithms). We also give some insight into how it is implemented although we cover the implementation in more details in the technical documentation. This is not meant to be a rigorous presentation of the algorithm (for this, please see the references at the bottom of this page). Rather, we focus here on the "large building blocks" behind the algorithm.
+This page aims at giving a very brief introduction to the concept of Piecewise Deterministic samplers (below we will refer to *the algorithm* but it should be understood as a class of algorithms). We also give some insight into how it is implemented although we cover the implementation in more details in the technical documentation. This is not meant to be a rigorous presentation of the algorithm (for this, please see the references at the bottom of this page). Rather, we focus here on the "large building blocks" behind the algorithm.
 
 ## Basic idea (global samplers)
 
@@ -91,11 +91,11 @@ The simple global sampler can be expressed as follows:
 
 Following this representation, here are the key files of the code:
 
-* A way to sample from an IPP:  [**ippsampler.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/ippsampler.jl).
-* A way to define the geometry and in particular to compute the next boundary hit when traveling along a given ray: [**geometry.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/geometry.jl).
-* A way to define how the velocity needs to be updated (reflection, refreshments): [**kernels.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/kernels.jl).
-* A way to store a path formed of triples and compute integrals along it: [**path.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/path.jl).
-* A core loop: [**simulate.jl**](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/simulate.jl).
+* A way to sample from an IPP:  [**ippsampler.jl**](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/ippsampler.jl).
+* A way to define the geometry and in particular to compute the next boundary hit when traveling along a given ray: [**geometry.jl**](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/geometry.jl).
+* A way to define how the velocity needs to be updated (reflection, refreshments): [**kernels.jl**](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/kernels.jl).
+* A way to store a path formed of triples and compute integrals along it: [**path.jl**](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/path.jl).
+* A core loop: [**simulate.jl**](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/simulate.jl).
 
 We describe those in details and give explanations as to how to expand the toolbox in the technical documentation part.
 
@@ -103,7 +103,7 @@ We describe those in details and give explanations as to how to expand the toolb
 
 ### Basics of factor graphs
 
-PDMP samplers can be adapted to explore the structure of the target distribution if it factorizes according to a factor graph i.e.:
+Piecewise Deterministic samplers can be adapted to explore the structure of the target distribution if it factorizes according to a factor graph i.e.:
 
 \begin{equation}
     \pi(x) \propto \prod_{f\in F} \gamma_f (x_f),
