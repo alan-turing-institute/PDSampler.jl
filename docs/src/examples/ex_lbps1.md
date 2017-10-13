@@ -1,6 +1,6 @@
 # Local BPS (Chain of Gaussians)
 
-(*the code for this example can be found [here](https://github.com/alan-turing-institute/PDMP.jl/blob/master/test/ex_lbps1.jl), note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)
+(*the code for this example can be found [here](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/test/ex_lbps1.jl), note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)
 
 The approach to using the local BPS is much the same as for the global one
 except that you need to specify a `FactorGraph`.
@@ -9,7 +9,7 @@ That object will contain the structure of the factor graph (i.e.: which factor i
 Below, we show how to declare a chain of bivariate gaussians:
 
 ```julia
-using PDMP
+using PDSampler
 nfac = 3 # number of factors
 
 mvg = MvGaussianStandard(zeros(2),eye(2))

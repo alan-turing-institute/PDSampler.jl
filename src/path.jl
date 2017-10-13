@@ -16,7 +16,7 @@ AllowedTimeType = Union{Vector{Float}, Range{Float}}
 """
     Path
 
-Type to store a path simulated via PDMP sampling. It stores the corners and the
+Type to store a path simulated via PDSampling. It stores the corners and the
 times.
 """
 type Path

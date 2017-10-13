@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDSampler, Base.Test
 
 # the functions are somewhat trivial so the tests are also a bit trivial
 
@@ -37,7 +37,7 @@ srand(31); v1 = refresh_restricted!(v1)
 
 @test norm(v-v1) <= 1e-12
 
-beta  = PDMP.Beta(abs(randn()))
+beta  = PDSampler.Beta(abs(randn()))
 srand(53)
 w  = randn(d)
 w /= norm(w)

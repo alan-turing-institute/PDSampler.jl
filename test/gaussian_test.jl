@@ -1,4 +1,4 @@
-using PDMP, Base.Test, Distributions
+using PDSampler, Base.Test, Distributions
 
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing)

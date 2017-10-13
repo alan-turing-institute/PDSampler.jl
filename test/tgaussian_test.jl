@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDSampler, Base.Test
 
 # Everything should be the same as usual normals except
 # when x is out of boundaries

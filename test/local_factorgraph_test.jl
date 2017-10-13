@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDSampler, Base.Test
 
 srand(1234)
 
@@ -7,9 +7,9 @@ P1  = randn(p)
 P1 *= P1'
 mu  = zeros(p)
 
-mvg            = PDMP.MvGaussianCanon(mu,P1)
-gll(x)         = PDMP.gradloglik(mvg, x)
-nextevent(x,v) = PDMP.nextevent_bps(mvg, x, v)
+mvg            = PDSampler.MvGaussianCanon(mu,P1)
+gll(x)         = PDSampler.gradloglik(mvg, x)
+nextevent(x,v) = PDSampler.nextevent_bps(mvg, x, v)
 
 listfactors = [ Factor( nextevent, gll, i) for i in 1:3]
 chain       = chaingraph(listfactors)

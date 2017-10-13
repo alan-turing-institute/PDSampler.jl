@@ -1,4 +1,4 @@
-using PDMP, Base.Test, QuadGK.quadgk
+using PDSampler, Base.Test, QuadGK.quadgk
 
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing)
@@ -124,10 +124,10 @@ srand(542)
 ri = [randexp() for i in 1:100]
 
 # it must collide
-p1(xu,xv,wu,wv) = PDMP.Poly( [  dot(xu,xv)-pmfg.r,
+p1(xu,xv,wu,wv) = PDSampler.Poly( [  dot(xu,xv)-pmfg.r,
                                 (dot(xu,wv)+dot(xv,wu)),
                                 dot(wu,wv) ])
-p2(xu,xv,wu,wv) = PDMP.Poly( [  (dot(xu,wv)+dot(xv,wu)),
+p2(xu,xv,wu,wv) = PDSampler.Poly( [  (dot(xu,wv)+dot(xv,wu)),
                                 2.0dot(wu,wv)])
 E(xu,xv,wu,wv) = p1(xu,xv,wu,wv) * p2(xu,xv,wu,wv)
 

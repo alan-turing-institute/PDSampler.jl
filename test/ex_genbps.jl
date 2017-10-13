@@ -9,7 +9,7 @@ See also the corresponding paper: [*Generalized Bouncy Particle Sampler*](https:
 Robert.
 
 =#
-using PDMP
+using PDSampler
 p     = 2
 ns, a = eye(p), zeros(p)
 geom  = Polygonal(ns, a)

@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDSampler, Base.Test
 
 srand(1234)
 

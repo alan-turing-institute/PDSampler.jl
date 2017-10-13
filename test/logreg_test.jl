@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDSampler, Base.Test
 
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing) (drawn from some of SJV's old code)
@@ -31,7 +31,7 @@ X = randn(n,p)+0.1  # feature matrix
 w = 10*rand(p)      # true vector of parameters
 # observations according to a logistic thresholded to {-1,1}
 y = (logistic.(X*w) .> rand(n)) .* 2.0 .- 1.0
-# proxy for N*L upper bound (see PDMP paper TODO document better, check SQUARE?)
+# proxy for N*L upper bound (see PDSampler paper TODO document better, check SQUARE?)
 b  = sum( mapslices(r->norm(r)^2,X,1) )/4
 lr = LogReg(X,y,b)
 

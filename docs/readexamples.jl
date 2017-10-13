@@ -1,4 +1,4 @@
-baseURL = "https://github.com/alan-turing-institute/PDMP.jl/blob/master/"
+baseURL = "https://github.com/alan-turing-institute/PDSampler.jl/blob/master/"
 tests   = readdir("../test/")
 for name in tests
     if ismatch(Regex("^ex_"),name) && name[end-2:end]==".jl"

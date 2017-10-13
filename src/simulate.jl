@@ -5,7 +5,7 @@ export
 """
     Simulation
 
-Describe a PDMP sampling: information about the initial point, the time of the
+Describe a PDSampling: information about the initial point, the time of the
 simulation, the function to sample from an IPP, etc.
 """
 immutable Simulation
@@ -99,7 +99,7 @@ end
 """
     simulate(sim)
 
-Launch a PDMP simulation defined in the sim variable. Return the corresponding
+Launch a PD simulation defined in the sim variable. Return the corresponding
 Path and a dictionary of indicators (clocktime, ...).
 """
 function simulate(sim::Simulation)::Tuple{Path, Dict}

@@ -1,4 +1,4 @@
-using PDMP, Base.Test
+using PDSampler, Base.Test
 
 # This tests the Simulation object (not the simulate function)
 

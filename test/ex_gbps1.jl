@@ -7,7 +7,7 @@ In this example we use the global Bouncy Particle Sampler on 2D Gaussian truncat
 
 Start by loading the library:
 =#
-using PDMP
+using PDSampler
 #=
 you then need to define two elements:
 1. a geometry (boundaries)

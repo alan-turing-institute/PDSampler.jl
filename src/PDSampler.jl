@@ -1,6 +1,6 @@
 __precompile__(true)
 
-module PDMP
+module PDSampler
 
 using Compat
 using Klara.ess

@@ -1,6 +1,6 @@
 # Generalised BPS (Truncated Gaussian)
 
-(*the code for this example can be found [here](https://github.com/alan-turing-institute/PDMP.jl/blob/master/test/ex_genbps.jl), note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)
+(*the code for this example can be found [here](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/test/ex_genbps.jl), note that the doc rendered here was automatically generated, if you want to fix it, please do it in the julia code directly*)
 
 
 This example is identical to the Global Bouncy Particle Sampler example with
@@ -11,7 +11,7 @@ Robert.
 
 
 ```julia
-using PDMP
+using PDSampler
 p     = 2
 ns, a = eye(p), zeros(p)
 geom  = Polygonal(ns, a)

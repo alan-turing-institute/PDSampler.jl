@@ -7,7 +7,7 @@ That object will contain the structure of the factor graph (i.e.: which factor i
 
 Below, we show how to declare a chain of bivariate gaussians:
 =#
-using PDMP
+using PDSampler
 nfac = 3 # number of factors
 
 mvg = MvGaussianStandard(zeros(2),eye(2))

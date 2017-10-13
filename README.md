@@ -1,13 +1,13 @@
-# PDMP
+# PDSampler
 
 Unix | Windows | CodeCov | Docs | License
 ---- | ------- | ------- | ---- | -------
-[![Travis](https://travis-ci.org/alan-turing-institute/PDMP.jl.svg?branch=master)](https://travis-ci.org/alan-turing-institute/PDMP.jl) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/alan-turing-institute/PDMP.jl?branch=master&svg=true)](https://ci.appveyor.com/project/tlienart/pdmp-jl) | [![CodeCov](http://codecov.io/github/alan-turing-institute/PDMP.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDMP.jl?branch=master) | [![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDMP.jl/latest) | [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Travis](https://travis-ci.org/alan-turing-institute/PDSampler.jl.svg?branch=master)](https://travis-ci.org/alan-turing-institute/PDSampler.jl) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/alan-turing-institute/PDSampler.jl?branch=master&svg=true)](https://ci.appveyor.com/project/tlienart/PDSampler-jl) | [![CodeCov](http://codecov.io/github/alan-turing-institute/PDSampler.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDSampler.jl?branch=master) | [![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDSampler.jl/latest) | [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
+PDSampler.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 
-Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDMP.jl/latest) for information on how to use/expand this package. The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
+Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDSampler.jl/latest) for information on how to use/expand this package. The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDSampler.jl/issues).
 If you have comments or wish to collaborate, please send an email to `lienart σ stats > ox > ac > uk`.
 
 If you find this toolbox useful please star the repo. If you use it in your work, please cite this code and send us an email so that we can cite your work here.
@@ -23,16 +23,16 @@ Requirements:
 * Julia in `[0.5.x, 0.6.x]` (*Julia `0.7` introduces breaking changes to the syntax, since it's still a "nightly" release we are sticking to rc versions.*)
 * 64-bit architecture (*It may be possible to adapt the code to run on 32 bit but it would be a bit of a headache, if there is genuine interest for this, please open issue and explain.*)
 
-Note: at the moment (summer 2017) we recommend  Julia 0.5.2 (last Julia 0.5 release) as the loading time of `PDMP.jl` is less than half that when using `0.6.0`.
+Note: at the moment (summer 2017) we recommend  Julia 0.5.2 (last Julia 0.5 release) as the loading time of `PDSampler.jl` is less than half that when using `0.6.0`.
 
 In the Julia REPL:
 
 ```julia
-Pkg.clone("https://github.com/alan-turing-institute/PDMP.jl.git")
-using PDMP
+Pkg.clone("https://github.com/alan-turing-institute/PDSampler.jl.git")
+using PDSampler
 ```
 
-Note that loading the package may take several seconds. This is not because of PDMP itself but rather its dependencies. We are looking into this issue.
+Note that loading the package may take several seconds. This is not because of PDSampler itself but rather its dependencies. We are looking into this issue.
 
 ## References
 

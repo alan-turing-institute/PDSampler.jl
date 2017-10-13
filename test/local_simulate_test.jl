@@ -1,6 +1,6 @@
 # TODO: tests with multiD variables
-using PDMP
-#using PDMP
+using PDSampler
+#using PDSampler
 using Base.Test
 
 srand(1234)
@@ -9,9 +9,9 @@ p     = 2
 P1    = randn(p)
 P1   *= P1'
 mu    = zeros(p)
-mvg   = PDMP.MvGaussianCanon(mu,P1)
-chain = chaingraph([ Factor( (x,v)->PDMP.nextevent_bps(mvg, x, v),
-                              x   ->PDMP.gradloglik(mvg, x),
+mvg   = PDSampler.MvGaussianCanon(mu,P1)
+chain = chaingraph([ Factor( (x,v)->PDSampler.nextevent_bps(mvg, x, v),
+                              x   ->PDSampler.gradloglik(mvg, x),
                               i) for i in 1:3])
 
 srand(1234)
@@ -45,7 +45,7 @@ ls2 = LocalSimulation(
 
 ### TEST LS_INIT
 srand(140)
-(start, all_evlist, pq, tref) = PDMP.ls_init(ls2)
+(start, all_evlist, pq, tref) = PDSampler.ls_init(ls2)
 
 @test time()-start > 0.0 # and expected to be small...
 i = rand(1:chain.structure.nvars)
@@ -61,15 +61,15 @@ srand(140)
 @test pq[i] > 0.0
 
 ### TEST LS_RESHAPE
-v = Vector{PDMP.AllowedVarType}(5)
+v = Vector{PDSampler.AllowedVarType}(5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]
-w = Vector{PDMP.AllowedVarType}(5)
+w = Vector{PDSampler.AllowedVarType}(5)
 for i in 1:length(v)
     w[i] = v[i]*0.
 end
 u = vcat(v...)
 
-@test PDMP.ls_reshape(u, w) == v
+@test PDSampler.ls_reshape(u, w) == v
 
 all_evlist = AllEventList(Float, nvars)
 
@@ -94,14 +94,14 @@ pushevent!(all_evlist.evl[k], ev3)
 
 ### Testing LS_RETRIEVE (1D) (without reflection)
 fidx = 2
-(xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, 0.0)
+(xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist, 0.0)
 @test   xf == x0[assocvariables(chain, fidx)] &&
         vf == v0[assocvariables(chain, fidx)] &&
-        g  == PDMP.gradloglik(mvg, vcat(xf...))
+        g  == PDSampler.gradloglik(mvg, vcat(xf...))
 
 fidx = 1
 t    = t3+rand()
-(xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, t, false)
+(xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist, t, false)
 aev1x = all_evlist.evl[1].xs[end]
 aev1t = all_evlist.evl[1].ts[end]
 aev1v = all_evlist.evl[1].vs[end]
@@ -116,7 +116,7 @@ aev2v = all_evlist.evl[2].vs[end]
 
 ### Testing LS_RETRIEVE (1D) (with reflection)
 fidx = 2
-(xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, t, true)
+(xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist, t, true)
 aev1x = all_evlist.evl[2].xs[end]
 aev1t = all_evlist.evl[2].ts[end]
 aev1v = all_evlist.evl[2].vs[end]
@@ -130,15 +130,15 @@ aev2v = all_evlist.evl[3].vs[end]
         isapprox(g, chain.factors[fidx].gll(vcat(xf...)))
 
 ### Testing LS_SAVEUPDATE!
-PDMP.ls_saveupdate!(all_evlist, vars, xf, vf, t)
+PDSampler.ls_saveupdate!(all_evlist, vars, xf, vf, t)
 ii = rand(1:length(vars))
 vi = vars[ii]
 
 @test getlastevent(all_evlist.evl[vi]) == Event(xf[ii], vf[ii], t)
 
 ### Testing LS_UPDATEPQ!
-pq = PDMP.PriorityQueue()
-srand(123); PDMP.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
+pq = PDSampler.PriorityQueue()
+srand(123); PDSampler.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
 # It's gaussian so no need for thinning
 srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
 
@@ -155,8 +155,8 @@ push!(evl2.xs, randn(2))
 push!(evl2.vs, randn(2))
 push!(evl2.ts, abs(randn()))
 
-srand(321); a1 = PDMP.ls_random(evl1)
-srand(321); a2 = PDMP.ls_random(evl2)
+srand(321); a1 = PDSampler.ls_random(evl1)
+srand(321); a2 = PDSampler.ls_random(evl2)
 srand(321); aa = randn()
 srand(321); ab = randn(2)
 
@@ -165,19 +165,19 @@ srand(321); ab = randn(2)
 ### Testing LS_REFRESHMENT
 t  = randexp()
 
-srand(123); pq = PDMP.ls_refreshment(chain, t, all_evlist)
+srand(123); pq = PDSampler.ls_refreshment(chain, t, all_evlist)
 srand(123)
 ### this is a bit of a silly test but ls_refreshment is the
 # composite of functions that have all been tested, so there's not much
 # else to test than to just check it "works"
-v = Vector{PDMP.AllowedVarType}(chain.structure.nvars)
+v = Vector{PDSampler.AllowedVarType}(chain.structure.nvars)
 for i in 1:length(v)
-    v[i] = PDMP.ls_random(all_evlist.evl[i])
+    v[i] = PDSampler.ls_random(all_evlist.evl[i])
 end
-pq2 = PDMP.PriorityQueue(Int, Float)
+pq2 = PDSampler.PriorityQueue(Int, Float)
 for fidx in 1:chain.structure.nfactors
-    (xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist, t)
-    PDMP.ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)
+    (xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist, t)
+    PDSampler.ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)
 end
 @test pq == pq2
 
@@ -186,16 +186,16 @@ fidx = 2
 all_evlist_copy  = deepcopy(all_evlist)
 pq_copy          = deepcopy(pq)
 srand(9)
-(all_evlist, pq) = PDMP.ls_firstbranch!(chain, fidx, all_evlist, pq, t)
+(all_evlist, pq) = PDSampler.ls_firstbranch!(chain, fidx, all_evlist, pq, t)
 ## reproduce part of the action
 srand(9)
-(xf, vf, g, vars) = PDMP.ls_retrieve(chain, fidx, all_evlist_copy, t, true)
-PDMP.ls_saveupdate!(all_evlist_copy, vars, xf, vf, t)
-PDMP.ls_updatepq!(pq_copy, chain, fidx, xf, vf, g, t)
+(xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist_copy, t, true)
+PDSampler.ls_saveupdate!(all_evlist_copy, vars, xf, vf, t)
+PDSampler.ls_updatepq!(pq_copy, chain, fidx, xf, vf, g, t)
 # update a single attached factor
 fpidx = linkedfactors(chain, fidx)[1]
-(xfp, vfp, gp) = PDMP.ls_retrieve(chain, fpidx, all_evlist_copy, t)
-PDMP.ls_updatepq!(pq_copy, chain, fpidx, xfp, vfp, gp, t)
+(xfp, vfp, gp) = PDSampler.ls_retrieve(chain, fpidx, all_evlist_copy, t)
+PDSampler.ls_updatepq!(pq_copy, chain, fpidx, xfp, vfp, gp, t)
 
 @test   getlastevent(all_evlist.evl[1]).x ==
         getlastevent(all_evlist_copy.evl[1]).x

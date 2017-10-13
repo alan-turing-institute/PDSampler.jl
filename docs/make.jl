@@ -1,4 +1,4 @@
-using Documenter, PDMP
+using Documenter, PDSampler
 
 try
     # refreshes all the examples
@@ -9,13 +9,13 @@ catch e
 end
 
 makedocs(
-    modules = [PDMP],
+    modules = [PDSampler],
     format = :html,
-    sitename = "PDMP.jl",
+    sitename = "PDSampler.jl",
     authors = "Thibaut Lienart",
     pages = Any[
         "Introduction" => "index.md",
-        "About PDMP"   => "aboutpdmp.md",
+        "About PDSampler"   => "aboutpdsampler.md",
         "Examples" => Any[
             "Global BPS" => "examples/ex_gbps1.md",
             "Local BPS"  => "examples/ex_lbps1.md"
@@ -40,7 +40,7 @@ makedocs(
 )
 
 deploydocs(
-    repo   = "github.com/alan-turing-institute/PDMP.jl.git",
+    repo   = "github.com/alan-turing-institute/PDSampler.jl.git",
     deps   = Deps.pip("mkdocs", "pygments"),
     target = "build",
     julia  = "0.5",
