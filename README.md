@@ -7,12 +7,20 @@ Unix | Windows | CodeCov | Docs | License
 PDSampler.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 
-Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDSampler.jl/latest) for information on how to use/expand this package. The project is hosted and maintained by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI) and currently developed by [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDSampler.jl/issues).
+Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDSampler.jl/latest) for information on how to use/expand this package. 
+The project is hosted by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDSampler.jl/issues).
 If you have comments or wish to collaborate, please send an email to `lienart σ stats > ox > ac > uk`.
 
 If you find this toolbox useful please star the repo. If you use it in your work, please cite this code and send us an email so that we can cite your work here.
 
 If you want to make suggestions, if you want new features, please don't hesitate, open an issue or send an email.
+
+### Contributors
+
+* [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/)
+* [Sebastian Vollmer](https://www2.warwick.ac.uk/fac/sci/maths/people/staff/vollmer/)
+* [Andrew Duncan](http://www.imperial.ac.uk/complex-multiscale-systems/our-group/former-members/dr-andrew-duncan/)
+* Martin O'Reilly (ATI)
 
 ## Installation and requirements
 
