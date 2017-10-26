@@ -14,7 +14,7 @@ A few design choices have been made and should be respected (or modified with a 
 The structure of the `src/` folder is as follows:
 
 ```
-├── PDMP.jl
+├── PDSampler.jl
 ├── geometry.jl
 ├── ippsampler.jl
 ├── kernels.jl
@@ -30,9 +30,9 @@ The structure of the `src/` folder is as follows:
 └── simulate.jl
 ```
 
-The central file is `PDMP.jl` which serves one key purpose: declaring what the package needs (`Compat`, `Polynomials`, ...) and including the files that contain the effective pieces of code. It also *exports* some generic functions that are used throughout the package.
+The central file is `PDSampler.jl` which serves one key purpose: declaring what the package needs (`Compat`, `Polynomials`, ...) and including the files that contain the effective pieces of code. It also *exports* some generic functions that are used throughout the package.
 
-**Note**: in Julia everything should be wrapped around by a *module*. The `using PkgName` indicates that we want to have access to the functions exported by the package `PkgName` in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The `export functionName` indicates that if another user wants to use our module (by entering `using PDMP`) s/he will have access to all of those functions directly.
+**Note**: in Julia everything should be wrapped around by a *module*. The `using PkgName` indicates that we want to have access to the functions exported by the package `PkgName` in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The `export functionName` indicates that if another user wants to use our module (by entering `using PDSampler`) s/he will have access to all of those functions directly.
 
 Here is a high-level overview of the rest of the folder structure:
 

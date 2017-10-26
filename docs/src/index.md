@@ -1,34 +1,34 @@
-# PDMP.jl Documentation
+# PDSampler.jl Documentation
 
-[PDMP.jl](https://github.com/alan-turing-institute/PDMP.jl) is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
+[PDSampler.jl](https://github.com/alan-turing-institute/PDSampler.jl) is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 See the references at the bottom of this page.
 
 ```@contents
 Pages = [
-    "aboutpdmp.md",
+    "aboutpdsampler.md",
     ]
 Depth = 1
 ```
 
-The project is hosted by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDMP.jl/issues).
+The project is hosted by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDSampler.jl/issues).
 If you have comments or wish to collaborate, please open an issue on Github. 
 
 ## Using the Package
 
-To install the (currently unregistered) package, use the following command inside the Julia REPL:
+To install the package, use the following command inside the Julia REPL:
 
 ```julia
-Pkg.clone("git://github.com/alan-turing-institute/PDMP.jl.git")
+Pkg.clone("PDSampler")
 ```
 
 To load the package, use the command:
 
 ```julia
-using PDMP
+using PDSampler
 ```
 
-You can also run the tests with ```Pkg.test("PDMP")``` and update to the latest Github version with ```Pkg.update("PDMP")```.
+You can also run the tests with ```Pkg.test("PDSampler")``` and update to the latest Github version with ```Pkg.update("PDSampler")```.
 
 ## Examples
 

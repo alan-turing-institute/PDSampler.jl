@@ -27,7 +27,7 @@ Then a few markers should be considered:
 * `#@endexample` to indicate that the example is finished
 * write a few tests that check that the example produces the right answer (unit test)
 
-So it should look like (a full example can be seen [here](https://github.com/alan-turing-institute/PDMP.jl/blob/master/test/ex_gbps1.jl))
+So it should look like (a full example can be seen [here](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/test/ex_gbps1.jl))
 
 ```julia
 using Base.Test

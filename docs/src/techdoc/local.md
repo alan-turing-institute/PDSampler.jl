@@ -2,9 +2,9 @@
 
 Link to the source files:
 
-* [`local/event.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/local/event.jl)
-* [`local/factorgraph.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/local/factorgraph.jl)
-* [`local/simulate.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/local/simulate.jl)
+* [`local/event.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/local/event.jl)
+* [`local/factorgraph.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/local/factorgraph.jl)
+* [`local/simulate.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/local/simulate.jl)
 
 ## Event
 

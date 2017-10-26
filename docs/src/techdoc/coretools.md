@@ -2,9 +2,9 @@
 
 Link to the source files:
 
-* [`geometry.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/geometry.jl)
-* [`ippsampler.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/ippsampler.jl)
-* [`kernels.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/kernels.jl)
+* [`geometry.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/geometry.jl)
+* [`ippsampler.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/ippsampler.jl)
+* [`kernels.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/kernels.jl)
 
 ## Geometry
 

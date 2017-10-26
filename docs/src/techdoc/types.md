@@ -1,4 +1,4 @@
-# PDMP Types
+# PDSampler Types
 
 (**/!\WIP/!\**)
 
@@ -6,8 +6,8 @@
 FactorGraph
 ```
 
-* `Int` for `Int64` -- in `PDMP.jl`
-* `Float` for `Float64` -- in `PDMP.jl`
+* `Int` for `Int64` -- in `PDSampler.jl`
+* `Float` for `Float64` -- in `PDSampler.jl`
 * `AllowedVarType` for `Union{Float, Vector{Float}}` (variable types in the local BPS) -- in `local/event.jl`
 * `AllowedTimeType` for `Union{Vector{Float}, LinSpace{Float}}` (format of collections of times that can be passed to extract samples from events) -- in `path.jl`
 

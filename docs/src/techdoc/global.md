@@ -2,8 +2,8 @@
 
 Link to the source files:
 
-* [`path.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/path.jl)
-* [`simulate.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/simulate.jl)
+* [`path.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/path.jl)
+* [`simulate.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/simulate.jl)
 
 ## Path
 

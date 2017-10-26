@@ -36,7 +36,7 @@ Note: at the moment (summer 2017) we recommend  Julia 0.5.2 (last Julia 0.5 rele
 In the Julia REPL:
 
 ```julia
-Pkg.clone("https://github.com/alan-turing-institute/PDSampler.jl.git")
+Pkg.add("PDSampler")
 using PDSampler
 ```
 

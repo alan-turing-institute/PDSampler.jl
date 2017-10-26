@@ -2,9 +2,9 @@
 
 Link to the source files:
 
-* [`models/mvgaussian.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/models/mvgaussian.jl)
-* [`models/logreg.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/models/logreg.jl)
-* [`models/pmf.jl`](https://github.com/alan-turing-institute/PDMP.jl/blob/master/src/models/pmf.jl)
+* [`models/mvgaussian.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/models/mvgaussian.jl)
+* [`models/logreg.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/models/logreg.jl)
+* [`models/pmf.jl`](https://github.com/alan-turing-institute/PDSampler.jl/blob/master/src/models/pmf.jl)
 
 ## Generic model
 
