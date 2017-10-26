@@ -9,11 +9,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PDMP.jl-Documentation-1",
+    "location": "index.html#PDSampler.jl-Documentation-1",
     "page": "Introduction",
-    "title": "PDMP.jl Documentation",
+    "title": "PDSampler.jl Documentation",
     "category": "section",
-    "text": "PDMP.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on Piecewise Deterministic Markov Processes and their applications. This includes the Bouncy Particle Sampler and the Zig-Zag Sampler. See the references at the bottom of this page.Pages = [\n    \"aboutpdmp.md\",\n    ]\nDepth = 1The project is hosted by the Alan Turing Institute (ATI). If you encounter problems, please open an issue on Github. If you have comments or wish to collaborate, please open an issue on Github. "
+    "text": "PDSampler.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on Piecewise Deterministic Markov Processes and their applications. This includes the Bouncy Particle Sampler and the Zig-Zag Sampler. See the references at the bottom of this page.Pages = [\n    \"aboutpdsampler.md\",\n    ]\nDepth = 1The project is hosted by the Alan Turing Institute (ATI). If you encounter problems, please open an issue on Github. If you have comments or wish to collaborate, please open an issue on Github. "
 },
 
 {
@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Introduction",
     "title": "Using the Package",
     "category": "section",
-    "text": "To install the (currently unregistered) package, use the following command inside the Julia REPL:Pkg.clone(\"git://github.com/alan-turing-institute/PDMP.jl.git\")To load the package, use the command:using PDMPYou can also run the tests with Pkg.test(\"PDMP\") and update to the latest Github version with Pkg.update(\"PDMP\")."
+    "text": "To install the package, use the following command inside the Julia REPL:Pkg.clone(\"PDSampler\")To load the package, use the command:using PDSamplerYou can also run the tests with Pkg.test(\"PDSampler\") and update to the latest Github version with Pkg.update(\"PDSampler\")."
 },
 
 {
@@ -229,7 +229,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Code structure",
     "title": "Source files",
     "category": "section",
-    "text": "The structure of the src/ folder is as follows:├── PDMP.jl\n├── geometry.jl\n├── ippsampler.jl\n├── kernels.jl\n├── local\n│   ├── event.jl\n│   ├── factorgraph.jl\n│   └── simulate.jl\n├── models\n│   ├── logreg.jl\n│   ├── mvgaussian.jl\n│   └── pmf.jl\n├── path.jl\n└── simulate.jlThe central file is PDMP.jl which serves one key purpose: declaring what the package needs (Compat, Polynomials, ...) and including the files that contain the effective pieces of code. It also exports some generic functions that are used throughout the package.Note: in Julia everything should be wrapped around by a module. The using PkgName indicates that we want to have access to the functions exported by the package PkgName in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The export functionName indicates that if another user wants to use our module (by entering using PDMP) s/he will have access to all of those functions directly.Here is a high-level overview of the rest of the folder structure:geometry, ippsampler, kernels (specific documentation): generic tools used throughout the package\npath, simulate (specific documentation): tools to describe the path and how the simulation is run in the global case.\nmodels/* (specific documentation): to define specific models, their likelihood, gradient of log-likelihood etc.\nlocal/* (specific documentation): to define events, factor graphs and how to run the algorithm in the local case."
+    "text": "The structure of the src/ folder is as follows:├── PDSampler.jl\n├── geometry.jl\n├── ippsampler.jl\n├── kernels.jl\n├── local\n│   ├── event.jl\n│   ├── factorgraph.jl\n│   └── simulate.jl\n├── models\n│   ├── logreg.jl\n│   ├── mvgaussian.jl\n│   └── pmf.jl\n├── path.jl\n└── simulate.jlThe central file is PDSampler.jl which serves one key purpose: declaring what the package needs (Compat, Polynomials, ...) and including the files that contain the effective pieces of code. It also exports some generic functions that are used throughout the package.Note: in Julia everything should be wrapped around by a module. The using PkgName indicates that we want to have access to the functions exported by the package PkgName in the current scope (e.g.: the scope of the wrapping module or that of the REPL). The export functionName indicates that if another user wants to use our module (by entering using PDSampler) s/he will have access to all of those functions directly.Here is a high-level overview of the rest of the folder structure:geometry, ippsampler, kernels (specific documentation): generic tools used throughout the package\npath, simulate (specific documentation): tools to describe the path and how the simulation is run in the global case.\nmodels/* (specific documentation): to define specific models, their likelihood, gradient of log-likelihood etc.\nlocal/* (specific documentation): to define events, factor graphs and how to run the algorithm in the local case."
 },
 
 {
