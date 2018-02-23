@@ -9,20 +9,20 @@ Describe a PDSampling: information about the initial point, the time of the
 simulation, the function to sample from an IPP, etc.
 """
 immutable Simulation
-    x0::Vector{AbstractFloat}      # Starting point
-    v0::Vector{AbstractFloat}      # Starting velocity
-    T::AbstractFloat               # Simulation time
+    x0::Vector{Real}      # Starting point
+    v0::Vector{Real}      # Starting velocity
+    T::Real               # Simulation time
     nextevent::Function    # Appropriate simulation for first arrival time
     gll::Function          # Gradient of Log Lik (potentially CV)
     nextboundary::Function # Where/When is the next boundary hit
-    lambdaref::AbstractFloat       # Refreshment rate
+    lambdaref::Real       # Refreshment rate
     algname::String        # BPS, ZZ, GBPS
     # derived
     dim::Int               # dimensionality
     # optional named arguments
-    mass::Matrix{AbstractFloat}    # mass matrix (preconditioner)
+    mass::Matrix{Real}    # mass matrix (preconditioner)
     blocksize::Int         # increment the storage by blocks
-    maxsimtime::AbstractFloat      # max. simulation time (s)
+    maxsimtime::Real      # max. simulation time (s)
     maxsegments::Int       # max. num. of segments
     maxgradeval::Int       # max. num. grad. evals
     refresh!::Function     # refreshment function (TODO: examples)
