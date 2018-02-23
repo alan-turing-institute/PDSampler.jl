@@ -8,10 +8,10 @@ export
 """
     AllowedTimeType
 
-Syntactic sugar for union type of Vector{AbstractFloat} and LinSpace{AbstractFloat} (types
+Syntactic sugar for union type of Vector{Real} and LinSpace{Real} (types
 accepted for the `samplelocalpath` function).
 """
-const AllowedTimeType = Union{Vector{AbstractFloat}, Range{AbstractFloat}}
+const AllowedTimeType = Union{Vector{<:Real}, Range{<:Real}}
 
 """
     Path
@@ -20,8 +20,8 @@ Type to store a path simulated via PDSampling. It stores the corners and the
 times.
 """
 mutable struct Path
-    xs::Matrix{AbstractFloat}  # corners (dim: nfeatures * nsteps)
-    ts::Vector{AbstractFloat}  # times (dim: nsteps)
+    xs::Matrix{Real}  # corners (dim: nfeatures * nsteps)
+    ts::Vector{Real}  # times (dim: nsteps)
     # -- implicit
     p::Int      # nfeatures
     nseg::Int   # number of segments
@@ -35,13 +35,13 @@ Type to store the information relative to a single segment within a path in the
 global BPS.
 """
 struct Segment
-    ta::AbstractFloat
-    tb::AbstractFloat
-    xa::Vector{AbstractFloat}
-    xb::Vector{AbstractFloat}
+    ta::Real
+    tb::Real
+    xa::Vector{Real}
+    xb::Vector{Real}
     # -- implicit
-    tau::AbstractFloat
-    v::Vector{AbstractFloat}
+    tau::Real
+    v::Vector{Real}
     function Segment(ta, tb, xa, xb)
         @assert tb > ta "times of subsequent events should be distinct"
         new(ta, tb, xa, xb, tb - ta, (xb - xa) / (tb - ta))
@@ -86,7 +86,7 @@ function samplepath(p::Path, t::AllowedTimeType)
     end
     samples
 end
-samplepath(p::Path, t::AbstractFloat) = samplepath(p, [t])[:, 1]
+samplepath(p::Path, t::Real) = samplepath(p, [t])[:, 1]
 
 """
     quadpathpoly(path, poly)
@@ -132,8 +132,8 @@ pathmean(path::Path) = quadpathpoly(path, Poly([0.0, 1.0]))
 Increase the number of sample points on the path. The hope is that the ESS for
 each dimension divided by the number of samples becomes larger than `limfrac`.
 """
-function esspath(path::Path; ns::Int=1000, rtol::AbstractFloat=0.1,
-                 limfrac::AbstractFloat=0.2, maxns::Int=100000)
+function esspath(path::Path; ns::Int=1000, rtol::Real=0.1,
+                 limfrac::Real=0.2, maxns::Int=100000)
 
     Tp = 0.999 * path.ts[end]
     gg = linspace(0, Tp, ns)
