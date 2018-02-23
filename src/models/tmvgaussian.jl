@@ -15,14 +15,14 @@ the mean and the covariance matrix as well as the boundaries.
 Users should prefer the Canonical representation if they can use that.
 """
 struct TMvGaussianStandard <: TMvGaussian
-    mu::Vector{AbstractFloat}   # Precision*mean
-    cov::Matrix{AbstractFloat}  # negative Precision
-    lbd::Vector{AbstractFloat}  # list of lower boundaries
-    ubd::Vector{AbstractFloat}  # list of upper boundaries
+    mu::Vector{Real}   # Precision*mean
+    cov::Matrix{Real}  # negative Precision
+    lbd::Vector{Real}  # list of lower boundaries
+    ubd::Vector{Real}  # list of upper boundaries
     p::Int  # Dimensions
     #
-    prec::Matrix{AbstractFloat}
-    precmu::Vector{AbstractFloat}
+    prec::Matrix{Real}
+    precmu::Vector{Real}
     function TMvGaussianStandard(mu, cov, lbd, ubd)
         @assert length(mu) == size(cov, 1) == size(cov, 2)
         @assert length(mu) == length(lbd) == length(ubd)
@@ -41,11 +41,11 @@ Representation of a truncated multivariate diagonal gaussian (diagonal
 covariance) as well as the boundaries.
 """
 struct TMvDiagonalGaussian <: TMvGaussian
-    mu::Vector{AbstractFloat}     # mean
-    sigma::Vector{AbstractFloat}  # standard deviation
-    sigma2::Vector{AbstractFloat} # standard deviation squared
-    lbd::Vector{AbstractFloat}    # list of lower boundaries
-    ubd::Vector{AbstractFloat}    # list of upper boundaries
+    mu::Vector{Real}     # mean
+    sigma::Vector{Real}  # standard deviation
+    sigma2::Vector{Real} # standard deviation squared
+    lbd::Vector{Real}    # list of lower boundaries
+    ubd::Vector{Real}    # list of upper boundaries
     p::Int # dimensions
     function TMvDiagonalGaussian(mu, sigma, lbd, ubd)
         @assert length(mu) == length(lbd) == length(ubd)
@@ -62,11 +62,11 @@ the mean and the precision matrix as well as the boundaries.
 This is the preferred representation.
 """
 struct TMvGaussianCanon <: TMvGaussian
-    mu::Vector{AbstractFloat}     # mean
-    prec::Matrix{AbstractFloat}   # Precision
-    precmu::Vector{AbstractFloat} # Precision*mean
-    lbd::Vector{AbstractFloat}    # list of lower boundaries
-    ubd::Vector{AbstractFloat}    # list of upper boundaries
+    mu::Vector{Real}     # mean
+    prec::Matrix{Real}   # Precision
+    precmu::Vector{Real} # Precision*mean
+    lbd::Vector{Real}    # list of lower boundaries
+    ubd::Vector{Real}    # list of upper boundaries
     p::Int                # Dimensions
     function TMvGaussianCanon(mu, prec, lbd, ubd)
         @assert length(mu)==size(prec,1)==size(prec,2)
@@ -82,10 +82,10 @@ end
 Natural parameter space representation of a truncated multivariate Gaussian.
 """
 struct TMvGaussianNatural <: TMvGaussian
-    precmu::Vector{AbstractFloat}   # Precision*mean
-    negprec::Matrix{AbstractFloat}  # negative Precision
-    lbd::Vector{AbstractFloat}      # list of lower boundaries
-    ubd::Vector{AbstractFloat}      # list of upper boundaries
+    precmu::Vector{Real}   # Precision*mean
+    negprec::Matrix{Real}  # negative Precision
+    lbd::Vector{Real}      # list of lower boundaries
+    ubd::Vector{Real}      # list of upper boundaries
     p::Int                  # Dimensions
     function TMvGaussianNatural(precmu, negprec, lbd, ubd)
         @assert length(precmu) == size(negprec,1) == size(negprec,2)
@@ -114,10 +114,10 @@ mvg_precmu(g::TMvGN) = g.precmu
 mvg_precmu(g::TMvGS) = g.precmu
 mvg_precmu(g::TMvDG) = g.mu ./ g.sigma2
 
-mvg_precmult(g::TMvGC, x::Vector{AbstractFloat}) =  g.prec * x
-mvg_precmult(g::TMvGN, x::Vector{AbstractFloat}) = -g.negprec * x
-mvg_precmult(g::TMvGS, x::Vector{AbstractFloat}) =  g.prec * x
-mvg_precmult(g::TMvDG, x::Vector{AbstractFloat}) =  x ./ g.sigma2
+mvg_precmult(g::TMvGC, x::Vector{<:Real}) =  g.prec * x
+mvg_precmult(g::TMvGN, x::Vector{<:Real}) = -g.negprec * x
+mvg_precmult(g::TMvGS, x::Vector{<:Real}) =  g.prec * x
+mvg_precmult(g::TMvDG, x::Vector{<:Real}) =  x ./ g.sigma2
 
 # ------------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ mvg_precmult(g::TMvDG, x::Vector{AbstractFloat}) =  x ./ g.sigma2
 Gradient of the loglikelihood of a truncated multivariate Gaussian `g` at
 point `x`.
 """
-function gradloglik(g::TMvGaussian, x::Vector{AbstractFloat})
+function gradloglik(g::TMvGaussian, x::Vector{<:Real})
     if all(g.lbd .<= x .<= g.ubd)
         return mvg_precmu(g) - mvg_precmult(g,x)
     else
@@ -140,7 +140,7 @@ end
 
 Loglikelihood of a truncated multivariate Gaussian `g` at point `x`.
 """
-function loglik(g::TMvGaussian, x::Vector{AbstractFloat})
+function loglik(g::TMvGaussian, x::Vector{<:Real})
     if all(g.lbd .<= x .<= g.ubd)
         return 0.5dot(mvg_precmu(g) - mvg_precmult(g, x), x - mvg_mu(g))
     else
