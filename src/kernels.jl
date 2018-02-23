@@ -15,9 +15,9 @@ export
 BPS specular reflection (in place) of a velocity `v` against a plane defined by
 its normal `n`.
 """
-function reflect_bps!{T<:Vector{Float}}(n::T, v::T)::T
-    v -= 2.0dot(n, v)*n/dot(n,n)
-    v
+function reflect_bps!(n::T, v::T) where T <: Vector{AbstractFloat}
+    v .-= 2.0dot(n, v) * n / dot(n, n)
+    return v
 end
 
 """
@@ -26,10 +26,10 @@ end
 (Generalized) BPS specular reflection - flip normal component and resample
 orthogonal https://arxiv.org/abs/1706.04781
 """
-function reflect_gbps{T<:Vector{Float}}(n::T, v::T)::T
-    v2  = randn(length(n))
-    v2 -= dot(n, v2 + v)*n/dot(n,n)
-    v2
+function reflect_gbps(n::T, v::T) where T <: Vector{AbstractFloat}
+    v2 = randn(length(n))
+    v2 .-= dot(n, v2 + v) * n / dot(n, n)
+    return v2
 end
 
 # """
@@ -38,7 +38,7 @@ end
 # (Generalized) BPS specular reflection flip normal component and resample orthogonal https://arxiv.org/abs/1706.04781
 #
 # """
-# function reflect_gbps_sphere!{T<:Vector{Float}}(n::T, v::T)::T
+# function reflect_gbps_sphere!{T<:Vector{AbstractFloat}}(n::T, v::T)::T
 #     p = dot(n, v)*n/norm(n)^2
 #     v -= dot(n, v)*n/norm(n)^2
 #     v2 = rnorm(length(d))
@@ -52,9 +52,10 @@ end
 BPS specular reflection (in place) of a velocity `v` against a plane defined by
 its normal `n` and a mass matrix `mass`.
 """
-function reflect_bps!{T<:Vector{Float}}(n::T, v::T, mass::Matrix{Float})::T
-    v -= 2.0dot(n, v)*(mass*n)/dot(mass*n,n)
-    v
+function reflect_bps!(n::T, v::T, mass::Matrix{AbstractFloat}
+                        ) where T <: Vector{AbstractFloat}
+    v .-= 2.0dot(n, v) * (mass * n) / dot(mass * n, n)
+    return v
 end
 
 # ------------------------------------------------------------------------------
@@ -65,26 +66,27 @@ end
 
 ZigZag reflection (in place) of v according to a mask on its indeces `mask`.
 """
-function reflect_zz!{T<:Vector{Float}}(mask::Vector{Int}, v::T)::T
-    v[mask] *= -1.0
-    v
+function reflect_zz!(mask::Vector{Int}, v::T) where T <: Vector{AbstractFloat}
+    v[mask] .*= -1.0
+    return v
 end
-reflect_zz!{T<:Vector{Float}}(mask::Int, v::T)::T = reflect_zz!([mask], v)
+reflect_zz!(mask::Int, v::T) where T <: Vector{AbstractFloat} =
+    reflect_zz!([mask], v)
 
 # ------------------------------------------------------------------------------
 # Refreshment kernels
 
-function refresh_global!{T<:Vector{Float}}(v::T)::T
-    v = randn(length(v))
-    v
-end
-function refresh_restricted!{T<:Vector{Float}}(v::T)::T
+refresh_global!(v::Vector{AbstractFloat}) = (v .= randn(length(v)); v)
+
+function refresh_restricted!(v::Vector{AbstractFloat})
     v  = refresh_global!(v)
     v /= norm(v)
+    return v
 end
-function refresh_partial!{T<:Vector{Float}}(v::T, beta::Beta{Float})::T
+
+function refresh_partial!(v::Vector{AbstractFloat}, beta::Beta{AbstractFloat})
     # sample a vector with norm 1
-    w  = randn(length(v))
+    w = randn(length(v))
     w /= norm(w)
     # sample an angle
     angle = rand(beta) * 2 * pi
@@ -99,4 +101,4 @@ function refresh_partial!{T<:Vector{Float}}(v::T, beta::Beta{Float})::T
     # normalise
     v /= norm(v)
 end
-refresh_partial!(beta::Beta{Float}) = v->refresh_partial!(v,beta)
+refresh_partial!(beta::Beta{AbstractFloat}) = v -> refresh_partial!(v, beta)

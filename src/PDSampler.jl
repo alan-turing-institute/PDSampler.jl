@@ -2,7 +2,6 @@ __precompile__(true)
 
 module PDSampler
 
-using Compat
 using Klara.ess
 using ApproxFun
 using Polynomials:
@@ -18,13 +17,7 @@ using DataStructures:
 using ProgressMeter
 using Distributions: Beta
 
-
-const Int   = Int64
-const Float = Float64
-
 export
-    Int,
-    Float,
     # MODELS
     loglik,
     gradloglik,

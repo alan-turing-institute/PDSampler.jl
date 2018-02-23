@@ -32,7 +32,7 @@ xvals = [randn(p) for i in 1:100]
 
 # difference is in logspace, and we're using slightly different matrices and
 # the computation of the constant is crude to say the least -> higher tol
-@test maximum( loglik(mvg,x) - check_loglik(x)
+@test maximum( loglik(mvg, x) - check_loglik(x)
                     for x in xvals ) <= 1e-6
 
 # canon to natural

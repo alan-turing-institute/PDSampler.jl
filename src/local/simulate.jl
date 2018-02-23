@@ -10,9 +10,9 @@ immutable LocalSimulation
     fg::FactorGraph
     x0::Vector{AllowedVarType}  # Starting point
     v0::Vector{AllowedVarType}  # Starting velocity
-    T::Float                    # Simulation time
+    T::AbstractFloat                    # Simulation time
     maxnevents::Int             # Maximum number of events
-    lambdaref::Float            # Refreshment rate
+    lambdaref::AbstractFloat            # Refreshment rate
     # -- implicit
     nvars::Int                  # Number of nodes
     nfactors::Int               # Number of factors
@@ -116,7 +116,7 @@ all eventlists and push the original event, create the priorityqueue and fill
 it with the initial bounce times
 """
 function ls_init(sim::LocalSimulation
-                )::Tuple{Float,AllEventList,PriorityQueue,Float}
+                )::Tuple{AbstractFloat,AllEventList,PriorityQueue,AbstractFloat}
     # instantiate wall clock
     start = time()
     # initialisation of the eventlists for every node in the graph
@@ -126,7 +126,7 @@ function ls_init(sim::LocalSimulation
         pushevent!(all_evlist.evl[i], evi)
     end
     # initialisation of the priority queue and the refreshment time
-    pq   = PriorityQueue(Int, Float)
+    pq   = PriorityQueue(Int, AbstractFloat)
     tref = randexp()/sim.lambdaref
     # filling of the priority queue with initial position
     for fidx in 1:sim.fg.structure.nfactors
@@ -142,7 +142,7 @@ end
 Operation corresponding to the first branch of events in simulate.
 """
 function ls_firstbranch!(fg::FactorGraph, fidx::Int, all_evlist::AllEventList,
-                         pq::PriorityQueue, t::Float
+                         pq::PriorityQueue, t::AbstractFloat
                          )::Tuple{AllEventList,PriorityQueue}
     # retrieve xf, vf corresponding to factor
     (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t, true)
@@ -166,7 +166,7 @@ AllowedVarType following the structure of `v`. For example, let
 `v = [0., [0., 0.]]` and `u=[1., 2., 3.]` then `ls_reshape(u,v)` will return
 `[1., [2., 3.]]`.
 """
-function ls_reshape{V<:Vector{AllowedVarType}}(u::Vector{Float}, v::V)::V
+function ls_reshape{V<:Vector{AllowedVarType}}(u::Vector{AbstractFloat}, v::V)::V
     w = similar(v)
     # offsets to know where to look for next block of information
     offset = 0
@@ -188,7 +188,7 @@ well as the gradient at `xf` and the list of indices of the attached variables.
 """
 function ls_retrieve(fg::FactorGraph, fidx::Int,
                     all_evlist::AllEventList,
-                    t::Float, doreflect::Bool=false)
+                    t::AbstractFloat, doreflect::Bool=false)
     # indices of the variable associated with factor fidx
     vars = assocvariables(fg, fidx)
     # allocate xf, vf, note the different variables
@@ -229,7 +229,7 @@ the recovered positions and velocities obtained when considering factor `f`).
 """
 function ls_saveupdate!(all_evlist::AllEventList, vars::Vector{Int},
                         xf::Vector{AllowedVarType}, vf::Vector{AllowedVarType},
-                        t::Float)::AllEventList
+                        t::AbstractFloat)::AllEventList
     # Add the new sample to the list
     for (i, k) in enumerate(vars)
         pushevent!(all_evlist.evl[k], Event(xf[i], vf[i], t))
@@ -246,7 +246,7 @@ push it to the PriorityQueue `pq`.
 """
 function ls_updatepq!(pq::PriorityQueue, fg::FactorGraph, fidx::Int,
                       xf::Vector{AllowedVarType}, vf::Vector{AllowedVarType},
-                      g::Vector{Float}, t::Float)::PriorityQueue
+                      g::Vector{AbstractFloat}, t::AbstractFloat)::PriorityQueue
     # useful temporary variables
     vcxf, vcvf = vcat(xf...), vcat(vf...)
     # Update time in Priority Queue for the current factor
@@ -279,7 +279,7 @@ end
 new velocities for each node and storing it (cf. NewQueue algorithm in the BPS
 paper).
 """
-function ls_refreshment(fg::FactorGraph, t::Float,
+function ls_refreshment(fg::FactorGraph, t::AbstractFloat,
                         all_evlist::AllEventList)::PriorityQueue
     # draw a new bunch of velocities for each node
     v = Vector{AllowedVarType}(fg.structure.nvars)
@@ -287,7 +287,7 @@ function ls_refreshment(fg::FactorGraph, t::Float,
         @inbounds v[i] = ls_random(all_evlist.evl[i])
     end
     # Instantiate a new priority queue
-    pq = PriorityQueue(Int, Float)
+    pq = PriorityQueue(Int, AbstractFloat)
     for fidx in 1:fg.structure.nfactors
         # retrieve xf, vf corresponding to factor
         (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t)
