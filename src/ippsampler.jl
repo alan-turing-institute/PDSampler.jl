@@ -14,9 +14,9 @@ abstract type Thinning <: IPPSamplingMethod end
 Indicating you have access to a global bound on the eigenvalues of the Hessian.
 """
 struct LinearBound <: Thinning
-    xstar::Vector{AbstractFloat}
-    gllstar::Vector{AbstractFloat}  # grad log likelihood around xstar
-    b::AbstractFloat                # N*L where L is Lipschitz constant
+    xstar::Vector{Real}
+    gllstar::Vector{Real}  # grad log likelihood around xstar
+    b::Real                # N*L where L is Lipschitz constant
     a::Function
     function LinearBound(xstar, gllstar, b)
         new(xstar, gllstar, b,
@@ -32,7 +32,7 @@ Object returned when calling a `nextevent_*` type function. The bouncing time
 true always for analytical sampling). `flipindex` is to support ZZ sampling.
 """
 struct NextEvent
-    tau::AbstractFloat # candidate first arrival time
+    tau::Real # candidate first arrival time
     dobounce::Function # do bounce (if accept reject step)
     flipindex::Int     # flipindex (if ZZ style)
     function NextEvent(tau, dobounce, flipindex)
@@ -52,7 +52,7 @@ Gaussian density (for which the simulation of the first arrival time of the
 corresponding IPP can be done exactly).
 """
 function nextevent_bps(g::MvGaussian,
-                       x::T, v::T) where T <: Vector{AbstractFloat}
+                       x::Vector{<:Real}, v::Vector{<:Real})
     # precision(g)*x - precision(g)*mu(g) --> precmult, precmu in Gaussian.jl
     a = dot(mvg_precmult(g, x) - mvg_precmu(g), v)
     b = dot(mvg_precmult(g, v), v)
@@ -63,7 +63,7 @@ function nextevent_bps(g::MvGaussian,
 end
 
 function nextevent_bps(g::PMFGaussian,
-                       x::T, w::T) where T <: Vector{AbstractFloat}
+                       x::Vector{<:Real}, w::Vector{<:Real})
     # unmasking x, w
     xu, xv = x[1:g.d], x[g.d+1:end]
     wu, wv = w[1:g.d], w[g.d+1:end]
@@ -117,7 +117,7 @@ end
 Same as nextevent but for the Zig Zag sampler.
 """
 function nextevent_zz(g::MvGaussian,
-                      x::T, v::T) where T <: Vector{AbstractFloat}
+                      x::Vector{<:Real}, v::Vector{<:Real})
     # # precision(g)*x - precision(g)*mu(g) --> precmult, precmu in Gaussian.jl
     u1 = mvg_precmult(g, x)-mvg_precmu(g)
     u2 = mvg_precmult(g, v)
@@ -140,7 +140,7 @@ Return a bouncing time and corresponding intensity corresponding to a linear
 upperbound described in `lb`.
 """
 function nextevent_bps(lb::LinearBound,
-                       x::T, v::T) where T <: Vector{AbstractFloat}
+                       x::Vector{<:Real}, v::Vector{<:Real})
     a = lb.a(x, v)
     b = lb.b
     @assert a >= 0.0 && b > 0.0 "<ippsampler/nextevent_bps/linearbound>"
@@ -149,8 +149,8 @@ function nextevent_bps(lb::LinearBound,
     return NextEvent(tau, dobounce=(g,v)->(rand()<-dot(g, v)/lambdabar))
 end
 
-function nextevent_bps_q(gll::Function, x::T, v::T, tref::AbstractFloat;
-                         n=100) where T <: Vector{AbstractFloat}
+function nextevent_bps_q(gll::Function, x::T, v::T, tref::Real;
+                         n=100) where T <: Vector{<:Real}
 
     chi(t) = max(0.0, dot(-gll(x + t * v), v))
     S      = Chebyshev(0.0..tref)
