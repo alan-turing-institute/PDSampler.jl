@@ -19,8 +19,8 @@ Encapsulate a domain with polygonal boundaries. The boundaries are defined with
 the normals to the facets and the intercepts of the corresponding hyperplanes.
 """
 struct Polygonal <: Domain
-    normals::Matrix{AbstractFloat} # dim CxD where C=#constraints, D=#features
-    intercepts::Vector{AbstractFloat} # dim C
+    normals::Matrix{Real} # dim CxD where C=#constraints, D=#features
+    intercepts::Vector{Real} # dim C
 end
 
 # -----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ end
 Return (NaN, NaN) corresponding to the unconstrained case.
 """
 function nextboundary(ud::Unconstrained,
-                      x::T, v::T) where T <: Vector{AbstractFloat}
+                      x::T, v::T) where T <: Vector{<:Real}
     return (NaN, NaN)
 end
 
@@ -43,7 +43,7 @@ domain is polygonal and return the normal of the corresponding boundary.
 The current point is `x` and the velocity `v`.
 """
 function nextboundary(pd::Polygonal,
-                      x::T, v::T) where T <: Vector{AbstractFloat}
+                      x::T, v::T) where T <: Vector{<:Real}
     # hitting time along trajectory (x+tv) for a boundary (normal,intercept) is
     # t = intercept/(normal dot v) - (x dot normal)/(normal dot v)
     nsv  = pd.normals * v

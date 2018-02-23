@@ -1,4 +1,5 @@
-using PDSampler, Base.Test
+using PDSampler
+using Base.Test
 
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing) (drawn from some of SJV's old code)
@@ -15,12 +16,12 @@ end
 
 srand(123)
 
-p          = 50
-c          = 10
-normals    = randn(c,p)
+p = 50
+c = 10
+normals = randn(c,p)
 intercepts = randn(c)
 
-unconstr   = Unconstrained()
+unconstr = Unconstrained()
 polyconstr = Polygonal(normals,intercepts)
 
 x = randn(p)
@@ -28,7 +29,7 @@ v = randn(p)
 
 res = nextboundary(unconstr, x, v)
 
-@test reduce(*,map(isnan,res))
+@test reduce(*, map(isnan, res))
 
 (t_b, n_b) = q_nextboundary(normals, intercepts, x, v)
 (t, n)     = nextboundary(polyconstr, x, v)
