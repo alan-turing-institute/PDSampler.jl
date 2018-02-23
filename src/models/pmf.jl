@@ -2,31 +2,31 @@ export
     PMFGaussian
 
 struct PMFGaussian
-    r::AbstractFloat   # Rating
-    sigma::AbstractFloat
+    r::Real   # Rating
+    sigma::Real
     d::Int   # Dimension of latent space
 end
 
-function gradloglik(g::PMFGaussian, x::Vector{AbstractFloat})
+function gradloglik(g::PMFGaussian, x::Vector{<:Real})
     u = x[1:g.d]
     v = x[g.d+1:end]
     e = dot(u, v) - g.r
-    return -e/g.sigma^2 * [v; u]
+    return -e / g.sigma^2 * [v; u]
 end
 
-function loglik(g::PMFGaussian, x::Vector{AbstractFloat})
+function loglik(g::PMFGaussian, x::Vector{<:Real})
     u = x[1:g.d]
     v = x[g.d+1:end]
     e = dot(u, v) - g.r
-    return 0.5(e/g.sigma)^2
+    return 0.5(e / g.sigma)^2
 end
 
 # --------------------------------------------------------------------------
 # HELPER FUNCTIONS FOR THE BPS sampler
 
-function pmf_base(rexp::AbstractFloat, p::Poly)
+function pmf_base(rexp::Real, p::Poly)
     # find solutions to [p(x) = y]
-    rs  = roots(p-rexp)
+    rs  = roots(p - rexp)
     # we want the first real root > 0.0
     # this requires a bit of subtlety as `roots` is not
     # super stable so there are imaginary numbers trailing
@@ -41,7 +41,7 @@ function pmf_base(rexp::AbstractFloat, p::Poly)
 end
 
 
-function pmf_caseA(rexp::AbstractFloat, p::Poly)
+function pmf_caseA(rexp::Real, p::Poly)
     # == CASE A ###### intensity:
     #  |   |
     #  |  /
@@ -55,7 +55,7 @@ function pmf_caseA(rexp::AbstractFloat, p::Poly)
 end
 
 
-function pmf_caseB(rexp::T, p::Poly, r::T) where T <: AbstractFloat
+function pmf_caseB(rexp::T, p::Poly, r::T) where T <: Real
     @assert 0.0 < r
     # == CASE B ###### intensity:
     #   |         |
@@ -70,7 +70,7 @@ function pmf_caseB(rexp::T, p::Poly, r::T) where T <: AbstractFloat
 end
 
 
-function pmf_caseC(rexp::T, p::Poly, t0::T, tp::T) where T <: AbstractFloat
+function pmf_caseC(rexp::T, p::Poly, t0::T, tp::T) where T <: Real
     @assert 0.0 < t0 < tp
     # == CASE C ###### intensity:
     #   |             |
@@ -95,7 +95,7 @@ end
 
 
 function pmf_caseD(rexp::T, p::Poly, tm::T, t0::T, tp::T
-                    ) where T <: AbstractFloat
+                    ) where T <: Real
     @assert 0.0 <= tm < t0 < tp
     # == CASE D ###### intensity:
     #   |
