@@ -79,7 +79,7 @@ ss2 = samplepath(Path(xs,ts), ss)
 
 ############
 # testing pathmean (and implicitly quadpathpoly) on entire alleventlist
-all_evlist = AllEventList(Float, nvars)
+all_evlist = AllEventList(Float64, nvars)
 for k in 1:nvars
     t = 0.0
     for e in 1:50
