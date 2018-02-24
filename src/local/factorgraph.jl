@@ -17,7 +17,7 @@ bounce, the gradient of the log likelihood associated with the factor and
 the index of the factor in the list of factors of a factor graph.
 See also: `FactorGraph`, `FactorGraphStruct`.
 """
-immutable Factor
+struct Factor
     nextevent::Function # compute the corresponding first arrival time
     gll::Function       # gradient of log likelihood
     index::Int          # factor index
@@ -30,7 +30,7 @@ Encapsulation of the structure of a factor graph. It is made of a list of
 factors each corresponding to a list of variables attached to the factor.
 See also: `Factor`, `FactorGraph`.
 """
-immutable FactorGraphStruct
+struct FactorGraphStruct
     flist::Vector{Vector{Int}} # each entry is a list of vars
     # -- implicit
     vlist::Vector{Vector{Int}} # each entry is a list of factors
@@ -41,13 +41,13 @@ immutable FactorGraphStruct
         # finding how many variables there are
         maxvar = 0
         for f in flist
-            maxvar = max(maxvar,maximum(f))
+            maxvar = max(maxvar, maximum(f))
         end
         # populating the lists of factors for each variable
         vars = [Vector{Int}(0) for i in 1:maxvar]
-        for (fi,f) in enumerate(flist)
+        for (fi, f) in enumerate(flist)
             for e in f
-                push!(vars[e],fi)
+                push!(vars[e], fi)
             end
         end
         new(flist, vars, length(flist), maxvar)
@@ -62,19 +62,18 @@ Encapsulation of a factor graph. It is made out of a structure
 structure.
 See also: `Factor`, `FactorGraphStruct`.
 """
-immutable FactorGraph
+struct FactorGraph
     structure::FactorGraphStruct
     factors::Vector{Factor}
 end
-function FactorGraph(fgs::Vector{Vector{Int}}, factors::Vector{Factor})
-    FactorGraph(FactorGraphStruct(fgs),factors)
-end
+FactorGraph(fgs::Vector{Vector{Int}}, factors::Vector{Factor}) =
+    FactorGraph(FactorGraphStruct(fgs), factors)
 
 # access the variables associated to a factor or vice versa
 assocvariables(fgs::FactorGraphStruct, fidx::Int) = fgs.flist[fidx]
-assocfactors(fgs::FactorGraphStruct,   vidx::Int) = fgs.vlist[vidx]
-assocvariables(fg::FactorGraph, fidx::Int) = assocvariables(fg.structure,fidx)
-assocfactors(fg::FactorGraph,   vidx::Int) = assocfactors(fg.structure,vidx)
+assocfactors(fgs::FactorGraphStruct, vidx::Int) = fgs.vlist[vidx]
+assocvariables(fg::FactorGraph, fidx::Int) = assocvariables(fg.structure, fidx)
+assocfactors(fg::FactorGraph, vidx::Int) = assocfactors(fg.structure, vidx)
 
 """
     linkedfactors(fgs, fidx)
@@ -84,9 +83,9 @@ indexed by `fidx`. It does *not* contain the current factor fidx for efficiency
 reason (the current factor can be updated quicker directly from the general
 simulation loop).
 """
-function linkedfactors(fgs::FactorGraphStruct, fidx::Int)::Vector{Int}
+function linkedfactors(fgs::FactorGraphStruct, fidx::Int)
     lf = Vector{Int}(0)
-    for v in fgs.flist[fidx]
+    for v ∈ fgs.flist[fidx]
         push!(lf, fgs.vlist[v]...)
     end
     unq = unique(lf)                    # this still contains fidx
@@ -97,8 +96,8 @@ linkedfactors(fg::FactorGraph, fidx::Int) = linkedfactors(fg.structure, fidx)
 # ==============================================================================
 # Definition of standard FG structures
 
-chainstruct(nvars::Int) = FactorGraphStruct([[i,i+1] for i in 1:nvars-1])
-chaingraph(lf::Vector{Factor}) = FactorGraph(chainstruct(length(lf)+1), lf)
+chainstruct(nvars::Int) = FactorGraphStruct([[i,i+1] for i ∈ 1:nvars-1])
+chaingraph(lf::Vector{Factor}) = FactorGraph(chainstruct(length(lf) + 1), lf)
 
 # row based reading (left right then top down)
 # gridstruct(nvars::Int) = error("Not implemented yet")

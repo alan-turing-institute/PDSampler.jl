@@ -17,7 +17,7 @@ Syntactic sugar to make it explicit what variable types are handled in the
 local BPS (i.e, the type of the variables on each node of the factor graph).
 See also, Event, EventList.
 """
-AllowedVarType = Union{Float, Vector{Float}}
+const AllowedVarType = Union{Real, Vector{<:Real}}
 
 """
     Event{T <: AllowedVarType}
@@ -26,10 +26,10 @@ Encapsulation of a local event: a tuple made out of (position, velocity, time)
 for a node in the local BPS algorithm.
 See also: `EventList`.
 """
-immutable Event{T <: AllowedVarType}
+struct Event{T <: AllowedVarType}
     x::T
     v::T
-    t::Float
+    t::Real
 end
 
 """
@@ -44,11 +44,12 @@ See also: `Event`, `AllEventList`.
 type EventList{T <: AllowedVarType}
     xs::Vector{T}     # coordinates
     vs::Vector{T}     # associated velocities
-    ts::Vector{Float} # associated times
+    ts::Vector{Real}  # associated times
 end
-function EventList(TT::Type)
-    @assert TT <: AllowedVarType
-    EventList(Vector{TT}(0), Vector{TT}(0), Vector{Float}(0))
+
+function EventList(T::Type)
+    @assert T <: AllowedVarType
+    EventList(Vector{T}(0), Vector{T}(0), Vector{Real}(0))
 end
 
 """
@@ -60,17 +61,16 @@ local BPS setting. The element `evl` can be accessed by the variable index so
 the different `EventList` may have different types (in particular, different
 dimensions). See also: `Event`, `EventList`.
 """
-type AllEventList
+mutable struct AllEventList
     evl::Vector{EventList}
     types::Vector{DataType}
     function AllEventList(types::Vector{DataType})
-        new( [EventList(types[i]) for i in 1:length(types)],
-             types )
+        new([EventList(types[i]) for i ∈ 1:length(types)], types)
     end
 end
-AllEventList(T::DataType, nvars::Int) = AllEventList([T for i in 1:nvars])
+AllEventList(T::DataType, nvars::Int) = AllEventList([T for i ∈ 1:nvars])
 
-tmax(aev::AllEventList) = maximum(aev.evl[i].ts[end] for i in 1:length(aev.evl))
+tmax(aev::AllEventList) = maximum(aev.evl[i].ts[end] for i ∈ 1:length(aev.evl))
 
 """
     getevent(evl, evidx)
@@ -79,8 +79,8 @@ Retrieve a specfic event (at index `evidx`) in an `EventList` object `evl` and
 return it as an `Event` object.
 See also: `Event`, `EventList`.
 """
-function getevent(evl::EventList, evidx::Int)::Event
-    Event(evl.xs[evidx],evl.vs[evidx],evl.ts[evidx])
+function getevent(evl::EventList, evidx::Int)
+    Event(evl.xs[evidx], evl.vs[evidx], evl.ts[evidx])
 end
 
 """
@@ -89,8 +89,8 @@ end
 Retrieve the last `Event` in an `EventList` object `evl`.
 See also: `getevent`, `EventList`.
 """
-function getlastevent(evl::EventList)::Event
-    Event(evl.xs[end],evl.vs[end],evl.ts[end])
+function getlastevent(evl::EventList)
+    Event(evl.xs[end], evl.vs[end], evl.ts[end])
 end
 
 """
@@ -100,7 +100,7 @@ Append an `Event` object `ev` to an `EventList` object `evl`. The `Event`
 object is unpacked and pushed to the vectors encapsulated by `evl`.
 See also: `EventList`.
 """
-function pushevent!(evl::EventList, ev::Event)::EventList
+function pushevent!(evl::EventList, ev::Event)
     push!(evl.xs, ev.x)
     push!(evl.vs, ev.v)
     push!(evl.ts, ev.t)
@@ -115,8 +115,8 @@ that event and the next event. If there is no next event (end of event list),
 an "infinity event" is returned (in order to allow extrapolation).
 See also: `samplelocalpath`.
 """
-function getlocalsegment(evl::EventList, j::Int)::Tuple{Event,Event}
-    if j==length(evl.ts)
+function getlocalsegment(evl::EventList, j::Int)
+    if j == length(evl.ts)
         return (getevent(evl,j), Event(NaN, NaN, Inf))
     end
     (getevent(evl,j), getevent(evl,j+1))
@@ -145,17 +145,17 @@ function samplelocalpath(evl::EventList, t::AllowedTimeType)
         ti = t[i]
         if ti <= evb.t
             # stay in the current segment
-            samples[i] = eva.x + (ti-eva.t)*eva.v
+            samples[i] = eva.x + (ti - eva.t) * eva.v
             i += 1
         else
             # get the next segment
-            j += searchsortedlast(evl.ts[j+1:end],ti)
-            eva, evb = getlocalsegment(evl,j)
+            j += searchsortedlast(evl.ts[j+1:end], ti)
+            eva, evb = getlocalsegment(evl, j)
         end
     end
     samples
 end
-samplelocalpath(evl::EventList, t::Float) = samplelocalpath(evl, [t])[1]
+samplelocalpath(evl::EventList, t::Real) = samplelocalpath(evl, [t])[1]
 
 """
     quadpathpoly(evl, pol, T)
@@ -166,7 +166,7 @@ polynomial along the path. Note that we can't do the same thing if phi(X) mixes
 2 or more nodes. See also syntactic sugar to perform the same operation on all
 nodes.
 """
-function quadpathpoly(evl::EventList, pol::Poly, T::Float)::Vector{Float}
+function quadpathpoly(evl::EventList, pol::Poly, T::Real)
     dim  = length(evl.xs[1])
     res  = zeros(dim)
     nseg = searchsortedlast(evl.ts,T)
@@ -189,16 +189,15 @@ function quadpathpoly(evl::EventList, pol::Poly, T::Float)::Vector{Float}
     for d = 1:dim
         res[d] += polyint(polyval(pol,Poly([eva.x[d],eva.v[d]])))(tau)
     end
-    res/T
+    return res / T
 end
-function quadpathpoly(aev::AllEventList, pol::Poly, T::Float
-                     )::Vector{Vector{Float}}
-    res = Vector{Vector{Float}}(length(aev.evl))
+function quadpathpoly(aev::AllEventList, pol::Poly, T::Real)
+    res = Vector{Vector{<:Real}}(length(aev.evl))
     for (d, evl) in enumerate(aev.evl)
         res[d] = quadpathpoly(evl, pol, T)
     end
-    res
+    return res
  end
-pathmean(evl::EventList, T::Float)    = quadpathpoly(evl, Poly([0.0,1.0]), T)
-pathmean(aev::AllEventList, T::Float) = quadpathpoly(aev, Poly([0.0,1.0]), T)
+pathmean(evl::EventList, T::Real) = quadpathpoly(evl, Poly([0.0,1.0]), T)
+pathmean(aev::AllEventList, T::Real) = quadpathpoly(aev, Poly([0.0,1.0]), T)
 pathmean(aev::AllEventList) = pathmean(aev, tmax(aev))

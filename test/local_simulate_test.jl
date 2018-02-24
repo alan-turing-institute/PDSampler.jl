@@ -5,23 +5,23 @@ using Base.Test
 
 srand(1234)
 
-p     = 2
-P1    = randn(p)
-P1   *= P1'
-mu    = zeros(p)
-mvg   = PDSampler.MvGaussianCanon(mu,P1)
+p = 2
+P1 = randn(p)
+P1 *= P1'
+mu = zeros(p)
+mvg = PDSampler.MvGaussianCanon(mu,P1)
 chain = chaingraph([ Factor( (x,v)->PDSampler.nextevent_bps(mvg, x, v),
                               x   ->PDSampler.gradloglik(mvg, x),
-                              i) for i in 1:3])
+                              i) for i ∈ 1:3])
 
 srand(1234)
 
 # test_local_definegraph defines a chain.
 nvars = chain.structure.nvars
-x0    = randn(nvars)
-v0    = randn(nvars)
-v0   /= norm(v0)
-T     = abs(randn())
+x0 = randn(nvars)
+v0 = randn(nvars)
+v0 /= norm(v0)
+T = abs(randn())
 
 ### TEST LOCALSIMULATION
 v0a = randn(nvars+1)
@@ -32,16 +32,20 @@ x0a = randn(nvars-1)
 @test_throws AssertionError LocalSimulation(chain,x0,v0,T,-10,0.01)
 @test_throws AssertionError LocalSimulation(chain,x0,v0,T,1000,-0.1)
 
-ls = LocalSimulation(chain,x0,v0,T,1000,0.001)
-@test ls.x0==x0 && ls.v0==v0 && ls.T==T && ls.maxnevents==1000 &&
-        ls.lambdaref==0.001 && ls.fg.structure.flist==chain.structure.flist
+ls = LocalSimulation(chain, x0, v0, T, 1000, 0.001)
+@test ls.x0 == x0 && ls.v0 == v0 && ls.T == T && ls.maxnevents == 1000 &&
+        ls.lambdaref == 0.001 && ls.fg.structure.flist == chain.structure.flist
 
 ls2 = LocalSimulation(
         factorgraph=chain,
         x0=x0, v0=v0, T=T,
         maxnevents=1000, lambdaref=0.001)
-@test ls2.x0==x0 && ls2.v0==v0 && ls2.T==T && ls2.maxnevents==1000 &&
-        ls2.lambdaref==0.001 && ls2.fg.structure.flist==chain.structure.flist
+@test ls2.x0 == x0 &&
+        ls2.v0 == v0 &&
+        ls2.T == T &&
+        ls2.maxnevents == 1000 &&
+        ls2.lambdaref == 0.001 &&
+        ls2.fg.structure.flist == chain.structure.flist
 
 ### TEST LS_INIT
 srand(140)
@@ -71,7 +75,7 @@ u = vcat(v...)
 
 @test PDSampler.ls_reshape(u, w) == v
 
-all_evlist = AllEventList(Float, nvars)
+all_evlist = AllEventList(Float64, nvars)
 
 for i in 1:nvars
     evi = Event(x0[i], v0[i], 0.0)
@@ -145,12 +149,12 @@ srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
 @test pq[fidx] == t+bounce.tau
 
 ### Testing LS_RANDOM
-evl1 = EventList(Float)
+evl1 = EventList(Float64)
 push!(evl1.xs, randn())
 push!(evl1.vs, randn())
 push!(evl1.ts, abs(randn()))
 
-evl2 = EventList(Vector{Float})
+evl2 = EventList(Vector{Float64})
 push!(evl2.xs, randn(2))
 push!(evl2.vs, randn(2))
 push!(evl2.ts, abs(randn()))
@@ -174,7 +178,7 @@ v = Vector{PDSampler.AllowedVarType}(chain.structure.nvars)
 for i in 1:length(v)
     v[i] = PDSampler.ls_random(all_evlist.evl[i])
 end
-pq2 = PDSampler.PriorityQueue(Int, Float)
+pq2 = PDSampler.PriorityQueue{Int, Real}()
 for fidx in 1:chain.structure.nfactors
     (xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist, t)
     PDSampler.ls_updatepq!(pq2, chain, fidx, xf, v[vars], g, t)

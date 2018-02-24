@@ -10,9 +10,9 @@ immutable LocalSimulation
     fg::FactorGraph
     x0::Vector{AllowedVarType}  # Starting point
     v0::Vector{AllowedVarType}  # Starting velocity
-    T::Float                    # Simulation time
+    T::Real                     # Simulation time
     maxnevents::Int             # Maximum number of events
-    lambdaref::Float            # Refreshment rate
+    lambdaref::Real             # Refreshment rate
     # -- implicit
     nvars::Int                  # Number of nodes
     nfactors::Int               # Number of factors
@@ -68,8 +68,7 @@ function simulate(sim::LocalSimulation)::Tuple{AllEventList, Dict}
 
     # global iteration
     prog = Progress(sim.maxnevents, 1)
-    # HACK
-    #while globalclock < sim.T && nevents < sim.maxnevents
+
     for evnum in 1:sim.maxnevents
         # get bounce and dequeue
         (fidx, tbounce) = peek(pq)
@@ -115,8 +114,7 @@ Initialise a local simulation: store the starting clock time, create a list of
 all eventlists and push the original event, create the priorityqueue and fill
 it with the initial bounce times
 """
-function ls_init(sim::LocalSimulation
-                )::Tuple{Float,AllEventList,PriorityQueue,Float}
+function ls_init(sim::LocalSimulation)
     # instantiate wall clock
     start = time()
     # initialisation of the eventlists for every node in the graph
@@ -126,14 +124,14 @@ function ls_init(sim::LocalSimulation
         pushevent!(all_evlist.evl[i], evi)
     end
     # initialisation of the priority queue and the refreshment time
-    pq   = PriorityQueue(Int, Float)
+    pq   = PriorityQueue{Int, Real}()
     tref = randexp()/sim.lambdaref
     # filling of the priority queue with initial position
     for fidx in 1:sim.fg.structure.nfactors
         (xf, vf, g) = ls_retrieve(sim.fg, fidx, all_evlist, 0.0)
         ls_updatepq!(pq, sim.fg, fidx, xf, vf, g, 0.0)
     end
-    (start, all_evlist, pq, tref)
+    return (start, all_evlist, pq, tref)
 end
 
 """
@@ -142,8 +140,7 @@ end
 Operation corresponding to the first branch of events in simulate.
 """
 function ls_firstbranch!(fg::FactorGraph, fidx::Int, all_evlist::AllEventList,
-                         pq::PriorityQueue, t::Float
-                         )::Tuple{AllEventList,PriorityQueue}
+                         pq::PriorityQueue, t::Real)
     # retrieve xf, vf corresponding to factor
     (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t, true)
     ls_saveupdate!(all_evlist, vars, xf, vf, t)
@@ -154,7 +151,7 @@ function ls_firstbranch!(fg::FactorGraph, fidx::Int, all_evlist::AllEventList,
         (xfp, vfp, gp) = ls_retrieve(fg, fpidx, all_evlist, t)
         ls_updatepq!(pq, fg, fpidx, xfp, vfp, gp, t)
     end
-    (all_evlist, pq)
+    return (all_evlist, pq)
 end
 
 
@@ -166,17 +163,17 @@ AllowedVarType following the structure of `v`. For example, let
 `v = [0., [0., 0.]]` and `u=[1., 2., 3.]` then `ls_reshape(u,v)` will return
 `[1., [2., 3.]]`.
 """
-function ls_reshape{V<:Vector{AllowedVarType}}(u::Vector{Float}, v::V)::V
+function ls_reshape(u::Vector{<:Real}, v::V) where V <: Vector{AllowedVarType}
     w = similar(v)
     # offsets to know where to look for next block of information
     offset = 0
-    for i in 1:length(v)
+    for i ∈ 1:length(v)
         tmpi = length(v[i])
         # if length is 1, return only single point, otherwise vector
         @inbounds w[i] = (tmpi==1) ? u[offset+1] : u[offset+(1:tmpi)]
         offset += tmpi
     end
-    w
+    return w
 end
 
 """
@@ -188,7 +185,7 @@ well as the gradient at `xf` and the list of indices of the attached variables.
 """
 function ls_retrieve(fg::FactorGraph, fidx::Int,
                     all_evlist::AllEventList,
-                    t::Float, doreflect::Bool=false)
+                    t::Real, doreflect::Bool=false)
     # indices of the variable associated with factor fidx
     vars = assocvariables(fg, fidx)
     # allocate xf, vf, note the different variables
@@ -197,16 +194,16 @@ function ls_retrieve(fg::FactorGraph, fidx::Int,
     xf = similar(vf)
     # shortcut to initial event
     if t == 0.0
-        for (i, k) in enumerate(vars)
+        for (i, k) ∈ enumerate(vars)
             ev = getevent(all_evlist.evl[k], 1)
             xf[i], vf[i] = ev.x, ev.v
         end
     # retrieving later than initial event (standard case)
     else
         # retrieve vf, xf(t)
-        for (i, k) in enumerate(vars)
+        for (i, k) ∈ enumerate(vars)
             # get the eventlist corresponding to variable k
-            ev    = getlastevent(all_evlist.evl[k])
+            ev = getlastevent(all_evlist.evl[k])
             # store the components and extrapolate from ev.x as needed
             vf[i] = ev.v
             xf[i] = ev.x + (t-ev.t)*ev.v
@@ -229,12 +226,12 @@ the recovered positions and velocities obtained when considering factor `f`).
 """
 function ls_saveupdate!(all_evlist::AllEventList, vars::Vector{Int},
                         xf::Vector{AllowedVarType}, vf::Vector{AllowedVarType},
-                        t::Float)::AllEventList
+                        t::Real)
     # Add the new sample to the list
-    for (i, k) in enumerate(vars)
+    for (i, k) ∈ enumerate(vars)
         pushevent!(all_evlist.evl[k], Event(xf[i], vf[i], t))
     end
-    all_evlist
+    return all_evlist
 end
 
 """
@@ -246,19 +243,19 @@ push it to the PriorityQueue `pq`.
 """
 function ls_updatepq!(pq::PriorityQueue, fg::FactorGraph, fidx::Int,
                       xf::Vector{AllowedVarType}, vf::Vector{AllowedVarType},
-                      g::Vector{Float}, t::Float)::PriorityQueue
+                      g::Vector{<:Real}, t::Real)
     # useful temporary variables
     vcxf, vcvf = vcat(xf...), vcat(vf...)
     # Update time in Priority Queue for the current factor
     acc  = false
     tauf = 0.0
     while !acc
-        bounce    = fg.factors[fidx].nextevent(vcxf, vcvf)
+        bounce = fg.factors[fidx].nextevent(vcxf, vcvf)
         acc, tauf = bounce.dobounce(g, vcvf), bounce.tau
     end
     # add the time to current priorityQueue
     pq[fidx] = t+tauf
-    pq
+    return pq
 end
 
 """
@@ -267,9 +264,9 @@ end
 (Local simulation, helper function) Generate N(0,1) random numbers of dimension
 corresponding to the passed `EventList`.
 """
-function ls_random(evl::EventList)::AllowedVarType
+function ls_random(evl::EventList)
     l = length(evl.xs[end])
-    l>1?randn(l):randn()
+    return l > 1 ? randn(l) : randn()
 end
 
 """
@@ -279,21 +276,20 @@ end
 new velocities for each node and storing it (cf. NewQueue algorithm in the BPS
 paper).
 """
-function ls_refreshment(fg::FactorGraph, t::Float,
-                        all_evlist::AllEventList)::PriorityQueue
+function ls_refreshment(fg::FactorGraph, t::Real, all_evlist::AllEventList)
     # draw a new bunch of velocities for each node
     v = Vector{AllowedVarType}(fg.structure.nvars)
-    for i in 1:fg.structure.nvars
+    for i ∈ 1:fg.structure.nvars
         @inbounds v[i] = ls_random(all_evlist.evl[i])
     end
     # Instantiate a new priority queue
-    pq = PriorityQueue(Int, Float)
-    for fidx in 1:fg.structure.nfactors
+    pq = PriorityQueue{Int, Real}()
+    for fidx ∈ 1:fg.structure.nfactors
         # retrieve xf, vf corresponding to factor
         (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t)
         # update the priority queue, note v[vars] and not vf
         # since we are using the refreshed velocity
         ls_updatepq!(pq, fg, fidx, xf, v[vars], g, t)
     end
-    pq
+    return pq
 end
