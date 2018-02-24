@@ -2,9 +2,15 @@
 language: julia
 os:
   - linux
+    #  - osx
 julia:
-  - 0.5
   - 0.6
+  - nightly
+git:
+  depth: 99999999
+matrix:
+  allow_failures:
+  - julia: nightly
 notifications:
   email: false
 script:
