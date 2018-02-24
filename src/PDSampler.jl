@@ -3,6 +3,7 @@ __precompile__(true)
 module PDSampler
 
 using ApproxFun
+using StatsBase: autocov
 using Polynomials:
         Poly,
         roots,

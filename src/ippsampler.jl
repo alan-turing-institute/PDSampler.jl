@@ -149,8 +149,8 @@ function nextevent_bps(lb::LinearBound,
     return NextEvent(tau, dobounce=(g,v)->(rand()<-dot(g, v)/lambdabar))
 end
 
-function nextevent_bps_q(gll::Function, x::T, v::T, tref::Real;
-                         n=100) where T <: Vector{<:Real}
+function nextevent_bps_q(gll::Function, x::Vector{<:Real}, v::Vector{<:Real},
+                         tref::Real; n=100)
 
     chi(t) = max(0.0, dot(-gll(x + t * v), v))
     S      = Chebyshev(0.0..tref)

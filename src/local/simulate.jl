@@ -283,7 +283,7 @@ function ls_refreshment(fg::FactorGraph, t::Real, all_evlist::AllEventList)
         @inbounds v[i] = ls_random(all_evlist.evl[i])
     end
     # Instantiate a new priority queue
-    pq = PriorityQueue(Int, Real)
+    pq = PriorityQueue{Int, Real}()
     for fidx ∈ 1:fg.structure.nfactors
         # retrieve xf, vf corresponding to factor
         (xf, vf, g, vars) = ls_retrieve(fg, fidx, all_evlist, t)
