@@ -3,21 +3,21 @@ using PDSampler, Base.Test
 # This tests the Simulation object (not the simulate function)
 
 srand(1777)
-n = 1000           # n observations
-p = 5              # n dimensions (covariates)
-X = randn(n,p)+0.1  # feature matrix
-w = 5*rand(p)       # true vector of parameters
+n = 1000               # n observations
+p = 5                  # n dimensions (covariates)
+X = randn(n, p) + 0.1  # feature matrix
+w = 5 * rand(p)        # true vector of parameters
 # observations according to a logistic thresholded to {-1,1}
-y = (logistic.(X*w) .> rand(n)) .* 2.0 .- 1.0
+y = (logistic.(X * w) .> rand(n)) .* 2.0 .- 1.0
 # proxy for N*L upper bound
 b = sum( mapslices(e->norm(e)^2,X,1) )/4
 
 # DATA MODEL
-dm = LogReg(X,y,b)
+dm = LogReg(X, y, b)
 
 # GEOMETRY
 ns, a    = eye(p), zeros(p)
-geom     = Polygonal(ns,a)
+geom     = Polygonal(ns, a)
 nb(x,v)  = nextboundary(geom, x, v)
 
 # GRADIENTS and IPPSampling
@@ -46,9 +46,9 @@ vrand = randn(p)
 @test   sim.x0 == x0 &&
         sim.v0 == v0 &&
         sim.T  == T  &&
-        (srand(12);sim.nextevent(xrand, vrand).tau)==
-        (srand(12);nev(xrand, vrand).tau)
-@test   (srand(12);sim.gll(xrand))==(srand(12);gll_cv(xrand)) &&
+        (srand(12); sim.nextevent(xrand, vrand).tau) ==
+        (srand(12); nev(xrand, vrand).tau)
+@test   (srand(12); sim.gll(xrand)) == (srand(12); gll_cv(xrand)) &&
         sim.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim.lambdaref == lref &&
         sim.algname   == "BPS"

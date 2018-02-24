@@ -1,4 +1,4 @@
-using PDSampler,
+using PDSampler
 using Base.Test
 using Polynomials
 

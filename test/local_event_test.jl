@@ -1,4 +1,5 @@
-using PDSampler, Base.Test
+using PDSampler
+using Base.Test
 
 srand(1234)
 
@@ -19,7 +20,7 @@ x0    = randn(nvars)
 v0    = randn(nvars)
 v0   /= norm(v0)
 
-all_evlist = AllEventList(Float, nvars)
+all_evlist = AllEventList(Float64, nvars)
 
 for i in 1:nvars
     evi = Event(x0[i], v0[i], 0.0)
@@ -55,7 +56,7 @@ ses = [ ts[j]<t1?(x0[i]+ts[j]*v0[i]):
 @test isapprox( norm(ss-ses)/length(ss) , 0.0 )
 
 ################
-all_evlist = AllEventList(Vector{Float}, nvars)
+all_evlist = AllEventList(Vector{Float64}, nvars)
 
 xs = [[0.,0.] [1.,1.] [2.,1.5] [3.,5.0] [3.4,-2.0]]
 ts = [0.0, 1.0, 2.0, 2.5, 2.7]

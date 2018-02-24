@@ -157,3 +157,41 @@ function esspath(path::Path; ns::Int=1000, rtol::Real=0.1,
     end
     (cur_ess, ns)
 end
+
+"""
+    ess(v)
+
+Compute the ESS of a vector of samples. This code is adapted from Klara.jl.
+"""
+function ess(v::AbstractVector{T}) where T <: Real
+    length_v = length(v)
+    mcvar_iid = var(v) / length_v
+
+    # = IMSE ============================
+    maxlag = length_v - 1
+    k = Int(floor((maxlag - 1) / 2))
+    m = k + 1
+    g = zeros(T, m)
+    # empirical autocovariance
+    acv = autocov(v, 0:maxlag)
+    # calculate Ĝ_{n, m} from the acv
+    for j ∈ 0:k
+        g[j+1] = acv[2j + 1] + acv[2j + 2]
+        if g[j+1] <= 0
+            m = j
+            break
+        end
+    end
+    # create monotone sequence of g
+    if m > 1
+        for j ∈ 2:m
+            if g[j] > g[j - 1]
+                g[j] = g[j - 1]
+            end
+        end
+    end
+    mcvar_imse = (-acv[1] + 2sum(g[1:m])) / length_v
+    # ===================================
+
+    return length_v * mcvar_iid / mcvar_imse
+end

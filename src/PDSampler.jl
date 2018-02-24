@@ -1,8 +1,7 @@
-#__precompile__(true)
+__precompile__(true)
 
 module PDSampler
 
-using Klara.ess
 using ApproxFun
 using Polynomials:
         Poly,

@@ -17,7 +17,7 @@ Syntactic sugar to make it explicit what variable types are handled in the
 local BPS (i.e, the type of the variables on each node of the factor graph).
 See also, Event, EventList.
 """
-AllowedVarType = Union{AbstractFloat, Vector{AbstractFloat}}
+AllowedVarType = Union{Real, Vector{<:Real}}
 
 """
     Event{T <: AllowedVarType}
@@ -29,7 +29,7 @@ See also: `EventList`.
 immutable Event{T <: AllowedVarType}
     x::T
     v::T
-    t::AbstractFloat
+    t::Real
 end
 
 """
@@ -44,11 +44,11 @@ See also: `Event`, `AllEventList`.
 type EventList{T <: AllowedVarType}
     xs::Vector{T}     # coordinates
     vs::Vector{T}     # associated velocities
-    ts::Vector{AbstractFloat} # associated times
+    ts::Vector{Real} # associated times
 end
 function EventList(TT::Type)
     @assert TT <: AllowedVarType
-    EventList(Vector{TT}(0), Vector{TT}(0), Vector{AbstractFloat}(0))
+    EventList(Vector{TT}(0), Vector{TT}(0), Vector{Real}(0))
 end
 
 """
@@ -155,7 +155,7 @@ function samplelocalpath(evl::EventList, t::AllowedTimeType)
     end
     samples
 end
-samplelocalpath(evl::EventList, t::AbstractFloat) = samplelocalpath(evl, [t])[1]
+samplelocalpath(evl::EventList, t::Real) = samplelocalpath(evl, [t])[1]
 
 """
     quadpathpoly(evl, pol, T)
@@ -166,7 +166,7 @@ polynomial along the path. Note that we can't do the same thing if phi(X) mixes
 2 or more nodes. See also syntactic sugar to perform the same operation on all
 nodes.
 """
-function quadpathpoly(evl::EventList, pol::Poly, T::AbstractFloat)::Vector{AbstractFloat}
+function quadpathpoly(evl::EventList, pol::Poly, T::Real)::Vector{Real}
     dim  = length(evl.xs[1])
     res  = zeros(dim)
     nseg = searchsortedlast(evl.ts,T)
@@ -191,14 +191,14 @@ function quadpathpoly(evl::EventList, pol::Poly, T::AbstractFloat)::Vector{Abstr
     end
     res/T
 end
-function quadpathpoly(aev::AllEventList, pol::Poly, T::AbstractFloat
-                     )::Vector{Vector{AbstractFloat}}
-    res = Vector{Vector{AbstractFloat}}(length(aev.evl))
+function quadpathpoly(aev::AllEventList, pol::Poly, T::Real
+                     )::Vector{Vector{<:Real}}
+    res = Vector{Vector{<:Real}}(length(aev.evl))
     for (d, evl) in enumerate(aev.evl)
         res[d] = quadpathpoly(evl, pol, T)
     end
     res
  end
-pathmean(evl::EventList, T::AbstractFloat)    = quadpathpoly(evl, Poly([0.0,1.0]), T)
-pathmean(aev::AllEventList, T::AbstractFloat) = quadpathpoly(aev, Poly([0.0,1.0]), T)
+pathmean(evl::EventList, T::Real)    = quadpathpoly(evl, Poly([0.0,1.0]), T)
+pathmean(aev::AllEventList, T::Real) = quadpathpoly(aev, Poly([0.0,1.0]), T)
 pathmean(aev::AllEventList) = pathmean(aev, tmax(aev))
