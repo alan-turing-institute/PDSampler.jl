@@ -7,9 +7,9 @@ Unix | Windows | CodeCov | Docs | License
 PDSampler.jl is a package designed to provide an efficient, flexible, and expandable framework for samplers based on *Piecewise Deterministic Markov Processes* and their applications.
 This includes the **Bouncy Particle Sampler** and the **Zig-Zag Sampler**.
 
-Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDSampler.jl/latest) for information on how to use/expand this package. 
+Please refer to [**the documentation**](https://alan-turing-institute.github.io/PDSampler.jl/latest) for information on how to use/expand this package.
 The project is hosted by the [Alan Turing Institute](https://www.turing.ac.uk) (ATI). If you encounter problems, please [open an issue on Github](https://github.com/alan-turing-institute/PDSampler.jl/issues).
-If you have comments or wish to collaborate, please send an email to `lienart σ stats > ox > ac > uk`.
+If you have comments or wish to collaborate, please send an email to `tlienart > cpg σ gmail > com`.
 
 If you find this toolbox useful please star the repo. If you use it in your work, please cite this code and send us an email so that we can cite your work here.
 
@@ -28,10 +28,7 @@ If you want to make suggestions, if you want new features, please don't hesitate
 
 Requirements:
 
-* Julia in `[0.5.x, 0.6.x]` (*Julia `0.7` introduces breaking changes to the syntax, since it's still a "nightly" release we are sticking to rc versions.*)
-* 64-bit architecture (*It may be possible to adapt the code to run on 32 bit but it would be a bit of a headache, if there is genuine interest for this, please open issue and explain.*)
-
-Note: at the moment (summer 2017) we recommend  Julia 0.5.2 (last Julia 0.5 release) as the loading time of `PDSampler.jl` is less than half that when using `0.6.0`.
+* Julia ∈ `[0.6.*]` (*Julia `0.7` introduces breaking changes to the syntax, since it's still a "nightly" release we are sticking to rc versions.*)
 
 In the Julia REPL:
 
@@ -40,7 +37,7 @@ Pkg.add("PDSampler")
 using PDSampler
 ```
 
-Note that loading the package may take several seconds. This is not because of PDSampler itself but rather its dependencies. We are looking into this issue.
+Note that loading the package may take several seconds.
 
 ## References
 
