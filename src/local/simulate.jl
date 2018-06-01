@@ -6,7 +6,7 @@ export
 
 Describe a Local-BPS sampling
 """
-immutable LocalSimulation
+struct LocalSimulation
     fg::FactorGraph
     x0::Vector{AllowedVarType}  # Starting point
     v0::Vector{AllowedVarType}  # Starting velocity

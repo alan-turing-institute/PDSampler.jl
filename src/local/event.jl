@@ -41,7 +41,7 @@ so that the times can be traversed efficiently. The xs, vs must all have the
 same type within the list.
 See also: `Event`, `AllEventList`.
 """
-type EventList{T <: AllowedVarType}
+mutable struct EventList{T <: AllowedVarType}
     xs::Vector{T}     # coordinates
     vs::Vector{T}     # associated velocities
     ts::Vector{Real}  # associated times

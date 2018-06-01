@@ -8,7 +8,7 @@ export
 Describe a PDSampling: information about the initial point, the time of the
 simulation, the function to sample from an IPP, etc.
 """
-immutable Simulation
+struct Simulation
     x0::Vector{Real}       # Starting point
     v0::Vector{Real}       # Starting velocity
     T::Real                # Simulation time
