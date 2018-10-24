@@ -14,7 +14,7 @@ using DataStructures:
         peek
 using ProgressMeter
 using Distributions: Beta
-using LinearAlgebra: dot
+using LinearAlgebra
 
 export
     # MODELS
