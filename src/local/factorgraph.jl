@@ -44,7 +44,7 @@ struct FactorGraphStruct
             maxvar = max(maxvar, maximum(f))
         end
         # populating the lists of factors for each variable
-        vars = [Vector{Int}(0) for i in 1:maxvar]
+        vars = [Vector{Int}(undef, 0) for i in 1:maxvar]
         for (fi, f) in enumerate(flist)
             for e in f
                 push!(vars[e], fi)
@@ -84,12 +84,12 @@ reason (the current factor can be updated quicker directly from the general
 simulation loop).
 """
 function linkedfactors(fgs::FactorGraphStruct, fidx::Int)
-    lf = Vector{Int}(0)
+    lf = Vector{Int}(undef, 0)
     for v ∈ fgs.flist[fidx]
         push!(lf, fgs.vlist[v]...)
     end
     unq = unique(lf)                    # this still contains fidx
-    deleteat!(unq, findin(unq, fidx))   # this does not
+    deleteat!(unq, findall((in)(fidx), unq))   # this does not
 end
 linkedfactors(fg::FactorGraph, fidx::Int) = linkedfactors(fg.structure, fidx)
 

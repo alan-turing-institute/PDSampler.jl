@@ -1,22 +1,20 @@
-using PDSampler, Base.Test
-
 # This tests the Simulation object (not the simulate function)
 
-srand(1777)
+Random.seed!(1777)
 n = 1000               # n observations
 p = 5                  # n dimensions (covariates)
-X = randn(n, p) + 0.1  # feature matrix
+X = randn(n, p) .+ 0.1 # feature matrix
 w = 5 * rand(p)        # true vector of parameters
 # observations according to a logistic thresholded to {-1,1}
 y = (logistic.(X * w) .> rand(n)) .* 2.0 .- 1.0
 # proxy for N*L upper bound
-b = sum( mapslices(e->norm(e)^2,X,1) )/4
+b = sum( mapslices(e->norm(e)^2, X, dims=1) )/4
 
 # DATA MODEL
 dm = LogReg(X, y, b)
 
 # GEOMETRY
-ns, a    = eye(p), zeros(p)
+ns, a    = diagm(0=>ones(p)), zeros(p)
 geom     = Polygonal(ns, a)
 nb(x,v)  = nextboundary(geom, x, v)
 
@@ -43,17 +41,18 @@ sim = Simulation(
 xrand = randn(p)
 vrand = randn(p)
 
-@test   sim.x0 == x0 &&
-        sim.v0 == v0 &&
-        sim.T  == T  &&
-        (srand(12); sim.nextevent(xrand, vrand).tau) ==
-        (srand(12); nev(xrand, vrand).tau)
-@test   (srand(12); sim.gll(xrand)) == (srand(12); gll_cv(xrand)) &&
+@test sim.x0 == x0 &&
+      sim.v0 == v0 &&
+      sim.T  == T
+
+@test (Random.seed!(12); sim.nextevent(xrand, vrand).tau) ==
+      (Random.seed!(12); nev(xrand, vrand).tau)
+@test (Random.seed!(12); sim.gll(xrand)) == (Random.seed!(12); gll_cv(xrand)) &&
         sim.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim.lambdaref == lref &&
         sim.algname   == "BPS"
 @test   sim.dim         == length(x0) &&
-        sim.mass        == eye(0) &&
+        sim.mass        == diagm(0=>ones(0)) &&
         sim.blocksize   == 1000 &&
         sim.maxsimtime  == 4e3 &&
         sim.maxsegments == Int(1e6) &&
@@ -76,14 +75,14 @@ sim2 = Simulation(
 @test   sim2.x0 == x0 &&
         sim2.v0 == v0 &&
         sim2.T  == T  &&
-        (srand(12);sim2.nextevent(xrand, vrand).tau)==
-        (srand(12);nev(xrand, vrand).tau)
-@test   (srand(12);sim2.gll(xrand))==(srand(12);gll_cv(xrand)) &&
+        (Random.seed!(12);sim2.nextevent(xrand, vrand).tau)==
+        (Random.seed!(12);nev(xrand, vrand).tau)
+@test   (Random.seed!(12);sim2.gll(xrand))==(Random.seed!(12);gll_cv(xrand)) &&
         sim2.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim2.lambdaref == lref &&
         sim2.algname   == "BPS"
 @test   sim2.dim         == length(x0) &&
-        sim2.mass        == eye(0) &&
+        sim2.mass        == diagm(0=>ones(0)) &&
         sim2.blocksize   == 1000 &&
         sim2.maxsimtime  == 4e3 &&
         sim2.maxsegments == Int(1e6) &&

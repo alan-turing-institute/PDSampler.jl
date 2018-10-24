@@ -11,20 +11,20 @@ Robert.
 
 
 ```julia
-using PDSampler
+using PDSampler, Random
 p     = 2
-ns, a = eye(p), zeros(p)
+ns, a = diagm(0=>ones(p)), zeros(p)
 geom  = Polygonal(ns, a)
 
 nextbdG(x, v) = nextboundary(geom, x, v)
 
-srand(12)
+Random.seed!(12)
 P1  = randn(p,p)
 P1 *= P1'
-P1 += norm(P1)/100*eye(p)
+P1 += norm(P1)/100*diagm(0=>ones(p))
 C1  = inv(P1); C1 += C1'; C1/=2;
-L1  = cholfact(C1)
-mu  = zeros(p)+1.
+L1  = cholesky(C1)
+mu  = zeros(p) .+ 1.
 mvg = MvGaussianCanon(mu, P1)
 
 gradllG(x) = gradloglik(mvg, x)
@@ -38,7 +38,7 @@ set to 0.0 (no refreshment).
 ```julia
 T    = 1000.0   # length of path generated
 lref = 0.0      # rate of refreshment
-x0   = mu+L1[:L]*randn(p) # sensible starting point
+x0   = mu+L1.L*randn(p) # sensible starting point
 v0   = randn(p) # starting velocity
 v0  /= norm(v0) # put it on the sphere (not necessary)
 # Define a simulation
@@ -52,7 +52,7 @@ The rest is as before:
 (path, details) = simulate(sim)
 
 sN = 1000
-s  = broadcast(+, mu, L1[:L]*randn(p,sN))
+s  = broadcast(+, mu, L1.L*randn(p,sN))
 mt = zeros(2)
 np = 0
 # Sum for all samples in the positive orthan

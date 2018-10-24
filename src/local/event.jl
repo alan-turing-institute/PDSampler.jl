@@ -49,7 +49,7 @@ end
 
 function EventList(T::Type)
     @assert T <: AllowedVarType
-    EventList(Vector{T}(0), Vector{T}(0), Vector{Real}(0))
+    EventList(Vector{T}(undef, 0), Vector{T}(undef, 0), Vector{Real}(undef, 0))
 end
 
 """
@@ -138,7 +138,7 @@ function samplelocalpath(evl::EventList, t::AllowedTimeType)
     # event and next event (describes the "segment")
     eva, evb = getlocalsegment(evl,j)
     # allocation of samples
-    samples = Vector{typeof(eva.x)}(length(t))
+    samples = Vector{typeof(eva.x)}(undef, length(t))
     # recursively work with local segments
     i=1
     while i<= length(t)
@@ -192,7 +192,7 @@ function quadpathpoly(evl::EventList, pol::Poly, T::Real)
     return res / T
 end
 function quadpathpoly(aev::AllEventList, pol::Poly, T::Real)
-    res = Vector{Vector{<:Real}}(length(aev.evl))
+    res = Vector{Vector{<:Real}}(undef, length(aev.evl))
     for (d, evl) in enumerate(aev.evl)
         res[d] = quadpathpoly(evl, pol, T)
     end

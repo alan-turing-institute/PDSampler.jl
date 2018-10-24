@@ -1,5 +1,3 @@
-using PDSampler
-using Base.Test
 using Polynomials
 
 d = 3

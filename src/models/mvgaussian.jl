@@ -23,9 +23,9 @@ struct MvGaussianStandard <: MvGaussian
     precmu::Vector{Real}
     function MvGaussianStandard(mu, cov)
         # stored+considered as lower triangular
-        L = cholfact(Symmetric(cov))[:L]
+        L = cholesky(Symmetric(cov)).L
         Li = inv(L)
-        # going through CholFact is more stable + guarantees Positive Def
+        # going through cholesky is more stable + guarantees Positive Def
         prec = Li' * Li
         new(mu, cov, length(mu), prec, prec * mu)
     end

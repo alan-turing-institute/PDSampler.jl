@@ -1,6 +1,3 @@
-using PDSampler
-using Base.Test
-
 xs = [[0.,0.] [1.,1.] [2.,1.5]]
 ts = [0.0, 1.0, 2.0]
 
@@ -23,13 +20,13 @@ ts = [0.0, 1.0, 2.0, 2.5, 2.7]
 pb = Path(xs, ts)
 
 N  = 10000
-ss = linspace(0.0, ts[end], N)
+ss = range(0.0, stop=ts[end], length=N)
 
 samples = samplepath(pb, ss)
-@test norm(sum(samples, 2) / N - pathmean(pb)) / norm(pathmean(pb)) <= 5e-3
+@test norm(sum(samples, dims=2) / N - pathmean(pb)) / norm(pathmean(pb)) <= 5e-3
 
 #####
-srand(15)
+Random.seed!(15)
 N  = 500
 xs = zeros(2, N)
 ts = zeros(N)
@@ -40,6 +37,6 @@ for s ∈ 2:N
 end
 pb = Path(xs, ts)
 N  = 10000
-ss = linspace(0.0, ts[end], N)
+ss = range(0.0, stop=ts[end], length=N)
 samples = samplepath(pb, ss)
-@test norm(sum(samples, 2) / N - pathmean(pb)) / norm(pathmean(pb)) <= 5e-3
+@test norm(sum(samples, dims=2) / N - pathmean(pb)) / norm(pathmean(pb)) <= 5e-3

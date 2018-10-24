@@ -1,9 +1,6 @@
 # TODO: tests with multiD variables
-using PDSampler
-#using PDSampler
-using Base.Test
 
-srand(1234)
+Random.seed!(1234)
 
 p = 2
 P1 = randn(p)
@@ -14,7 +11,7 @@ chain = chaingraph([ Factor( (x,v)->PDSampler.nextevent_bps(mvg, x, v),
                               x   ->PDSampler.gradloglik(mvg, x),
                               i) for i ∈ 1:3])
 
-srand(1234)
+Random.seed!(1234)
 
 # test_local_definegraph defines a chain.
 nvars = chain.structure.nvars
@@ -48,7 +45,7 @@ ls2 = LocalSimulation(
         ls2.fg.structure.flist == chain.structure.flist
 
 ### TEST LS_INIT
-srand(140)
+Random.seed!(140)
 (start, all_evlist, pq, tref) = PDSampler.ls_init(ls2)
 
 @test time()-start > 0.0 # and expected to be small...
@@ -56,7 +53,7 @@ i = rand(1:chain.structure.nvars)
 @test   all_evlist.evl[i].xs[1] == x0[i] &&
         all_evlist.evl[i].vs[1] == v0[i] &&
         all_evlist.evl[i].ts[1] == 0.0
-srand(140)
+Random.seed!(140)
 @test tref == randexp()/0.001
 
 # pq for i <> NOTE it's hard to test precisely
@@ -65,9 +62,9 @@ srand(140)
 @test pq[i] > 0.0
 
 ### TEST LS_RESHAPE
-v = Vector{PDSampler.AllowedVarType}(5)
+v = Vector{PDSampler.AllowedVarType}(undef, 5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]
-w = Vector{PDSampler.AllowedVarType}(5)
+w = Vector{PDSampler.AllowedVarType}(undef, 5)
 for i in 1:length(v)
     w[i] = v[i]*0.
 end
@@ -142,11 +139,11 @@ vi = vars[ii]
 
 ### Testing LS_UPDATEPQ!
 pq = PDSampler.PriorityQueue()
-srand(123); PDSampler.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
+Random.seed!(123); PDSampler.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
 # It's gaussian so no need for thinning
-srand(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
+Random.seed!(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
 
-@test pq[fidx] == t+bounce.tau
+@test pq[fidx] == t .+ bounce.tau
 
 ### Testing LS_RANDOM
 evl1 = EventList(Float64)
@@ -159,22 +156,22 @@ push!(evl2.xs, randn(2))
 push!(evl2.vs, randn(2))
 push!(evl2.ts, abs(randn()))
 
-srand(321); a1 = PDSampler.ls_random(evl1)
-srand(321); a2 = PDSampler.ls_random(evl2)
-srand(321); aa = randn()
-srand(321); ab = randn(2)
+Random.seed!(321); a1 = PDSampler.ls_random(evl1)
+Random.seed!(321); a2 = PDSampler.ls_random(evl2)
+Random.seed!(321); aa = randn()
+Random.seed!(321); ab = randn(2)
 
 @test a1==aa && a2==ab
 
 ### Testing LS_REFRESHMENT
 t  = randexp()
 
-srand(123); pq = PDSampler.ls_refreshment(chain, t, all_evlist)
-srand(123)
+Random.seed!(123); pq = PDSampler.ls_refreshment(chain, t, all_evlist)
+Random.seed!(123)
 ### this is a bit of a silly test but ls_refreshment is the
 # composite of functions that have all been tested, so there's not much
 # else to test than to just check it "works"
-v = Vector{PDSampler.AllowedVarType}(chain.structure.nvars)
+v = Vector{PDSampler.AllowedVarType}(undef, chain.structure.nvars)
 for i in 1:length(v)
     v[i] = PDSampler.ls_random(all_evlist.evl[i])
 end
@@ -189,10 +186,10 @@ end
 fidx = 2
 all_evlist_copy  = deepcopy(all_evlist)
 pq_copy          = deepcopy(pq)
-srand(9)
+Random.seed!(9)
 (all_evlist, pq) = PDSampler.ls_firstbranch!(chain, fidx, all_evlist, pq, t)
 ## reproduce part of the action
-srand(9)
+Random.seed!(9)
 (xf, vf, g, vars) = PDSampler.ls_retrieve(chain, fidx, all_evlist_copy, t, true)
 PDSampler.ls_saveupdate!(all_evlist_copy, vars, xf, vf, t)
 PDSampler.ls_updatepq!(pq_copy, chain, fidx, xf, vf, g, t)

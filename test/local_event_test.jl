@@ -1,7 +1,4 @@
-using PDSampler
-using Base.Test
-
-srand(1234)
+Random.seed!(1234)
 
 p     = 2
 P1    = randn(p)
@@ -12,7 +9,7 @@ chain = chaingraph([ Factor( (x,v)->nextevent_bps(mvg, x, v),
                               x   ->gradloglik(mvg, x),
                               i) for i in 1:3])
 
-srand(53)
+Random.seed!(53)
 
 # test_local_definegraph defines a chain.
 nvars = chain.structure.nvars
@@ -48,8 +45,8 @@ ts  = sort(rand(100))
 ts /= maximum(ts)
 ts *= t3
 ss  = samplelocalpath(all_evlist.evl[i],ts)
-ses = [ ts[j]<t1?(x0[i]+ts[j]*v0[i]):
-            (ts[j]<t2?(ev1.x+(ts[j]-ev1.t)*ev1.v):
+ses = [ ts[j] < t1 ? (x0[i]+ts[j]*v0[i]) :
+            (ts[j] < t2 ? (ev1.x+(ts[j]-ev1.t)*ev1.v) :
                 (ev2.x+(ts[j]-ev2.t)*ev2.v)) for j in 1:length(ts)]
 
 # sample localpath (multiple between)
@@ -69,11 +66,11 @@ for k in 1:length(ts)-1
 end
 
 Ns = 10000
-ss = linspace(0.0,ts[end],Ns)
+ss = range(0.0, stop=ts[end], length=Ns)
 # compare with classical
 ss1 = samplelocalpath(all_evlist.evl[i], ss)
 ss2 = samplepath(Path(xs,ts), ss)
-@test norm(sum(ss1)/Ns - sum(ss2,2)/Ns) <= 1e-10
+@test norm(sum(ss1)/Ns - sum(ss2, dims=2)/Ns) <= 1e-10
 # compare quadrature
 @test norm(pathmean(Path(xs,ts)) - pathmean(all_evlist.evl[i],ts[end]))<=1e-10
 
@@ -89,6 +86,6 @@ for k in 1:nvars
 end
 i = rand(1:nvars)
 @test abs.(
-        pathmean(Path(all_evlist.evl[i].xs', all_evlist.evl[i].ts)) -
+        pathmean(Path(all_evlist.evl[i].xs', all_evlist.evl[i].ts)) .-
         pathmean(all_evlist, all_evlist.evl[i].ts[end])[i]
         )[1] <= 1e-10

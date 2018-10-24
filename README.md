@@ -1,6 +1,6 @@
 # PDSampler
 
-Unix | Windows | CodeCov | Docs | License
+Unix/OSX | Windows | CodeCov | Docs | License
 ---- | ------- | ------- | ---- | -------
 [![Travis](https://travis-ci.org/alan-turing-institute/PDSampler.jl.svg?branch=master)](https://travis-ci.org/alan-turing-institute/PDSampler.jl) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/alan-turing-institute/PDSampler.jl?branch=master&svg=true)](https://ci.appveyor.com/project/tlienart/PDSampler-jl) | [![CodeCov](http://codecov.io/github/alan-turing-institute/PDSampler.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDSampler.jl?branch=master) | [![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDSampler.jl/latest) | [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -17,7 +17,7 @@ If you want to make suggestions, if you want new features, please don't hesitate
 
 ### Contributors
 
-* [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/)
+* [Thibaut Lienart](https://tlienart.github.io) (main dev)
 * [Sebastian Vollmer](https://www2.warwick.ac.uk/fac/sci/maths/people/staff/vollmer/)
 * [Andrew Duncan](http://www.imperial.ac.uk/complex-multiscale-systems/our-group/former-members/dr-andrew-duncan/)
 * Martin O'Reilly (ATI)
@@ -28,16 +28,16 @@ If you want to make suggestions, if you want new features, please don't hesitate
 
 Requirements:
 
-* Julia ∈ `[0.6.*]` (*Julia `0.7` introduces breaking changes to the syntax, since it's still a "nightly" release we are sticking to rc versions.*)
+* Julia ∈ `[0.7.*, 1.0.*]`, if you're on `0.6`, check out [the last legacy release](https://github.com/alan-turing-institute/PDSampler.jl/releases/tag/v0.1).
 
 In the Julia REPL:
 
 ```julia
-Pkg.add("PDSampler")
+] add PDSampler
 using PDSampler
 ```
 
-Note that loading the package may take several seconds.
+Note that loading the package may take several seconds as some of the dependencies (in particular [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl) are quite slow to load).
 
 ## References
 

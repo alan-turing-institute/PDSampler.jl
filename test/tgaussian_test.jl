@@ -1,6 +1,3 @@
-using PDSampler
-using Base.Test
-
 # Everything should be the same as usual normals except
 # when x is out of boundaries
 
@@ -23,7 +20,7 @@ mvgs  = MvGaussianStandard(mu, C1)
 tmvg   = TMvGaussianCanon(mu, P1, a, b)
 tmvg2  = TMvGaussianNatural(P1*mu, -P1, a, b)
 tmvg_d = TMvDiagonalGaussian(mu, 2ones(p), a, b)
-tmvgs = TMvGaussianStandard(mu, C1, a, b)
+tmvgs  = TMvGaussianStandard(mu, C1, a, b)
 
 x_valid = rand(p)
 

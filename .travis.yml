@@ -2,21 +2,17 @@
 language: julia
 os:
   - linux
-    #  - osx
+  - osx
 julia:
-  - 0.6
+  - 0.7
   - nightly
-git:
-  depth: 99999999
 matrix:
   allow_failures:
-  - julia: nightly
+    - julia: nightly
 notifications:
   email: false
-script:
-  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.clone(pwd()); Pkg.test("PDSampler"; coverage=true)'
+env:
+   - PYTHON=""
 after_success:
   # push coverage results to Codecov
   - julia -e 'cd(Pkg.dir("PDSampler")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-  - julia -e 'Pkg.add("Documenter"); cd(Pkg.dir("PDSampler")); include(joinpath("docs", "make.jl"))'

@@ -50,7 +50,10 @@ function nextboundary(pd::Polygonal,
     hits = (pd.intercepts - pd.normals * x) ./ nsv
     # hard threshold times with nsv ~ 0 (near-parallel case),
     # remove negative times and times ~ 0 (for numerical stability)
-    hits[ map(|, abs.(nsv) .< 1e-10, hits .< 1e-10) ] = Inf
+    mask = map(|, abs.(nsv) .< 1e-10, hits .< 1e-10)
+    for (i, e) ∈ enumerate(mask)
+        e && (hits[i] = Inf)
+    end
     # get time of hit + index of corresponding boundary
     (t_hit, j) = findmin(hits)
     # return time of hit + normal vector to boundary

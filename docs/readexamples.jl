@@ -1,7 +1,7 @@
 baseURL = "https://github.com/alan-turing-institute/PDSampler.jl/blob/master/"
 tests   = readdir("../test/")
 for name in tests
-    if ismatch(Regex("^ex_"),name) && name[end-2:end]==".jl"
+    if occursin(Regex("^ex_"), name) && name[end-2:end]==".jl"
         #########################
         pathin  = "../test/$name"
         URL     = baseURL * "test/$name"
@@ -14,22 +14,22 @@ for name in tests
                 llclose = false
                 for ln in eachline(fi)
                     # Chomp markers
-                    if ismatch(Regex("^#@startexample"),ln)
+                    if occursin(Regex("^#@startexample"),ln)
                         write(fo, "#"*match(Regex("^#@startexample(.*)"),ln)[1]*"\n\n")
                         write(fo, "(*the code for this example can be found "*
                                   "[here]($URL), note that the doc rendered "* "here was automatically generated, if you "*
                                   "want to fix it, please do it in the "*
                                   "julia code directly*)\n\n")
                         skip = false
-                    elseif ismatch(Regex("^#@endexample"),ln)
+                    elseif occursin(Regex("^#@endexample"),ln)
                         break
-                    elseif ismatch(Regex("^#="),ln)
+                    elseif occursin(Regex("^#="),ln)
                         if iscode
                             # close the block
                             write(fo, "\n```\n")
                             iscode = false
                         end
-                    elseif ismatch(Regex("^=#"),ln)
+                    elseif occursin(Regex("^=#"),ln)
                         iscode  = true
                         llclose = true
                     else
@@ -37,7 +37,7 @@ for name in tests
                             write(fo, "\n```julia\n")
                             llclose = false
                         end
-                        skip?nothing:write(fo, ln*"\n")
+                        skip ? nothing : write(fo, ln*"\n")
                     end
                 end
             end

@@ -1,5 +1,3 @@
-__precompile__(true)
-
 module PDSampler
 
 using ApproxFun
@@ -16,6 +14,9 @@ using DataStructures:
         peek
 using ProgressMeter
 using Distributions: Beta
+using LinearAlgebra
+using Random
+using Statistics
 
 export
     # MODELS

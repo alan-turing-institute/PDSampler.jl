@@ -170,7 +170,7 @@ function ls_reshape(u::Vector{<:Real}, v::V) where V <: Vector{AllowedVarType}
     for i ∈ 1:length(v)
         tmpi = length(v[i])
         # if length is 1, return only single point, otherwise vector
-        @inbounds w[i] = (tmpi==1) ? u[offset+1] : u[offset+(1:tmpi)]
+        @inbounds w[i] = (tmpi==1) ? u[offset+1] : u[offset .+ (1:tmpi)]
         offset += tmpi
     end
     return w
@@ -190,7 +190,7 @@ function ls_retrieve(fg::FactorGraph, fidx::Int,
     vars = assocvariables(fg, fidx)
     # allocate xf, vf, note the different variables
     # don't necessarily have the same types
-    vf = Vector{AllowedVarType}(length(vars))
+    vf = Vector{AllowedVarType}(undef, length(vars))
     xf = similar(vf)
     # shortcut to initial event
     if t == 0.0
@@ -278,7 +278,7 @@ paper).
 """
 function ls_refreshment(fg::FactorGraph, t::Real, all_evlist::AllEventList)
     # draw a new bunch of velocities for each node
-    v = Vector{AllowedVarType}(fg.structure.nvars)
+    v = Vector{AllowedVarType}(undef, fg.structure.nvars)
     for i ∈ 1:fg.structure.nvars
         @inbounds v[i] = ls_random(all_evlist.evl[i])
     end
