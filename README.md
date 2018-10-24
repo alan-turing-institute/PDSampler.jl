@@ -1,6 +1,6 @@
 # PDSampler
 
-Unix | Windows | CodeCov | Docs | License
+Unix/OSX | Windows | CodeCov | Docs | License
 ---- | ------- | ------- | ---- | -------
 [![Travis](https://travis-ci.org/alan-turing-institute/PDSampler.jl.svg?branch=master)](https://travis-ci.org/alan-turing-institute/PDSampler.jl) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/alan-turing-institute/PDSampler.jl?branch=master&svg=true)](https://ci.appveyor.com/project/tlienart/PDSampler-jl) | [![CodeCov](http://codecov.io/github/alan-turing-institute/PDSampler.jl/coverage.svg?branch=master)](http://codecov.io/github/alan-turing-institute/PDSampler.jl?branch=master) | [![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://alan-turing-institute.github.io/PDSampler.jl/latest) | [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
