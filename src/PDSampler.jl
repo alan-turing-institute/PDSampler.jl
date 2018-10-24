@@ -15,6 +15,7 @@ using DataStructures:
 using ProgressMeter
 using Distributions: Beta
 using LinearAlgebra
+using Random
 
 export
     # MODELS

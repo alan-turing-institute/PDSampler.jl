@@ -2,7 +2,7 @@ using PDSampler, Base.Test
 
 # This tests the Simulation object (not the simulate function)
 
-srand(1777)
+Random.seed!(1777)
 n = 1000               # n observations
 p = 5                  # n dimensions (covariates)
 X = randn(n, p) + 0.1  # feature matrix
@@ -46,9 +46,9 @@ vrand = randn(p)
 @test   sim.x0 == x0 &&
         sim.v0 == v0 &&
         sim.T  == T  &&
-        (srand(12); sim.nextevent(xrand, vrand).tau) ==
-        (srand(12); nev(xrand, vrand).tau)
-@test   (srand(12); sim.gll(xrand)) == (srand(12); gll_cv(xrand)) &&
+        (Random.seed!(12); sim.nextevent(xrand, vrand).tau) ==
+        (Random.seed!(12); nev(xrand, vrand).tau)
+@test   (Random.seed!(12); sim.gll(xrand)) == (Random.seed!(12); gll_cv(xrand)) &&
         sim.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim.lambdaref == lref &&
         sim.algname   == "BPS"
@@ -76,9 +76,9 @@ sim2 = Simulation(
 @test   sim2.x0 == x0 &&
         sim2.v0 == v0 &&
         sim2.T  == T  &&
-        (srand(12);sim2.nextevent(xrand, vrand).tau)==
-        (srand(12);nev(xrand, vrand).tau)
-@test   (srand(12);sim2.gll(xrand))==(srand(12);gll_cv(xrand)) &&
+        (Random.seed!(12);sim2.nextevent(xrand, vrand).tau)==
+        (Random.seed!(12);nev(xrand, vrand).tau)
+@test   (Random.seed!(12);sim2.gll(xrand))==(Random.seed!(12);gll_cv(xrand)) &&
         sim2.nextboundary(xrand, vrand) == nb(xrand, vrand) &&
         sim2.lambdaref == lref &&
         sim2.algname   == "BPS"

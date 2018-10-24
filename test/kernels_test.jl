@@ -3,7 +3,7 @@ using Base.Test
 
 # the functions are somewhat trivial so the tests are also a bit trivial
 
-srand(1240)
+Random.seed!(1240)
 
 d = 10
 normal = randn(d)
@@ -28,24 +28,24 @@ v5[mask[1]] = -v5[mask[1]]
 
 @test norm(reflect_zz!(mask[1], v1) - v5) <= 1e-12
 
-srand(12); v  = randn(d)
-srand(12); v1 = refresh_global!(v1)
+Random.seed!(12); v  = randn(d)
+Random.seed!(12); v1 = refresh_global!(v1)
 
 @test norm(v-v1) <= 1e-12
 
-srand(31); v  = randn(d); v /= norm(v)
-srand(31); v1 = refresh_restricted!(v1)
+Random.seed!(31); v  = randn(d); v /= norm(v)
+Random.seed!(31); v1 = refresh_restricted!(v1)
 
 @test norm(v-v1) <= 1e-12
 
 beta  = Beta(abs(randn()))
-srand(53)
+Random.seed!(53)
 w  = randn(d)
 w /= norm(w)
 w *= tan( rand(beta) * 2 * pi )
 v  = v1 + w
 v /= norm(v)
-srand(53)
+Random.seed!(53)
 v1 = refresh_partial!(beta)(v1)
 
 @test norm(v-v1) <= 1e-12

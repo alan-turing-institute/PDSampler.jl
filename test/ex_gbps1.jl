@@ -32,7 +32,7 @@ Here, let us consider a 2D gaussian.
 # here we build a valid precision matrix. The cholesky decomposition of
 # the covariance matrix will be useful later to build a sensible
 # starting point for the algorithm.
-srand(12)
+Random.seed!(12)
 P1  = randn(p,p)
 P1 *= P1'
 P1 += norm(P1)/100*eye(p)

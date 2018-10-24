@@ -1,6 +1,6 @@
 using PDSampler, Base.Test
 
-srand(1234)
+Random.seed!(1234)
 
 p   = 2
 P1  = randn(p)
@@ -32,8 +32,8 @@ v = randn(p)
 
 @test chain.factors[i].gll(x) == chain2.factors[i].gll(x)
 
-srand(12); a = chain2.factors[i].nextevent(x,v)
-srand(12); b = chain.factors[i].nextevent(x,v)
+Random.seed!(12); a = chain2.factors[i].nextevent(x,v)
+Random.seed!(12); b = chain.factors[i].nextevent(x,v)
 
 @test a==b
 
@@ -55,8 +55,8 @@ fgs = FactorGraphStruct( [[1,2,5],
 xtest = randn(p)
 vtest = randn(p)
 
-srand(12); ne1 = chain.factors[3].nextevent(xtest,vtest)
-srand(12); ne2 = nextevent(xtest,vtest)
+Random.seed!(12); ne1 = chain.factors[3].nextevent(xtest,vtest)
+Random.seed!(12); ne2 = nextevent(xtest,vtest)
 
 @test   chain.structure.flist == [[1,2],[2,3],[3,4]] &&
         chain.factors[1].gll(xtest) == gll(xtest) &&

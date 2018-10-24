@@ -16,7 +16,7 @@ geom  = Polygonal(ns, a)
 
 nextbdG(x, v) = nextboundary(geom, x, v)
 
-srand(12)
+Random.seed!(12)
 P1  = randn(p,p)
 P1 *= P1'
 P1 += norm(P1)/100*eye(p)

@@ -29,7 +29,7 @@ samples = samplepath(pb, ss)
 @test norm(sum(samples, 2) / N - pathmean(pb)) / norm(pathmean(pb)) <= 5e-3
 
 #####
-srand(15)
+Random.seed!(15)
 N  = 500
 xs = zeros(2, N)
 ts = zeros(N)

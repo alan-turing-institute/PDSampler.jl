@@ -1,7 +1,7 @@
 using PDSampler
 using Base.Test
 
-srand(1234)
+Random.seed!(1234)
 
 p     = 2
 P1    = randn(p)
@@ -12,7 +12,7 @@ chain = chaingraph([ Factor( (x,v)->nextevent_bps(mvg, x, v),
                               x   ->gradloglik(mvg, x),
                               i) for i in 1:3])
 
-srand(53)
+Random.seed!(53)
 
 # test_local_definegraph defines a chain.
 nvars = chain.structure.nvars

@@ -97,7 +97,7 @@ function nextevent_bps(g::PMFGaussian,
         end
     else
         # three distinct real roots,
-        tm, tp = t0 + sqrt(Δ) * [-1.0,1.0]
+        tm, tp = t0 .+ sqrt(Δ) * [-1.0,1.0]
         if tp <= 0 # case: |/
             tau = pmf_caseA(rexp, p)
         elseif t0 <= 0 # case: |_/

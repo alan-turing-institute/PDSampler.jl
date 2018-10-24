@@ -1,6 +1,6 @@
-using PDSampler
-using Base.Test
-using QuadGK.quadgk
+using QuadGK: quadgk
+using Random
+using LinearAlgebra
 
 # -------------------------------------------------------------------------
 # Quick version of functions (for testing)
@@ -25,7 +25,7 @@ function q_sampletaugaussian(mu,C,x,v)
 end
 # ------------------------------------------------------------------------------
 
-srand(123)
+Random.seed!(123)
 
 ### test NextEvent capsule (trivial test for code cov)
 
@@ -56,15 +56,15 @@ b = randn()
 lb = LinearBound(gllstar, xstar, b)
 
 ## check that q_linearupperbound and nextevent_bps match.
-srand(12); (a1, a2) = q_linearupperbound(gllstar, xstar, b, x, v)
+Random.seed!(10); (a1, a2) = q_linearupperbound(gllstar, xstar, b, x, v)
 acc = rand() < -dot(g, v) / a2
-srand(12); bounce = nextevent_bps(lb, x, v)
+Random.seed!(10); bounce = nextevent_bps(lb, x, v)
 
 @test abs(a1 - bounce.tau) <= 1e-12 && bounce.dobounce(g,v) == acc
 
 ## check that q_sampletaugaussian and nextevent_bps match.
 
-srand(123)
+Random.seed!(123)
 
 p = 50
 C1 = randn(p, p)
@@ -77,8 +77,8 @@ x = randn(p)
 v = randn(p)
 g = randn(p)
 
-srand(12); tauq = q_sampletaugaussian(mu, C1, x, v)
-srand(12); bounce = nextevent_bps(mvg, x, v)
+Random.seed!(12); tauq = q_sampletaugaussian(mu, C1, x, v)
+Random.seed!(12); bounce = nextevent_bps(mvg, x, v)
 
 @test abs(tauq - bounce.tau) <= 1e-12 && bounce.dobounce(g, v)
 
@@ -88,8 +88,8 @@ nedef = NextEvent(0.5)
 @test nedef.tau == 0.5 && nedef.dobounce(randn(), randn()) &&
         nedef.flipindex == -1
 
-srand(555); a = nextevent_zz(mvg, x, v)
-srand(555)
+Random.seed!(555); a = nextevent_zz(mvg, x, v)
+Random.seed!(555)
 u1 = mvg.prec * x - mvg.precmu
 u2 = mvg.prec * v
 taus = zeros(p)
@@ -118,10 +118,10 @@ xv = [randn(d) for i ∈ 1:n]
 wu = [randn(d) for i ∈ 1:n]
 wv = [randn(d) for i ∈ 1:n]
 
-srand(542)
+Random.seed!(542)
 tau = [nextevent_bps(pmfg, [xu[i]; xv[i]], [wu[i]; wv[i]]).tau for i ∈ 1:n]
 
-srand(542)
+Random.seed!(542)
 ri = [randexp() for i ∈ 1:100]
 
 # it must collide
@@ -139,7 +139,7 @@ t0(i) = -0.5(dot(xu[i], wv[i]) + dot(xv[i], wu[i])) / dot(wu[i], wv[i])
 Δ(i) = t0(i)^2 - (dot(xu[i], xv[i]) - pmfg.r) / dot(wu[i], wv[i])
 
 @test maximum(
-        (Δ(i) > 0) ? maximum(map(χ(i), t0(i) + sqrt(Δ(i)) * [-1., 0., 1.])) :
+        (Δ(i) > 0) ? maximum(map(χ(i), t0(i) .+ sqrt(Δ(i)) * [-1., 0., 1.])) :
                      χ(i)(t0(i))
         for i in 1:n) <= 1e-12
 
