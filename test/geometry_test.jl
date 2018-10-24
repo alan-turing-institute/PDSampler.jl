@@ -1,6 +1,3 @@
-using PDSampler
-using Random
-
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing) (drawn from some of SJV's old code)
 function q_nextboundary(ns, a, x, v)

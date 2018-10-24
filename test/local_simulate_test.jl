@@ -1,7 +1,4 @@
 # TODO: tests with multiD variables
-using PDSampler
-#using PDSampler
-using Base.Test
 
 Random.seed!(1234)
 
@@ -65,9 +62,9 @@ Random.seed!(140)
 @test pq[i] > 0.0
 
 ### TEST LS_RESHAPE
-v = Vector{PDSampler.AllowedVarType}(5)
+v = Vector{PDSampler.AllowedVarType}(undef, 5)
 v = [randn(), randn(7), randn(), randn(50), randn(10)]
-w = Vector{PDSampler.AllowedVarType}(5)
+w = Vector{PDSampler.AllowedVarType}(undef, 5)
 for i in 1:length(v)
     w[i] = v[i]*0.
 end
@@ -146,7 +143,7 @@ Random.seed!(123); PDSampler.ls_updatepq!(pq, chain, fidx, xf, vf, g, t)
 # It's gaussian so no need for thinning
 Random.seed!(123); bounce = chain.factors[fidx].nextevent(vcat(xf...), vcat(vf...))
 
-@test pq[fidx] == t+bounce.tau
+@test pq[fidx] == t .+ bounce.tau
 
 ### Testing LS_RANDOM
 evl1 = EventList(Float64)
@@ -174,7 +171,7 @@ Random.seed!(123)
 ### this is a bit of a silly test but ls_refreshment is the
 # composite of functions that have all been tested, so there's not much
 # else to test than to just check it "works"
-v = Vector{PDSampler.AllowedVarType}(chain.structure.nvars)
+v = Vector{PDSampler.AllowedVarType}(undef, chain.structure.nvars)
 for i in 1:length(v)
     v[i] = PDSampler.ls_random(all_evlist.evl[i])
 end

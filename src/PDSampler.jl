@@ -16,6 +16,7 @@ using ProgressMeter
 using Distributions: Beta
 using LinearAlgebra
 using Random
+using Statistics
 
 export
     # MODELS

@@ -1,4 +1,4 @@
-using Base.Test
+using Test
 #@startexample Global BPS (Truncated Gaussian)
 #=
 In this example we use the global Bouncy Particle Sampler on 2D Gaussian truncated to the positive orthan to show how to declare a BPS model.
@@ -7,7 +7,7 @@ In this example we use the global Bouncy Particle Sampler on 2D Gaussian truncat
 
 Start by loading the library:
 =#
-using PDSampler
+using PDSampler, Random
 #=
 you then need to define two elements:
 1. a geometry (boundaries)
@@ -18,7 +18,7 @@ A polygonal domain is then declared with the constructor `Polygonal`.
 =#
 p = 2
 # normal to faces and intercepts
-ns, a = eye(p), zeros(p)
+ns, a = diagm(0=>ones(p)), zeros(p)
 geom  = Polygonal(ns, a)
 #=
 The function `nextboundary` returns a function that can compute the next boundary on the current ray `[x,x+tv]` with `t>0` as well as the time of the hit.
@@ -35,10 +35,10 @@ Here, let us consider a 2D gaussian.
 Random.seed!(12)
 P1  = randn(p,p)
 P1 *= P1'
-P1 += norm(P1)/100*eye(p)
+P1 += norm(P1)/100*diagm(0=>ones(p))
 C1  = inv(P1); C1 += C1'; C1/=2;
-L1  = cholfact(C1)
-mu  = zeros(p)+1.
+L1  = cholesky(C1).L
+mu  = zeros(p) .+ 1.
 mvg = MvGaussianCanon(mu, P1)
 #=
 Here, we have defined the gaussian through the *Canonical* representation i.e.: by specifying a mean and a precision matrix.
@@ -64,7 +64,7 @@ refreshment and the maximum number of gradient evaluations.
 =#
 T    = 1000.0   # length of path generated
 lref = 2.0      # rate of refreshment
-x0   = mu+L1[:L]*randn(p) # sensible starting point
+x0   = mu+L1*randn(p) # sensible starting point
 v0   = randn(p) # starting velocity
 v0  /= norm(v0) # put it on the sphere (not necessary)
 # Define a simulation
@@ -83,7 +83,7 @@ A crude sanity check is for example to check that the estimated mean obtained th
 # Building a basic MC estimator
 # (taking samples from 2D MVG that are in positive orthan)
 sN = 1000
-s  = broadcast(+, mu, L1[:L]*randn(p,sN))
+s  = broadcast(+, mu, L1*randn(p,sN))
 mt = zeros(2)
 np = 0
 # Sum for all samples in the positive orthan

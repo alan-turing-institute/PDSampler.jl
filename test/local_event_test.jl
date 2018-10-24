@@ -1,6 +1,3 @@
-using PDSampler
-using Base.Test
-
 Random.seed!(1234)
 
 p     = 2
@@ -48,8 +45,8 @@ ts  = sort(rand(100))
 ts /= maximum(ts)
 ts *= t3
 ss  = samplelocalpath(all_evlist.evl[i],ts)
-ses = [ ts[j]<t1?(x0[i]+ts[j]*v0[i]):
-            (ts[j]<t2?(ev1.x+(ts[j]-ev1.t)*ev1.v):
+ses = [ ts[j] < t1 ? (x0[i]+ts[j]*v0[i]) :
+            (ts[j] < t2 ? (ev1.x+(ts[j]-ev1.t)*ev1.v) :
                 (ev2.x+(ts[j]-ev2.t)*ev2.v)) for j in 1:length(ts)]
 
 # sample localpath (multiple between)
@@ -69,11 +66,11 @@ for k in 1:length(ts)-1
 end
 
 Ns = 10000
-ss = linspace(0.0,ts[end],Ns)
+ss = range(0.0, stop=ts[end], length=Ns)
 # compare with classical
 ss1 = samplelocalpath(all_evlist.evl[i], ss)
 ss2 = samplepath(Path(xs,ts), ss)
-@test norm(sum(ss1)/Ns - sum(ss2,2)/Ns) <= 1e-10
+@test norm(sum(ss1)/Ns - sum(ss2, dims=2)/Ns) <= 1e-10
 # compare quadrature
 @test norm(pathmean(Path(xs,ts)) - pathmean(all_evlist.evl[i],ts[end]))<=1e-10
 

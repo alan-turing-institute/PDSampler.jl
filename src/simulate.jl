@@ -30,7 +30,7 @@ struct Simulation
     # constructor
     function Simulation(x0, v0, T, nextevent, gradloglik, nextboundary,
                 lambdaref=1.0, algname="BPS";
-                mass=eye(0), blocksize=1000, maxsimtime=4e3,
+                mass=diagm(0=>ones(0)), blocksize=1000, maxsimtime=4e3,
                 maxsegments=1_000_000, maxgradeval=100_000_000,
                 refresh! = refresh_global! )
         # check none of the default named arguments went through
@@ -59,7 +59,7 @@ function Simulation(;
             nextboundary = :undefined,
             lambdaref = 1.0,
             algname = "BPS",
-            mass = eye(0),
+            mass = diagm(0=>ones(0)),
             blocksize = 1000,
             maxsimtime = 4e3,
             maxsegments = Int(1e6),

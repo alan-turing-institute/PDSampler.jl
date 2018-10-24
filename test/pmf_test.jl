@@ -1,6 +1,4 @@
-using Random
 using Polynomials
-using LinearAlgebra
 
 d = 3
 u = randn(d)

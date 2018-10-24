@@ -1,4 +1,4 @@
-using Base.Test
+using Test
 #@startexample Local BPS (Chain of Gaussians)
 #=
 The approach to using the local BPS is much the same as for the global one
@@ -7,10 +7,10 @@ That object will contain the structure of the factor graph (i.e.: which factor i
 
 Below, we show how to declare a chain of bivariate gaussians:
 =#
-using PDSampler
+using PDSampler, Random
 nfac = 3 # number of factors
 
-mvg = MvGaussianStandard(zeros(2),eye(2))
+mvg = MvGaussianStandard(zeros(2),diagm(0=>ones(2)))
 
 # all factors have that same likelihood
 chainfactor(i) = Factor(

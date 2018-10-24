@@ -1,7 +1,4 @@
 using QuadGK: quadgk
-using Random
-using LinearAlgebra
-
 # -------------------------------------------------------------------------
 # Quick version of functions (for testing)
 function q_linearupperbound(xstar, gllstar, b, x, v)

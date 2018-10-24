@@ -136,7 +136,7 @@ function esspath(path::Path; ns::Int=1000, rtol::Real=0.1,
                  limfrac::Real=0.2, maxns::Int=100000)
 
     Tp = 0.999 * path.ts[end]
-    gg = linspace(0, Tp, ns)
+    gg = range(0, stop=Tp, length=ns)
 
     spath  = samplepath(path, gg)
     old_ess = [ess(spath[i, :]) for i in 1:path.p]
@@ -145,7 +145,7 @@ function esspath(path::Path; ns::Int=1000, rtol::Real=0.1,
 
     while flag && (ns < maxns / 2)
         ns *= 2
-        gg = linspace(0, Tp, ns)
+        gg = range(0, stop=Tp, length=ns)
         spath = samplepath(path, gg)
         cur_ess = [ess(spath[i, :]) for i in 1:path.p]
 

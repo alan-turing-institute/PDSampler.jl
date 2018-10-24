@@ -22,7 +22,7 @@ A polygonal domain is then declared with the constructor `Polygonal`.
 ```julia
 p = 2
 # normal to faces and intercepts
-ns, a = eye(p), zeros(p)
+ns, a = diagm(0=>ones(p)), zeros(p)
 geom  = Polygonal(ns, a)
 
 ```
@@ -43,7 +43,7 @@ Here, let us consider a 2D gaussian.
 srand(12)
 P1  = randn(p,p)
 P1 *= P1'
-P1 += norm(P1)/100*eye(p)
+P1 += norm(P1)/100*diagm(0=>ones(p))
 C1  = inv(P1); C1 += C1'; C1/=2;
 L1  = cholfact(C1)
 mu  = zeros(p)+1.

@@ -1,5 +1,3 @@
-using PDSampler, Base.Test
-
 Random.seed!(1234)
 
 p   = 2

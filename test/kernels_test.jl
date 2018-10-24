@@ -1,6 +1,3 @@
-using Random
-using LinearAlgebra
-
 # the functions are somewhat trivial so the tests are also a bit trivial
 
 Random.seed!(1240)

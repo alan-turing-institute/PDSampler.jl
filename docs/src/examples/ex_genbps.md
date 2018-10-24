@@ -13,7 +13,7 @@ Robert.
 ```julia
 using PDSampler
 p     = 2
-ns, a = eye(p), zeros(p)
+ns, a = diagm(0=>ones(p)), zeros(p)
 geom  = Polygonal(ns, a)
 
 nextbdG(x, v) = nextboundary(geom, x, v)
@@ -21,7 +21,7 @@ nextbdG(x, v) = nextboundary(geom, x, v)
 srand(12)
 P1  = randn(p,p)
 P1 *= P1'
-P1 += norm(P1)/100*eye(p)
+P1 += norm(P1)/100*diagm(0=>ones(p))
 C1  = inv(P1); C1 += C1'; C1/=2;
 L1  = cholfact(C1)
 mu  = zeros(p)+1.
@@ -59,4 +59,3 @@ np = 0
 ss = [s; ones(sN)']
 mt = sum(ss[:,i] for i in 1:sN if !any(e->e<0, ss[1:p,i]))
 mt = mt[1:p]/mt[end]
-

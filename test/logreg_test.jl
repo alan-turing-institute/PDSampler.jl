@@ -1,4 +1,3 @@
-using Random
 # ------------------------------------------------------------------------------
 # Quick version of functions (for testing) (drawn from some of SJV's old code)
 q_loglik(lr, w) = sum(-log.(1 .+ exp.(-lr.y .* (lr.X * w))))

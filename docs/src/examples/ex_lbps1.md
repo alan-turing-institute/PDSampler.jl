@@ -12,7 +12,7 @@ Below, we show how to declare a chain of bivariate gaussians:
 using PDSampler
 nfac = 3 # number of factors
 
-mvg = MvGaussianStandard(zeros(2),eye(2))
+mvg = MvGaussianStandard(zeros(2), diagm(0=>ones(2)))
 
 # all factors have that same likelihood
 chainfactor(i) = Factor(

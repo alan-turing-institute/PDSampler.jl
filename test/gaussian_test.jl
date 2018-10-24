@@ -1,7 +1,3 @@
-using Distributions
-using Random
-using LinearAlgebra
-
 # --------------------------------------------------------------------------
 # Quick version of functions (for testing)
 q_gradloglik(mu,cov,x) = cov\(mu-x)
