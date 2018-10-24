@@ -44,6 +44,5 @@ deploydocs(
     deps   = Deps.pip("mkdocs", "pygments"),
     target = "build",
     julia  = "0.5",
-    deps = nothing,
     make = nothing
 )

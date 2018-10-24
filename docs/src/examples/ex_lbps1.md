@@ -9,10 +9,10 @@ That object will contain the structure of the factor graph (i.e.: which factor i
 Below, we show how to declare a chain of bivariate gaussians:
 
 ```julia
-using PDSampler
+using PDSampler, Random
 nfac = 3 # number of factors
 
-mvg = MvGaussianStandard(zeros(2), diagm(0=>ones(2)))
+mvg = MvGaussianStandard(zeros(2),diagm(0=>ones(2)))
 
 # all factors have that same likelihood
 chainfactor(i) = Factor(
@@ -32,7 +32,7 @@ arbitrary graph, you would need to provide two things:
 The rest is very similar to the global BPS:
 
 ```julia
-srand(123)
+Random.seed!(123)
 lambdaref  = .01
 maxnevents = 10000
 T          = Inf
