@@ -1,5 +1,5 @@
-using PDSampler
-using Base.Test
+using Random
+using LinearAlgebra
 
 # the functions are somewhat trivial so the tests are also a bit trivial
 
@@ -9,9 +9,9 @@ d = 10
 normal = randn(d)
 v1 = randn(d)
 v2 = copy(v1)
-I = eye(d)
+II = diagm(0=>ones(d))
 
-@test norm(reflect_bps!(normal,v1)-reflect_bps!(normal,v2,I)) <= 1e-12
+@test norm(reflect_bps!(normal,v1)-reflect_bps!(normal,v2,II)) <= 1e-12
 
 v3 = v1-2.0dot(normal,v1)*normal/norm(normal)^2
 

@@ -28,7 +28,7 @@ arbitrary graph, you would need to provide two things:
 2. the list of factors
 The rest is very similar to the global BPS:
 =#
-srand(123)
+Random.seed!(123)
 lambdaref  = .01
 maxnevents = 10000
 T          = Inf
