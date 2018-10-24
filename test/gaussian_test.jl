@@ -30,13 +30,13 @@ xvals = [randn(p) for i in 1:25]
 
 # difference is in logspace, and we're using slightly different matrices and
 # the computation of the constant is crude to say the least -> higher tol
-@test maximum(abs.((loglik(mvg, x) - check_loglik(x) for x ∈ xvals))) <= 1e-6
+@test maximum(abs.(collect(loglik(mvg, x) - check_loglik(x) for x ∈ xvals))) <= 1e-6
 
 # canon to natural
-@test maximum(abs.((loglik(mvg, x) - loglik(mvg2, x) for x ∈ xvals))) <= 1e-10
+@test maximum(abs.(collect(loglik(mvg, x) - loglik(mvg2, x) for x ∈ xvals))) <= 1e-10
 
 # standard to diagonal
-@test maximum(abs.((loglik(mvg_da, x) - loglik(mvg_db, x) for x ∈ xvals))) <= 1e-10
+@test maximum(abs.(collect(loglik(mvg_da, x) - loglik(mvg_db, x) for x ∈ xvals))) <= 1e-10
 
 # gradloglik, expect a difference since C1 was stabilised
 @test maximum(norm(gradloglik(mvg, x) - q_gradloglik(mu, C1, x))
