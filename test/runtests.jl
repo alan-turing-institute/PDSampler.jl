@@ -1,4 +1,4 @@
-using PDSampler, Base.Test
+using PDSampler, Test
 
 @testset "gaussian"    begin include("gaussian_test.jl")   end
 @testset "t-gaussian"  begin include("tgaussian_test.jl")  end

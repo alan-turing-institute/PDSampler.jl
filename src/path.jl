@@ -11,7 +11,7 @@ export
 Syntactic sugar for union type of Vector{Real} and LinSpace{Real} (types
 accepted for the `samplelocalpath` function).
 """
-const AllowedTimeType = Union{Vector{<:Real}, Range{<:Real}}
+const AllowedTimeType = Union{Vector{<:Real}, AbstractRange{<:Real}}
 
 """
     Path
