@@ -17,7 +17,7 @@ If you want to make suggestions, if you want new features, please don't hesitate
 
 ### Contributors
 
-* [Thibaut Lienart](http://www.stats.ox.ac.uk/~lienart/) (main dev)
+* [Thibaut Lienart](https://tlienart.github.io) (main dev)
 * [Sebastian Vollmer](https://www2.warwick.ac.uk/fac/sci/maths/people/staff/vollmer/)
 * [Andrew Duncan](http://www.imperial.ac.uk/complex-multiscale-systems/our-group/former-members/dr-andrew-duncan/)
 * Martin O'Reilly (ATI)
